@@ -1,10 +1,10 @@
-
 <!DOCTYPE html>
 
 <html>
+
 <head>
 
-<meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, minimum-scale=1.0, user-scalable=no, minimal-ui">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, minimum-scale=1.0, user-scalable=no, minimal-ui">
   <link rel="apple-touch-icon" href="launch.png">
   <link rel="apple-touch-startup-image" href="launch.png">
 
@@ -18,31 +18,31 @@
   <meta name="apple-mobile-web-app-status-bar-style" content="black">
 
 
-<meta http-equiv="refresh" content="600">
+  <meta http-equiv="refresh" content="600">
 
 </head>
+
 <body style="background-color:black;color:red;font-family:courier;font-size:40px;text-align:center;" onload=“alert(5)”>
-<div style="font-size:300px;border: 6px solid red;border-radius: 100px;margin:auto;width:75%">T</div>
-<div><br>Bluetooth by <a style="color:red;" href="https://bwedgar.github.io">bwedgar</a></div>
-<br>
-<button id="find">find bluetooth devices</button>
+  <div style="font-size:300px;border: 6px solid red;border-radius: 100px;margin:auto;width:75%">T</div>
+  <div><br>Bluetooth by <a style="color:red;" href="https://bwedgar.github.io">bwedgar</a></div>
+  <br>
+  <button id="find">find bluetooth devices</button>
 
-<script>
-var x = document.getElementById("find");
-x.onclick=showList();
-//rem
-function showList() {
-  alert();
-  let device =  navigator.bluetooth.requestDevice({
-    filters: [
-        { namePrefix: 'JIB' }
-    ],
-    optionalServices: [ 0xff0f ]
-});
-}
+  <script>
+    var x = document.getElementById("find");
 
+    x.addEventListener('pointerup', function(event) {
 
-</script>
+      alert();
+      let device = navigator.bluetooth.requestDevice({
+        filters: [{
+          namePrefix: 'JIB'
+        }],
+        optionalServices: [0xff0f]
+      });
+    });
+  </script>
 
 </body>
+
 </html>
