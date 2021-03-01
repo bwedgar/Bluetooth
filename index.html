@@ -29,8 +29,16 @@
 
 <script>
 var x = document.getElementById("find");
-x.onclick=alert("");
+x.onclick=showList();
 //rem
+function showList() {
+  let device = await navigator.bluetooth.requestDevice({
+    filters: [
+        { namePrefix: 'JIB' }
+    ],
+    optionalServices: [ 0xff0f ]
+});
+}
 
 
 </script>
