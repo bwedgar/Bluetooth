@@ -32,7 +32,8 @@ var x = document.getElementById("find");
 x.onclick=showList();
 //rem
 function showList() {
-  let device = await navigator.bluetooth.requestDevice({
+  alert();
+  let device =  navigator.bluetooth.requestDevice({
     filters: [
         { namePrefix: 'JIB' }
     ],
