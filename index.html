@@ -1,0 +1,85 @@
+
+<!DOCTYPE html>
+
+<html>
+<head>
+
+<meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, minimum-scale=1.0, user-scalable=no, minimal-ui">
+  <link rel="apple-touch-icon" href="launch.png">
+  <link rel="apple-touch-startup-image" href="launch.png">
+
+  <link rel="manifest" href="manifest.json">
+  <link rel="canonical" href="https://bwedgar.github.io/TideWatch" />
+
+  <title>TideWatch</title>
+  <meta name="apple-mobile-web-app-title" content="TideWatch">
+  <meta name="apple-mobile-web-app-capable" content="yes">
+  <meta name="mobile-web-app-capable" content="yes">
+  <meta name="apple-mobile-web-app-status-bar-style" content="black">
+
+
+<meta http-equiv="refresh" content="600">
+
+</head>
+<body style="background-color:black;color:red;font-family:courier;font-size:40px;text-align:center;" onload=“alert(5)”>
+<div style="font-size:300px;border: 6px solid red;border-radius: 100px;margin:auto;width:75%">T</div>
+<div><br>TideWatch by <a style="color:red;" href="https://bwedgar.github.io">bwedgar</a></div>
+<br>
+<span id="demo"></span>
+
+<script>
+var x = document.getElementById("demo");
+var timeNow=Date.now()
+
+ var timeout = setTimeout("location.reload(true);",60000);
+
+function getLocation() {
+  if (navigator.geolocation) {
+    navigator.geolocation.getCurrentPosition(showTide);
+  } else {
+    x.innerHTML = "Geolocation is not supported by this browser.";
+  }
+}
+
+function showPosition(position) {
+  x.innerHTML = "Latitude: " + position.coords.latitude +
+  "<br>Longitude: " + position.coords.longitude;
+}
+
+function showTide(position) {
+  url="https://api.niwa.co.nz/tides/data?lat="+position.coords.latitude+"&long="+position.coords.longitude+"&datum=MSL&numberOfDays=2&apikey=afFMX6LgUIJ8axZZEVvmJVbOGo3gvtxa";
+fetch(url)
+  .then(response => response.text())
+.then(body => {
+//alert(body)
+s=""
+vals=JSON.parse(body).values
+for (val  of vals) {
+v= (val.value>0)?"High":"Low"
+elapsed= ((Date.parse(val.time)-Date.now())/1000/60/60)
+unit=(elapsed<1)?"hour":"hours"
+if (elapsed>0) {
+//alert(elapsed+" "+showTime(elapsed))
+s=v+" tide in<br>"+showTime(elapsed)+" "+unit
+s=s.replace("in hour","now")
+break
+}
+}
+x.innerHTML=s
+//alert((Date.parse(JSON.parse(body).values[0].time)-Date.now())/1000/60/60))
+}
+)
+}
+
+function showTime(time){
+  //time = time
+  t=time-Math.floor(time)
+  f=(t>5/8)?"&frac34;":(t>3/8)?"&frac12;":(t>1/8)?"&frac14;":""
+  return ((Math.floor(time)==0)?"":Math.floor(time))+f
+}
+
+getLocation()
+</script>
+
+</body>
+</html>
