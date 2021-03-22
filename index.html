@@ -32,6 +32,7 @@
 <button id="pin4ON">pin4 ON</button>
 <button id="pin4OFF">pin4 OFF</button>
   <script>
+    var myCharacteristic=0;
     var x = document.getElementById("find");
     document.getElementById("pin2ON").addEventListener('click',function(){myCharacteristic.writeValue(1)})
     document.getElementById("pin2OFF").addEventListener('click',function(){myCharacteristic.writeValue(2)})
