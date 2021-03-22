@@ -35,9 +35,21 @@
       alert();
 
       // Step 1: Scan for a device with 0xffe5 service
-      navigator.bluetooth.requestDevice({
+    //  navigator.bluetooth.requestDevice({
+
+
+        navigator.bluetooth.requestDevice({
+          filters: [{
+            namePrefix: 'MyESP32'
+          }],
+          optionalServices: [0xff0f]
+        });
+        });
+
+    /*
         filters: [{ namePrefix: 'MyESP32' }]
       })
+      */
         .then(function(device) {
           // Step 2: Connect to it
           return device.gatt.connect();
