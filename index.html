@@ -26,7 +26,7 @@
   <div style="font-size:300px;border: 6px solid red;border-radius: 100px;margin:auto;width:75%">T</div>
   <div><br>Bluetooth by <a style="color:red;" href="https://bwedgar.github.io">bwedgar</a></div>
   <br>
-  <button id="find">find bluetooth MyESP32 5</button>
+  <button id="find">find bluetooth MyESP32 6</button>
 <button id="pin2ON">pin2 ON</button>
 <button id="pin2OFF">pin2 OFF</button>
 <button id="pin4ON">pin4 ON</button>
@@ -34,8 +34,8 @@
   <script>
     var myCharacteristic;
     var x = document.getElementById("find");
-    document.getElementById("pin2ON").addEventListener('click',function(){myCharacteristic.writeValue(new Uint8Array([0x01])})
-    document.getElementById("pin2OFF").addEventListener('click',function(){myCharacteristic.writeValue(new Uint8Array([0x02])})
+    document.getElementById("pin2ON").addEventListener('click',function(){myCharacteristic.writeValue(new Uint8Array([0x01]))})
+    document.getElementById("pin2OFF").addEventListener('click',function(){myCharacteristic.writeValue(new Uint8Array([0x02]))})
 
     x.addEventListener('click', function(event) {
 
