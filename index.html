@@ -46,12 +46,13 @@
         .then(function(device) {
           // Step 2: Connect to it
           return device.gatt.connect();
-        });
-/*
+        })
+
         .then(function(server) {
           // Step 3: Get the Service
           return server.getPrimaryService(4FAFC201-1FB5-459E-8FCC-C5C9C331914B);
         })
+        /*
         .then(function(service) {
           // Step 4: get the Characteristic
           return service.getCharacteristic(BEB5483E-36E1-4688-B7F5-EA07361B26A8);
