@@ -34,8 +34,8 @@
   <script>
     var myCharacteristic;
     var x = document.getElementById("find");
-    document.getElementById("pin2ON").addEventListener('click',function(){myCharacteristic.writeValue(1)})
-    document.getElementById("pin2OFF").addEventListener('click',function(){myCharacteristic.writeValue(2)})
+    document.getElementById("pin2ON").addEventListener('click',function(){myCharacteristic.writeValue(0x01)})
+    document.getElementById("pin2OFF").addEventListener('click',function(){myCharacteristic.writeValue(0x02)})
 
     x.addEventListener('click', function(event) {
 
