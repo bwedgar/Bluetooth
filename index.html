@@ -32,7 +32,7 @@
     var x = document.getElementById("find");
 
     x.addEventListener('click', function(event) {
-      alert("say");
+      //alert("say");
 
       // Step 1: Scan for a device with 0xffe5 service
     //  navigator.bluetooth.requestDevice({
@@ -46,15 +46,13 @@
         });
         });
 
-  /*
 
-        filters: [{ namePrefix: 'MyESP32' }]
-      })
 
         .then(function(device) {
           // Step 2: Connect to it
           return device.gatt.connect();
         })
+        /*
         .then(function(server) {
           // Step 3: Get the Service
           return server.getPrimaryService(4FAFC201-1FB5-459E-8FCC-C5C9C331914B);
