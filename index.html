@@ -27,9 +27,14 @@
   <div><br>Bluetooth by <a style="color:red;" href="https://bwedgar.github.io">bwedgar</a></div>
   <br>
   <button id="find">find bluetooth MyESP32 3</button>
-
+<button id="pin2ON">pin2 ON</button>
+<button id="pin2OFF">pin2 OFF</button>
+<button id="pin4ON">pin4 ON</button>
+<button id="pin4OFF">pin4 OFF</button>
   <script>
     var x = document.getElementById("find");
+    document.getElementById("pin2ON").addEventListener('click',function(){myCharacteristic.writeValue(1)})
+    document.getElementById("pin2OFF").addEventListener('click',function(){myCharacteristic.writeValue(2)})
 
     x.addEventListener('click', function(event) {
 
@@ -60,12 +65,14 @@ console.log("connecting to device");
         .then(function(service) {
           // Step 4: get the Characteristic
           console.log("getting characteristic");
-          return service.getCharacteristic('beb5483e-36e1-4688-b7f5-ea07361b26a8');
+            myCharacteristic= service.getCharacteristic('beb5483e-36e1-4688-b7f5-ea07361b26a8');
+return   myCharacteristic;
         })
         .then(function(characteristic) {
           // Step 5: Write to the characteristic
           var data = new Uint8Array([0x01]);
           console.log("writing to characteristic");
+
           return characteristic.writeValue(data);
         })
         .catch(function(error) {
