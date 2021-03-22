@@ -32,11 +32,6 @@
     var x = document.getElementById("find");
 
     x.addEventListener('click', function(event) {
-      //alert("say");
-
-      // Step 1: Scan for a device with 0xffe5 service
-    //  navigator.bluetooth.requestDevice({
-
 
         navigator.bluetooth.requestDevice({
           filters: [{
@@ -44,7 +39,7 @@
           }],
           optionalServices: [0xff0f]
         })
-      //  });
+        });
 
 
 /*
