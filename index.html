@@ -109,10 +109,18 @@ motors on frame  10NN NNNM   NNNN=motor number 0-31  M=Motor Position 0 or 1
       [0, 0, 0],
       [0, 0, 0],
       [0, 0, 0],
+      [0, 0, 0],
+      [0, 0, 0],
+      [0, 0, 0],
+      [0, 0, 0],
+      [0, 0, 0],
+      [0, 0, 0],
+      [0, 0, 0],
+      [0, 0, 0],
       [0, 0, 0]
     ]; //0=stopped,0=reverse,0=lights off
     sendEngineCode = (engineNumber) => {
-      codeDisplay.innerHTML = engineCodes[engineNumber];
+      codeDisplay.innerHTML = (engineNumber*8+engineCodes[engineNumber][0]*4+engineCodes[engineNumber][1]*2+engineCodes[engineNumber][2]*1).toString(2);
     }
     var myCharacteristic;
     var e0Stopped = document.getElementById("e0Stopped");
@@ -132,7 +140,7 @@ motors on frame  10NN NNNM   NNNN=motor number 0-31  M=Motor Position 0 or 1
     e0LightsOff.addEventListener('click', () => {
       engineCodes[0][2] = (engineCodes[0][2] + 1) % 2;
       engineCodes[0][2] == 1 ? e0LightsOff.innerHTML = 'Lights On' : e0LightsOff.innerHTML = 'Lights Off';
-      sendEngineCode(0);
+      sendEngineCode(8);
     })
     var l0OffState=0;
     var l0Off = document.getElementById("l0Off");
