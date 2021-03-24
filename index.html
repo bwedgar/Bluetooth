@@ -46,7 +46,9 @@
   <button id="e0Stopped" class="button1">Stopped</button>
   <button id="e0Reverse" class="button1">Reverse</button>
   <button id="e0LightsOff" class="button1">Lights off</button>
-  <button id="l0Off" class="button1">light 0</button>
+  <button id="L0Button" class="button1">L0</button>
+    <button id="L1Button" class="button1">L1</button>
+      <button id="L2Button" class="button1">L2</button>
 
   <script>
     /*
@@ -54,49 +56,48 @@ CODING BYTE SENT TO CONTROLLER
 engines/coaches  0NNNSRL   NNN=engine number 0-15 S = Stopped or Moving R=Reverse or Forward L=Lights Off or on
 lights on frame  11NN NNNL   NNNN=light number 0-31  L=light Off or On
   lights numbers
-    0. scene 0'
-    1. scene 1
-    2. scene 2
-    3. scene 3
-    4. scene 4
-    5. scene 5
-    6. scene 6
-    7. scene 7
-    8. sunrise on left
-    9. sunlight 0
-    10. sunlight 1
-    11. sunlight 2
-    12. sunset on right
+    L0. scene 0
+    L1. scene 1
+    L2. scene 2
+    L3. scene 3
+    L4. scene 4
+    L5. scene 5
+    L6. scene 6
+    L7. scene 7
+    L8. sunrise on left
+    L9. sunlight 0
+    L10. sunlight 1
+    L11. sunlight 2
+    L12. sunset on right
 
 
 motors on frame  10NN NNNM   NNNN=motor number 0-31  M=Motor Position 0 or 1
    motor numbers
-    0. actuator 0
-    1. actuator 1
-    2. actuator 2
-    3. actuator 3
-    4. actuator 4
-    5. actuator 5
-    6. actuator 6
-    7. actuator 7
-    8. loop 0 connect
-    9. loop 1 connect
-    10. loop 2 connect
-    11. loop 3 connect
-    12. lift
-    13. loops exit stop
-    14. LHS lift stop
-    15. RHS lift stop
+    M0. actuator 0
+    M1. actuator 1
+    M2. actuator 2
+    M3. actuator 3
+    M4. actuator 4
+    M5. actuator 5
+    M6. actuator 6
+    M7. actuator 7
+    M8. loop 0 connect
+    M9. loop 1 connect
+    M10. loop 2 connect
+    M11. loop 3 connect
+    M12. lift
+    M13. loops exit stop
+    M14. LHS lift stop
+    M15. RHS lift stop
 
 
 
 
     */
-    var time = 8;
-    var timeScale = 120; //one hour=30 seconds;
-    var motorOperations = [
-      [1, 1]
-    ]; // item,state
+    var time = 0; //time (0-24*4-1) divided 4 gives hours on 24 hours clock advances every 30 secs so day takes 48 minutes
+    var sequence=[[40,L0,1]];  //[time,item,state(on or off)]
+
+
   sendLightCode = (lightNumber,on) => {
     codeDisplay.innerHTML=(128+64+lightNumber*2+on).toString(2);
   }
@@ -142,13 +143,41 @@ motors on frame  10NN NNNM   NNNN=motor number 0-31  M=Motor Position 0 or 1
       engineCodes[0][2] == 1 ? e0LightsOff.innerHTML = 'Lights On' : e0LightsOff.innerHTML = 'Lights Off';
       sendEngineCode(8);
     })
-    var l0OffState=0;
-    var l0Off = document.getElementById("l0Off");
-    l0Off.addEventListener('click', () => {
-      l0OffState=(l0OffState+1)%2;
-      l0OffState == 1 ? l0Off.innerHTML = 'Light 0 On' : l0Off.innerHTML = 'Light 0 Off';
-      sendLightCode(9,l0OffState);
+
+    /******************LIGHTS**************/
+    var L0=0;
+    var L0Button = document.getElementById("L0Button");
+    L0Button.addEventListener('click', () => {
+      L0=(L0+1)%2;
+      L0 == 1 ? L0Button.innerHTML = 'L0 On' : L0Button.innerHTML = 'L0 Off';
+      sendLightCode(0,L0);
     })
+    var L1=0;
+    var L1Button = document.getElementById("L1Button");
+    L1Button.addEventListener('click', () => {
+      L1=(L1+1)%2;
+      L1 == 1 ? L1Button.innerHTML = 'L1 On' : L1Button.innerHTML = 'L1 Off';
+      sendLightCode(1,L1);
+    })
+    var L2=0;
+    var L2Button = document.getElementById("L2Button");
+    L2Button.addEventListener('click', () => {
+      L2=(L2+1)%2;
+      L2 == 1 ? L2Button.innerHTML = 'L2 On' : L2Button.innerHTML = 'L2 Off';
+      sendLightCode(2,L2);
+    })
+    var L3=0;
+    var L3Button = document.getElementById("L3Button");
+    L3Button.addEventListener('click', () => {
+      L3=(L3+1)%2;
+      L3 == 1 ? L3Button.innerHTML = 'L3 On' : L3Button.innerHTML = 'L3 Off';
+      sendLightCode(3,L3);
+    })
+
+
+
+
+
 
     var x = document.getElementById("find");
 
