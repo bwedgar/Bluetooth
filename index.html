@@ -46,6 +46,7 @@
   <button id="e0Stopped" class="button1">Stopped</button>
   <button id="e0Reverse" class="button1">Reverse</button>
   <button id="e0LightsOff" class="button1">Lights off</button>
+  <button id="l0Off" class="button1">light 0</button>
 
   <script>
     /*
@@ -78,18 +79,15 @@ motors on frame  10NN NNNM   NNNN=motor number 0-31  M=Motor Position 0 or 1
     5. actuator 5
     6. actuator 6
     7. actuator 7
-    8. lift
-    9. loop 0
-    10. loop 1
-    11.  loop 2
-    12.  loop 3
+    8. loop 0 connect
+    9. loop 1 connect
+    10. loop 2 connect
+    11. loop 3 connect
+    12. lift
     13. loops exit stop
     14. LHS lift stop
-    15. lift RHS stopped
-    16. loop 0 connect
-    17. loop 1 connect
-    18. loop 2 connect
-    19. loop 3 connect
+    15. RHS lift stop
+
 
 
 
@@ -99,9 +97,9 @@ motors on frame  10NN NNNM   NNNN=motor number 0-31  M=Motor Position 0 or 1
     var motorOperations = [
       [1, 1]
     ]; // item,state
-    var lightsCode = [
-      []
-    ]; //16 lights
+  sendLightCode = (lightNumber,on) => {
+    codeDisplay.innerHTML=(128+64+lightNumber*2+on).toString(2);
+  }
     var codeDisplay = document.getElementById("codeDisplay");
     var engineCodes = [
       [0, 0, 0],
@@ -136,13 +134,32 @@ motors on frame  10NN NNNM   NNNN=motor number 0-31  M=Motor Position 0 or 1
       engineCodes[0][2] == 1 ? e0LightsOff.innerHTML = 'Lights On' : e0LightsOff.innerHTML = 'Lights Off';
       sendEngineCode(0);
     })
+    var l0OffState=0;
+    var l0Off = document.getElementById("l0Off");
+    l0Off.addEventListener('click', () => {
+      l0OffState=(l0OffState+1)%2;
+      l0OffState == 1 ? l0Off.innerHTML = 'Light 0 On' : l0Off.innerHTML = 'Light 0 Off';
+      sendLightCode(9,l0OffState);
+    })
+
     var x = document.getElementById("find");
+
+
+
+
+
+
     /*document.getElementById("pin2ON").addEventListener('click', function() {
       myCharacteristic.writeValue(new Uint8Array([0x01]))
     })
     document.getElementById("pin2OFF").addEventListener('click', function() {
       myCharacteristic.writeValue(new Uint8Array([0x02]))
     })
+
+
+
+
+
 */
     x.addEventListener('click', function(event) {
 
