@@ -8,7 +8,6 @@
   <link rel="apple-touch-icon" href="launch.png">
   <link rel="apple-touch-startup-image" href="launch.png">
 
-  <link rel="manifest" href="manifest.json">
   <link rel="canonical" href="https://bwedgar.github.io/Bluetooth" />
 
   <title>Bluetooth</title>
@@ -19,46 +18,154 @@
 
 
   <meta http-equiv="refresh" content="600">
+  <style>
+    .button1 {
+      background-color: black; //#4CAF50;
+      /* Green */
+      width: 20%;
+      border: 2px solid white;
+      color: white;
+      padding: 15px 32px;
+      text-align: center;
+      text-decoration: none;
+      display: inline-block;
+      font-size: 16px;
+    }
+  </style>
 
 </head>
 
 <body style="background-color:black;color:red;font-family:courier;font-size:40px;text-align:center;>
-  <div style="font-size:300px;border: 6px solid red;border-radius: 100px;margin:auto;width:75%">T</div>
+  <div style=" font-size:300px;border: 6px solid red;border-radius: 100px;margin:auto;width:75%">T</div>
   <div><br>Bluetooth by <a style="color:red;" href="https://bwedgar.github.io">bwedgar</a></div>
   <br>
   <button id="find">find bluetooth MyESP32 6</button>
-<button id="pin2ON">pin2 ON</button>
-<button id="pin2OFF">pin2 OFF</button>
-<button id="pin4ON">pin4 ON</button>
-<button id="pin4OFF">pin4 OFF</button>
-  <script>
-    var myCharacteristic;
-    var x = document.getElementById("find");
-    document.getElementById("pin2ON").addEventListener('click',function(){myCharacteristic.writeValue(new Uint8Array([0x01]))})
-    document.getElementById("pin2OFF").addEventListener('click',function(){myCharacteristic.writeValue(new Uint8Array([0x02]))})
+  <BR>
+  <button id="codeDisplay" class="button1">code</button><br>
+  <button class="button1">X0</button>
+  <button id="e0Stopped" class="button1">Stopped</button>
+  <button id="e0Reverse" class="button1">Reverse</button>
+  <button id="e0LightsOff" class="button1">Lights off</button>
 
+  <script>
+    /*
+CODING BYTE SENT TO CONTROLLER
+engines/coaches  0NNNSRL   NNN=engine number 0-15 S = Stopped or Moving R=Reverse or Forward L=Lights Off or on
+lights on frame  11NN NNNL   NNNN=light number 0-31  L=light Off or On
+  lights numbers
+    0. scene 0'
+    1. scene 1
+    2. scene 2
+    3. scene 3
+    4. scene 4
+    5. scene 5
+    6. scene 6
+    7. scene 7
+    8. sunrise on left
+    9. sunlight 0
+    10. sunlight 1
+    11. sunlight 2
+    12. sunset on right
+
+
+motors on frame  10NN NNNM   NNNN=motor number 0-31  M=Motor Position 0 or 1
+   motor numbers
+    0. actuator 0
+    1. actuator 1
+    2. actuator 2
+    3. actuator 3
+    4. actuator 4
+    5. actuator 5
+    6. actuator 6
+    7. actuator 7
+    8. lift
+    9. loop 0
+    10. loop 1
+    11.  loop 2
+    12.  loop 3
+    13. loops exit stop
+    14. LHS lift stop
+    15. lift RHS stopped
+    16. loop 0 connect
+    17. loop 1 connect
+    18. loop 2 connect
+    19. loop 3 connect
+
+
+
+    */
+    var time = 8;
+    var timeScale = 120; //one hour=30 seconds;
+    var motorOperations = [
+      [1, 1]
+    ]; // item,state
+    var lightsCode = [
+      []
+    ]; //16 lights
+    var codeDisplay = document.getElementById("codeDisplay");
+    var engineCodes = [
+      [0, 0, 0],
+      [0, 0, 0],
+      [0, 0, 0],
+      [0, 0, 0],
+      [0, 0, 0],
+      [0, 0, 0],
+      [0, 0, 0],
+      [0, 0, 0]
+    ]; //0=stopped,0=reverse,0=lights off
+    sendEngineCode = (engineNumber) => {
+      codeDisplay.innerHTML = engineCodes[engineNumber];
+    }
+    var myCharacteristic;
+    var e0Stopped = document.getElementById("e0Stopped");
+    e0Stopped.addEventListener('click', () => {
+
+      engineCodes[0][0] = (engineCodes[0][0] + 1) % 2
+      engineCodes[0][0] == 1 ? e0Stopped.innerHTML = 'Moving' : e0Stopped.innerHTML = 'Stopped';
+      sendEngineCode(0);
+    })
+    var e0Reverse = document.getElementById("e0Reverse");
+    e0Reverse.addEventListener('click', () => {
+      engineCodes[0][1] = (engineCodes[0][1] + 1) % 2;
+      engineCodes[0][1] == 1 ? e0Reverse.innerHTML = 'Forward' : e0Reverse.innerHTML = 'Reverse';
+      sendEngineCode(0);
+    })
+    var e0LightsOff = document.getElementById("e0LightsOff");
+    e0LightsOff.addEventListener('click', () => {
+      engineCodes[0][2] = (engineCodes[0][2] + 1) % 2;
+      engineCodes[0][2] == 1 ? e0LightsOff.innerHTML = 'Lights On' : e0LightsOff.innerHTML = 'Lights Off';
+      sendEngineCode(0);
+    })
+    var x = document.getElementById("find");
+    /*document.getElementById("pin2ON").addEventListener('click', function() {
+      myCharacteristic.writeValue(new Uint8Array([0x01]))
+    })
+    document.getElementById("pin2OFF").addEventListener('click', function() {
+      myCharacteristic.writeValue(new Uint8Array([0x02]))
+    })
+*/
     x.addEventListener('click', function(event) {
 
-        navigator.bluetooth.requestDevice({
+      navigator.bluetooth.requestDevice({
           filters: [{
             namePrefix: 'MyESP32'
           }],
           optionalServices: ['4fafc201-1fb5-459e-8fcc-c5c9c331914b']
         })
-      //  });
+        //  });
 
 
 
         .then(function(device) {
           // Step 2: Connect to it
-console.log("connecting to device");
+          console.log("connecting to device");
           return device.gatt.connect();
 
         })
 
         .then(function(server) {
           // Step 3: Get the Service
-            console.log("connecting to service");
+          console.log("connecting to service");
           return server.getPrimaryService('4fafc201-1fb5-459e-8fcc-c5c9c331914b');
 
         })
@@ -66,11 +173,11 @@ console.log("connecting to device");
         .then(function(service) {
           // Step 4: get the Characteristic
           console.log("getting characteristic");
-            return service.getCharacteristic('beb5483e-36e1-4688-b7f5-ea07361b26a8');
+          return service.getCharacteristic('beb5483e-36e1-4688-b7f5-ea07361b26a8');
 
         })
         .then(function(characteristic) {
-          myCharacteristic=characteristic;
+          myCharacteristic = characteristic;
           // Step 5: Write to the characteristic
           var data = new Uint8Array([0x01]);
           console.log("writing to characteristic");
@@ -78,13 +185,12 @@ console.log("connecting to device");
           return characteristic.writeValue(data);
         })
         .catch(function(error) {
-           // And of course: error handling!
-           console.error('Connection failed!', error);
+          // And of course: error handling!
+          console.error('Connection failed!', error);
         });
 
 
-});
-
+    });
   </script>
 
 </body>
