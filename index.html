@@ -29,7 +29,7 @@
       text-align: center;
       text-decoration: none;
       float: left;
-border: 1px solid green;
+      border: 1px solid green;
       display: inline-block;
       font-size: 16px;
     }
@@ -43,9 +43,9 @@ border: 1px solid green;
       padding: 15px 3px;
       text-align: center;
       text-decoration: none;
-    //  display: inline-block;
+      //  display: inline-block;
       float: left;
-border: 1px solid green;
+      border: 1px solid green;
       font-size: 16px;
     }
   </style>
@@ -65,26 +65,26 @@ border: 1px solid green;
   <button id="E0LightsButton" class="button1">Lights off</button>
 
   <span>
-  <button name="light" id="L0Button" class="button2">L0</button>
-  <button name="light" id="L1Button" class="button2">L1</button>
-  <button name="light" id="L2Button" class="button2">L2</button>
-  <button name="light" id="L3Button" class="button2">L3</button>
-  <button name="light" id="L4Button" class="button2">L4</button>
-  <button name="light" id="L5Button" class="button2">L5</button>
-  <button name="light" id="L6Button" class="button2">L6</button>
-  <button name="light" id="L7Button" class="button2">L7</button>
-  <button name="light" id="L8Button" class="button2">L8</button>
-</span>
-<br>
-<span>
-  <button name="motor" id="M0Button" class="button2">M0</button>
-  <button name="motor" id="M1Button" class="button2">M1</button>
-  <button name="motor" id="M2Button" class="button2">M2</button>
-  <button name="motor" id="M3Button" class="button2">M3</button>
-  <button name="motor" id="M4Button" class="button2">M4</button>
-  <button name="motor" id="M5Button" class="button2">M5</button>
-  <button name="motor" id="M6Button" class="button2">M6</button>
-</span>
+    <button name="light" id="L0Button" class="button2">L0</button>
+    <button name="light" id="L1Button" class="button2">L1</button>
+    <button name="light" id="L2Button" class="button2">L2</button>
+    <button name="light" id="L3Button" class="button2">L3</button>
+    <button name="light" id="L4Button" class="button2">L4</button>
+    <button name="light" id="L5Button" class="button2">L5</button>
+    <button name="light" id="L6Button" class="button2">L6</button>
+    <button name="light" id="L7Button" class="button2">L7</button>
+    <button name="light" id="L8Button" class="button2">L8</button>
+  </span>
+  <br style="clear:both" />
+  <span>
+    <button name="motor" id="M0Button" class="button2">M0</button>
+    <button name="motor" id="M1Button" class="button2">M1</button>
+    <button name="motor" id="M2Button" class="button2">M2</button>
+    <button name="motor" id="M3Button" class="button2">M3</button>
+    <button name="motor" id="M4Button" class="button2">M4</button>
+    <button name="motor" id="M5Button" class="button2">M5</button>
+    <button name="motor" id="M6Button" class="button2">M6</button>
+  </span>
   <script>
     /*
 CODING BYTE SENT TO CONTROLLER
@@ -92,7 +92,7 @@ engines/coaches  0NNNSRL   NNN=engine number 0-15 S = Stopped or Moving R=Revers
 lights on frame  11NN NNNL   NNNN=light number 0-31  L=light Off or On   count=12
 */
     lightNames = [
-    "scene 0",
+      "scene 0",
       "scene1",
       "scene2",
       "scene3",
@@ -105,10 +105,10 @@ lights on frame  11NN NNNL   NNNN=light number 0-31  L=light Off or On   count=1
 
 
 
-  /*  motors on frame 10 NN NNNM NNNN = motor number 0 - 31 M = Motor Position 0 or 1  Count=16
-  */
+    /*  motors on frame 10 NN NNNM NNNN = motor number 0 - 31 M = Motor Position 0 or 1  Count=16
+     */
 
-    motorNames =[
+    motorNames = [
       "actuator 0 and LHS",
       "actuator 1 and loop0 connect",
       "actuator 2 and loop1 connect",
@@ -125,10 +125,10 @@ lights on frame  11NN NNNL   NNNN=light number 0-31  L=light Off or On   count=1
 
 
     sendLightCode = (lightNumber, on) => {
-      codeDisplay.innerHTML = (128 + 64 + lightNumber * 2 + on).toString(2).padStart(8,"0");
+      codeDisplay.innerHTML = (128 + 64 + lightNumber * 2 + on).toString(2).padStart(8, "0");
     }
     sendMotorCode = (motorNumber, on) => {
-      codeDisplay.innerHTML = (128 + 0 + motorNumber * 2 + on).toString(2).padStart(8,"0");
+      codeDisplay.innerHTML = (128 + 0 + motorNumber * 2 + on).toString(2).padStart(8, "0");
     }
     var codeDisplay = document.getElementById("codeDisplay");
     var engineCodes = [
@@ -150,7 +150,7 @@ lights on frame  11NN NNNL   NNNN=light number 0-31  L=light Off or On   count=1
       [0, 0, 0]
     ]; //0=stopped,0=reverse,0=lights off
     sendEngineCode = (engineNumber) => {
-      codeDisplay.innerHTML = (engineNumber * 8 + engineCodes[engineNumber][0] * 4 + engineCodes[engineNumber][1] * 2 + engineCodes[engineNumber][2] * 1).toString(2).padStart(8,"0");
+      codeDisplay.innerHTML = (engineNumber * 8 + engineCodes[engineNumber][0] * 4 + engineCodes[engineNumber][1] * 2 + engineCodes[engineNumber][2] * 1).toString(2).padStart(8, "0");
     }
 
 
