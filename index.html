@@ -28,6 +28,8 @@
       padding: 15px 32px;
       text-align: center;
       text-decoration: none;
+      float: left;
+border: 1px solid green;
       display: inline-block;
       font-size: 16px;
     }
@@ -38,10 +40,12 @@
       width: 10%;
       border: 2px solid white;
       color: white;
-      padding: 15px 32px;
+      padding: 15px 3px;
       text-align: center;
       text-decoration: none;
-      display: inline-block;
+    //  display: inline-block;
+      float: left;
+border: 1px solid green;
       font-size: 16px;
     }
   </style>
@@ -56,66 +60,64 @@
   <BR>
   <button id="codeDisplay" class="button1">code</button><br>
   <button class="button1">X0</button>
-  <button id="e0Stopped" class="button1">Stopped</button>
-  <button id="e0Reverse" class="button1">Reverse</button>
-  <button id="e0LightsOff" class="button1">Lights off</button>
+  <button id="E0MotionButton" class="button1">Stopped</button>
+  <button id="E0DirectionButton" class="button1">Reverse</button>
+  <button id="E0LightsButton" class="button1">Lights off</button>
+
+  <span>
   <button name="light" id="L0Button" class="button2">L0</button>
   <button name="light" id="L1Button" class="button2">L1</button>
   <button name="light" id="L2Button" class="button2">L2</button>
   <button name="light" id="L3Button" class="button2">L3</button>
-  <BR>
+  <button name="light" id="L4Button" class="button2">L4</button>
+  <button name="light" id="L5Button" class="button2">L5</button>
+  <button name="light" id="L6Button" class="button2">L6</button>
+  <button name="light" id="L7Button" class="button2">L7</button>
+  <button name="light" id="L8Button" class="button2">L8</button>
+</span>
+<br>
+<span>
   <button name="motor" id="M0Button" class="button2">M0</button>
   <button name="motor" id="M1Button" class="button2">M1</button>
   <button name="motor" id="M2Button" class="button2">M2</button>
+  <button name="motor" id="M3Button" class="button2">M3</button>
+  <button name="motor" id="M4Button" class="button2">M4</button>
+  <button name="motor" id="M5Button" class="button2">M5</button>
+  <button name="motor" id="M6Button" class="button2">M6</button>
+</span>
   <script>
     /*
 CODING BYTE SENT TO CONTROLLER
 engines/coaches  0NNNSRL   NNN=engine number 0-15 S = Stopped or Moving R=Reverse or Forward L=Lights Off or on
-lights on frame  11NN NNNL   NNNN=light number 0-31  L=light Off or On
+lights on frame  11NN NNNL   NNNN=light number 0-31  L=light Off or On   count=12
 */
-    lightNames = ["scene 0",
+    lightNames = [
+    "scene 0",
       "scene1",
       "scene2",
       "scene3",
       "scene4",
       "scene5",
-      "scene6",
-      "scene7",
       "sunrise",
-      "am",
-      "noon",
-      "pm",
+      "daytime",
       "sunset"
     ];
 
 
 
-  /*  motors on frame 10 NN NNNM NNNN = motor number 0 - 31 M = Motor Position 0 or 1
+  /*  motors on frame 10 NN NNNM NNNN = motor number 0 - 31 M = Motor Position 0 or 1  Count=16
   */
 
     motorNames =[
-      "actuator 0",
-      "actuator 1",
-      "actuator 2",
-      "actuator 3",
-      "actuator 4",
-      "actuator 5",
-      "actuator 6",
-      "actuator 7",
-      "loop 0 connect",
-      "loop 1 connect",
-      "loop 2 connect",
-      "loop 3 connect",
-      "lift",
-      "loops exit stop",
-      "LHS lift stop",
-      "RHS lift stop"
+      "actuator 0 and LHS",
+      "actuator 1 and loop0 connect",
+      "actuator 2 and loop1 connect",
+      "actuator 3 and loop2 connect",
+      "actuator 4 and loops direction and stop",
+      "actuator 5 and RHS",
+      "lift"
     ]
 
-
-
-
-  
     var time = 0; //time (0-24*4-1) divided 4 gives hours on 24 hours clock advances every 30 secs so day takes 48 minutes
     var sequence = [
       [40, L0, 1]
@@ -123,10 +125,10 @@ lights on frame  11NN NNNL   NNNN=light number 0-31  L=light Off or On
 
 
     sendLightCode = (lightNumber, on) => {
-      codeDisplay.innerHTML = (128 + 64 + lightNumber * 2 + on).toString(2);
+      codeDisplay.innerHTML = (128 + 64 + lightNumber * 2 + on).toString(2).padStart(8,"0");
     }
     sendMotorCode = (motorNumber, on) => {
-      codeDisplay.innerHTML = (128 + 0 + motorNumber * 2 + on).toString(2);
+      codeDisplay.innerHTML = (128 + 0 + motorNumber * 2 + on).toString(2).padStart(8,"0");
     }
     var codeDisplay = document.getElementById("codeDisplay");
     var engineCodes = [
@@ -148,27 +150,29 @@ lights on frame  11NN NNNL   NNNN=light number 0-31  L=light Off or On
       [0, 0, 0]
     ]; //0=stopped,0=reverse,0=lights off
     sendEngineCode = (engineNumber) => {
-      codeDisplay.innerHTML = (engineNumber * 8 + engineCodes[engineNumber][0] * 4 + engineCodes[engineNumber][1] * 2 + engineCodes[engineNumber][2] * 1).toString(2);
+      codeDisplay.innerHTML = (engineNumber * 8 + engineCodes[engineNumber][0] * 4 + engineCodes[engineNumber][1] * 2 + engineCodes[engineNumber][2] * 1).toString(2).padStart(8,"0");
     }
+
+
     var myCharacteristic;
-    var e0Stopped = document.getElementById("e0Stopped");
-    e0Stopped.addEventListener('click', () => {
+    var E0Motion = document.getElementById("E0MotionButton");
+    E0Motion.addEventListener('click', () => {
 
       engineCodes[0][0] = (engineCodes[0][0] + 1) % 2
-      engineCodes[0][0] == 1 ? e0Stopped.innerHTML = 'Moving' : e0Stopped.innerHTML = 'Stopped';
+      engineCodes[0][0] == 1 ? E0Motion.innerHTML = 'Moving' : E0Motion.innerHTML = 'Stopped';
       sendEngineCode(0);
     })
-    var e0Reverse = document.getElementById("e0Reverse");
-    e0Reverse.addEventListener('click', () => {
+    var E0Direction = document.getElementById("E0DirectionButton");
+    E0Direction.addEventListener('click', () => {
       engineCodes[0][1] = (engineCodes[0][1] + 1) % 2;
-      engineCodes[0][1] == 1 ? e0Reverse.innerHTML = 'Forward' : e0Reverse.innerHTML = 'Reverse';
+      engineCodes[0][1] == 1 ? E0Direction.innerHTML = 'Forward' : E0Direction.innerHTML = 'Reverse';
       sendEngineCode(0);
     })
-    var e0LightsOff = document.getElementById("e0LightsOff");
-    e0LightsOff.addEventListener('click', () => {
+    var E0Lights = document.getElementById("E0LightsButton");
+    E0Lights.addEventListener('click', () => {
       engineCodes[0][2] = (engineCodes[0][2] + 1) % 2;
-      engineCodes[0][2] == 1 ? e0LightsOff.innerHTML = 'Lights On' : e0LightsOff.innerHTML = 'Lights Off';
-      sendEngineCode(8);
+      engineCodes[0][2] == 1 ? E0Lights.innerHTML = 'Lights On' : E0Lights.innerHTML = 'Lights Off';
+      sendEngineCode(0);
     })
 
     /******************LIGHTS**************/
@@ -223,16 +227,7 @@ lights on frame  11NN NNNL   NNNN=light number 0-31  L=light Off or On
       sendMotorCode(2, M2);
     })
 
-
-
-
-
     var x = document.getElementById("find");
-
-
-
-
-
 
     /*document.getElementById("pin2ON").addEventListener('click', function() {
       myCharacteristic.writeValue(new Uint8Array([0x01]))
@@ -240,10 +235,6 @@ lights on frame  11NN NNNL   NNNN=light number 0-31  L=light Off or On
     document.getElementById("pin2OFF").addEventListener('click', function() {
       myCharacteristic.writeValue(new Uint8Array([0x02]))
     })
-
-
-
-
 
 */
     x.addEventListener('click', function(event) {
