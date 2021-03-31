@@ -48,6 +48,23 @@
       border: 1px solid green;
       font-size: 16px;
     }
+
+    .button2On {
+
+      background-color: grey; //#4CAF50;
+      /* Green */
+      width: 10%;
+      border: 2px solid white;
+      color: black;
+      padding: 15px 3px;
+      text-align: center;
+      text-decoration: none;
+      //  display: inline-block;
+      float: left;
+      border: 1px solid green;
+      font-size: 16px;
+
+    }
   </style>
 
 </head>
@@ -58,11 +75,13 @@
   <br>
   <button id="find">find bluetooth MyESP32 6</button>
   <BR>
-  <button id="codeDisplay" class="button1">code</button><br>
+  <button id="codeDisplay" class="button1">code</button>
+  <br style="clear:both" />
   <button class="button1">X0</button>
   <button id="E0MotionButton" class="button1">Stopped</button>
   <button id="E0DirectionButton" class="button1">Reverse</button>
   <button id="E0LightsButton" class="button1">Lights off</button>
+  <br style="clear:both" />
 
   <span>
     <button name="light" id="L0Button" class="button2">L0</button>
@@ -180,30 +199,67 @@ lights on frame  11NN NNNL   NNNN=light number 0-31  L=light Off or On   count=1
     var L0Button = document.getElementById("L0Button");
     L0Button.addEventListener('click', () => {
       L0 = (L0 + 1) % 2;
-      L0 == 1 ? L0Button.innerHTML = 'L0 On' : L0Button.innerHTML = 'L0 Off';
+      //  L0 == 1 ? L0Button.innerHTML = 'L0 On' : L0Button.innerHTML = 'L0 Off';
+      L0 == 1 ? L0Button.className = "button2On" : L0Button.className = "button2"
       sendLightCode(0, L0);
     })
     var L1 = 0;
     var L1Button = document.getElementById("L1Button");
     L1Button.addEventListener('click', () => {
       L1 = (L1 + 1) % 2;
-      L1 == 1 ? L1Button.innerHTML = 'L1 On' : L1Button.innerHTML = 'L1 Off';
+      L1 == 1 ? L1Button.className = "button2On" : L1Button.className = "button2"
       sendLightCode(1, L1);
     })
     var L2 = 0;
     var L2Button = document.getElementById("L2Button");
     L2Button.addEventListener('click', () => {
       L2 = (L2 + 1) % 2;
-      L2 == 1 ? L2Button.innerHTML = 'L2 On' : L2Button.innerHTML = 'L2 Off';
+      L2 == 1 ? L2Button.className = "button2On" : L2Button.className = "button2"
       sendLightCode(2, L2);
     })
     var L3 = 0;
     var L3Button = document.getElementById("L3Button");
     L3Button.addEventListener('click', () => {
       L3 = (L3 + 1) % 2;
-      L3 == 1 ? L3Button.innerHTML = 'L3 On' : L3Button.innerHTML = 'L3 Off';
+      L3 == 1 ? L3Button.className = "button2On" : L3Button.className = "button2"
       sendLightCode(3, L3);
     })
+    var L4 = 0;
+    var L4Button = document.getElementById("L4Button");
+    L4Button.addEventListener('click', () => {
+      L4 = (L4 + 1) % 2;
+      L4 == 1 ? L4Button.className = "button2On" : L4Button.className = "button2"
+      sendLightCode(4, L4);
+    })
+    var L5 = 0;
+    var L5Button = document.getElementById("L5Button");
+    L5Button.addEventListener('click', () => {
+      L5 = (L5 + 1) % 2;
+      L5 == 1 ? L5Button.className = "button2On" : L5Button.className = "button2"
+      sendLightCode(5, L5);
+    })
+    var L6 = 0;
+    var L6Button = document.getElementById("L6Button");
+    L6Button.addEventListener('click', () => {
+      L6 = (L6 + 1) % 2;
+      L6 == 1 ? L6Button.className = "button2On" : L6Button.className = "button2"
+      sendLightCode(6, L6);
+    })
+    var L7 = 0;
+    var L7Button = document.getElementById("L7Button");
+    L7Button.addEventListener('click', () => {
+      L7 = (L7 + 1) % 2;
+      L7 == 1 ? L7Button.className = "button2On" : L7Button.className = "button2"
+      sendLightCode(7, L7);
+    })
+    var L8 = 0;
+    var L8Button = document.getElementById("L8Button");
+    L8Button.addEventListener('click', () => {
+      L8 = (L8 + 1) % 2;
+      L8 == 1 ? L8Button.className = "button2On" : L8Button.className = "button2"
+      sendLightCode(8, L8);
+    })
+
     /***************MOTORS******************/
     var M0 = 0;
     var M0Button = document.getElementById("M0Button");
