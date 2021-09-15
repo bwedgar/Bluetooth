@@ -92,7 +92,6 @@
     <button name="light" id="L5Button" class="button2">L5</button>
     <button name="light" id="L6Button" class="button2">L6</button>
     <button name="light" id="L7Button" class="button2">L7</button>
-    <button name="light" id="L8Button" class="button2">L8</button>
   </span>
   <br style="clear:both" />
   <span>
@@ -102,9 +101,13 @@
     <button name="motor" id="M3Button" class="button2">M3</button>
     <button name="motor" id="M4Button" class="button2">M4</button>
     <button name="motor" id="M5Button" class="button2">M5</button>
-    <button name="motor" id="M6Button" class="button2">M6</button>
+  <button name="motor" id="M6Button" class="button2">M6</button>
+    <button name="motor" id="M7Button" class="button2">M7</button>
   </span>
+
   <script>
+        var myCharacteristic;
+
     /*
 CODING BYTE SENT TO CONTROLLER
 engines/coaches  0NNNSRL   NNN=engine number 0-15 S = Stopped or Moving R=Reverse or Forward L=Lights Off or on
@@ -115,8 +118,6 @@ lights on frame  11NN NNNL   NNNN=light number 0-31  L=light Off or On   count=1
       "scene1",
       "scene2",
       "scene3",
-      "scene4",
-      "scene5",
       "sunrise",
       "daytime",
       "sunset"
@@ -128,26 +129,37 @@ lights on frame  11NN NNNL   NNNN=light number 0-31  L=light Off or On   count=1
      */
 
     motorNames = [
-      "actuator 0 and LHS",
+      "actuator 0 and LHS+RHS",
       "actuator 1 and loop0 connect",
       "actuator 2 and loop1 connect",
       "actuator 3 and loop2 connect",
       "actuator 4 and loops direction and stop",
-      "actuator 5 and RHS",
+      "actuator 5",
       "lift"
-    ]
+    ];
 
     var time = 0; //time (0-24*4-1) divided 4 gives hours on 24 hours clock advances every 30 secs so day takes 48 minutes
     var sequence = [
       [40, L0, 1]
     ]; //[time,item,state(on or off)]
 
+sendCode=(code)=>{
+  v=new Uint8Array(1);
+  v[0]=code;
+    myCharacteristic.writeValue(v);
+}
 
     sendLightCode = (lightNumber, on) => {
       codeDisplay.innerHTML = (128 + 64 + lightNumber * 2 + on).toString(2).padStart(8, "0");
+      code2=128 + 64 + lightNumber * 2 + on;
+      console.log(code2);
+      sendCode(code2)
     }
     sendMotorCode = (motorNumber, on) => {
       codeDisplay.innerHTML = (128 + 0 + motorNumber * 2 + on).toString(2).padStart(8, "0");
+      code2=(128 + 0 + motorNumber * 2 + on);
+      console.log(code2);
+      sendCode(code2);
     }
     var codeDisplay = document.getElementById("codeDisplay");
     var engineCodes = [
@@ -170,10 +182,15 @@ lights on frame  11NN NNNL   NNNN=light number 0-31  L=light Off or On   count=1
     ]; //0=stopped,0=reverse,0=lights off
     sendEngineCode = (engineNumber) => {
       codeDisplay.innerHTML = (engineNumber * 8 + engineCodes[engineNumber][0] * 4 + engineCodes[engineNumber][1] * 2 + engineCodes[engineNumber][2] * 1).toString(2).padStart(8, "0");
+code2=(engineNumber * 8 + engineCodes[engineNumber][0] * 4 + engineCodes[engineNumber][1] * 2 + engineCodes[engineNumber][2] * 1)
+console.log(code2);
+sendCode(code2);
+
     }
 
 
-    var myCharacteristic;
+
+
     var E0Motion = document.getElementById("E0MotionButton");
     E0Motion.addEventListener('click', () => {
 
@@ -252,35 +269,57 @@ lights on frame  11NN NNNL   NNNN=light number 0-31  L=light Off or On   count=1
       L7 == 1 ? L7Button.className = "button2On" : L7Button.className = "button2"
       sendLightCode(7, L7);
     })
-    var L8 = 0;
-    var L8Button = document.getElementById("L8Button");
-    L8Button.addEventListener('click', () => {
-      L8 = (L8 + 1) % 2;
-      L8 == 1 ? L8Button.className = "button2On" : L8Button.className = "button2"
-      sendLightCode(8, L8);
-    })
+  
 
     /***************MOTORS******************/
     var M0 = 0;
     var M0Button = document.getElementById("M0Button");
     M0Button.addEventListener('click', () => {
       M0 = (M0 + 1) % 2;
-      M0 == 1 ? M0Button.innerHTML = 'M0 On' : M0Button.innerHTML = 'M0 Off';
+      M0 == 1 ? M0Button.className = "button2On" : M0Button.className = "button2";
       sendMotorCode(0, M0);
     })
     var M1 = 0;
     var M1Button = document.getElementById("M1Button");
     M1Button.addEventListener('click', () => {
       M1 = (M1 + 1) % 2;
-      M1 == 1 ? M1Button.innerHTML = 'M1 On' : M1Button.innerHTML = 'M1 Off';
+      M1 == 1 ? M1Button.className = "button2On" : M1Button.className = "button2";
       sendMotorCode(1, M1);
     })
     var M2 = 0;
     var M2Button = document.getElementById("M2Button");
     M2Button.addEventListener('click', () => {
       M2 = (M2 + 1) % 2;
-      M2 == 1 ? M2Button.innerHTML = 'M2 On' : M2Button.innerHTML = 'M2 Off';
+      M2 == 1 ? M2Button.className = "button2On" : M2Button.className = "button2";
       sendMotorCode(2, M2);
+    })
+    var M3 = 0;
+    var M3Button = document.getElementById("M3Button");
+    M3Button.addEventListener('click', () => {
+      M3 = (M3 + 1) % 2;
+      M3 == 1 ? M3Button.className = "button2On" : M3Button.className = "button2";
+      sendMotorCode(3, M3);
+    })
+    var M4 = 0;
+    var M4Button = document.getElementById("M4Button");
+    M4Button.addEventListener('click', () => {
+      M4 = (M4 + 1) % 2;
+      M4 == 1 ? M4Button.className = "button2On" : M4Button.className = "button2";
+      sendMotorCode(4, M4);
+    })
+    var M5 = 0;
+    var M5Button = document.getElementById("M5Button");
+    M5Button.addEventListener('click', () => {
+      M5 = (M5 + 1) % 2;
+      M5 == 1 ? M5Button.className = "button2On" : M5Button.className = "button2";
+      sendMotorCode(5, M5);
+    })
+    var M6 = 0;
+    var M6Button = document.getElementById("M6Button");
+    M6Button.addEventListener('click', () => {
+      M6 = (M6 + 1) % 2;
+      M6 == 1 ? M6Button.className = "button2On" : M6Button.className = "button2";
+      sendMotorCode(6, M6);
     })
 
     var x = document.getElementById("find");
@@ -328,7 +367,7 @@ lights on frame  11NN NNNL   NNNN=light number 0-31  L=light Off or On   count=1
         .then(function(characteristic) {
           myCharacteristic = characteristic;
           // Step 5: Write to the characteristic
-          var data = new Uint8Array([0x01]);
+          var data = new Uint8Array([0x41]);
           console.log("writing to characteristic");
 
           return characteristic.writeValue(data);
