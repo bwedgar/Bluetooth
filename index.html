@@ -104,6 +104,17 @@
   <button name="motor" id="M6Button" class="button2">M6</button>
     <button name="motor" id="M7Button" class="button2">M7</button>
   </span>
+    <br style="clear:both" />
+  <span>
+    <button name="motor" id="M0BButton" class="button2">M0</button>
+    <button name="motor" id="M1BButton" class="button2">M1</button>
+    <button name="motor" id="M2BButton" class="button2">M2</button>
+    <button name="motor" id="M3BButton" class="button2">M3</button>
+    <button name="motor" id="M4BButton" class="button2">M4</button>
+    <button name="motor" id="M5BButton" class="button2">M5</button>
+  <button name="motor" id="M6BButton" class="button2">M6</button>
+    <button name="motor" id="M7BButton" class="button2">M7</button>
+  </span>
 
   <script>
         var myCharacteristic;
@@ -269,57 +280,122 @@ sendCode(code2);
       L7 == 1 ? L7Button.className = "button2On" : L7Button.className = "button2"
       sendLightCode(7, L7);
     })
-  
+
 
     /***************MOTORS******************/
     var M0 = 0;
     var M0Button = document.getElementById("M0Button");
     M0Button.addEventListener('click', () => {
       M0 = (M0 + 1) % 2;
-      M0 == 1 ? M0Button.className = "button2On" : M0Button.className = "button2";
-      sendMotorCode(0, M0);
+    //  M0 == 1 ? M0Button.className = "button2On" : M0Button.className = "button2";
+      sendMotorCode(0, 0);
     })
     var M1 = 0;
     var M1Button = document.getElementById("M1Button");
     M1Button.addEventListener('click', () => {
       M1 = (M1 + 1) % 2;
-      M1 == 1 ? M1Button.className = "button2On" : M1Button.className = "button2";
-      sendMotorCode(1, M1);
+    //  M1 == 1 ? M1Button.className = "button2On" : M1Button.className = "button2";
+      sendMotorCode(1, 0);
     })
     var M2 = 0;
     var M2Button = document.getElementById("M2Button");
     M2Button.addEventListener('click', () => {
       M2 = (M2 + 1) % 2;
-      M2 == 1 ? M2Button.className = "button2On" : M2Button.className = "button2";
-      sendMotorCode(2, M2);
+    //  M2 == 1 ? M2Button.className = "button2On" : M2Button.className = "button2";
+      sendMotorCode(2, 0);
     })
     var M3 = 0;
     var M3Button = document.getElementById("M3Button");
     M3Button.addEventListener('click', () => {
       M3 = (M3 + 1) % 2;
-      M3 == 1 ? M3Button.className = "button2On" : M3Button.className = "button2";
-      sendMotorCode(3, M3);
+    //  M3 == 1 ? M3Button.className = "button2On" : M3Button.className = "button2";
+      sendMotorCode(3, 0);
     })
     var M4 = 0;
     var M4Button = document.getElementById("M4Button");
     M4Button.addEventListener('click', () => {
       M4 = (M4 + 1) % 2;
-      M4 == 1 ? M4Button.className = "button2On" : M4Button.className = "button2";
-      sendMotorCode(4, M4);
+    //  M4 == 1 ? M4Button.className = "button2On" : M4Button.className = "button2";
+      sendMotorCode(4, 0);
     })
     var M5 = 0;
     var M5Button = document.getElementById("M5Button");
     M5Button.addEventListener('click', () => {
       M5 = (M5 + 1) % 2;
-      M5 == 1 ? M5Button.className = "button2On" : M5Button.className = "button2";
-      sendMotorCode(5, M5);
+  //    M5 == 1 ? M5Button.className = "button2On" : M5Button.className = "button2";
+      sendMotorCode(5, 0);
     })
     var M6 = 0;
     var M6Button = document.getElementById("M6Button");
     M6Button.addEventListener('click', () => {
       M6 = (M6 + 1) % 2;
-      M6 == 1 ? M6Button.className = "button2On" : M6Button.className = "button2";
-      sendMotorCode(6, M6);
+    //  M6 == 1 ? M6Button.className = "button2On" : M6Button.className = "button2";
+      sendMotorCode(6, 0);
+    })
+    var M7 = 0;
+    var M7Button = document.getElementById("M7Button");
+    M6Button.addEventListener('click', () => {
+    //  M6 = (M6 + 1) % 2;
+    //  M6 == 1 ? M6Button.className = "button2On" : M6Button.className = "button2";
+      sendMotorCode(7, 0);
+    })
+
+    /***************MOTORS******************/
+    var M0 = 0;
+    var M0Button = document.getElementById("M0BButton");
+    M0Button.addEventListener('click', () => {
+      M0 = (M0 + 1) % 2;
+    //  M0 == 1 ? M0Button.className = "button2On" : M0Button.className = "button2";
+      sendMotorCode(0, 1);
+    })
+    var M1 = 0;
+    var M1Button = document.getElementById("M1BButton");
+    M1Button.addEventListener('click', () => {
+      M1 = (M1 + 1) % 2;
+    //  M1 == 1 ? M1Button.className = "button2On" : M1Button.className = "button2";
+      sendMotorCode(1, 1);
+    })
+    var M2 = 0;
+    var M2Button = document.getElementById("M2BButton");
+    M2Button.addEventListener('click', () => {
+      M2 = (M2 + 1) % 2;
+    //  M2 == 1 ? M2Button.className = "button2On" : M2Button.className = "button2";
+      sendMotorCode(2, 1);
+    })
+    var M3 = 0;
+    var M3Button = document.getElementById("M3BButton");
+    M3Button.addEventListener('click', () => {
+      M3 = (M3 + 1) % 2;
+    //  M3 == 1 ? M3Button.className = "button2On" : M3Button.className = "button2";
+      sendMotorCode(3, 1);
+    })
+    var M4 = 0;
+    var M4Button = document.getElementById("M4BButton");
+    M4Button.addEventListener('click', () => {
+      M4 = (M4 + 1) % 2;
+    //  M4 == 1 ? M4Button.className = "button2On" : M4Button.className = "button2";
+      sendMotorCode(4, 1);
+    })
+    var M5 = 0;
+    var M5Button = document.getElementById("M5BButton");
+    M5Button.addEventListener('click', () => {
+      M5 = (M5 + 1) % 2;
+  //    M5 == 1 ? M5Button.className = "button2On" : M5Button.className = "button2";
+      sendMotorCode(5, 1);
+    })
+    var M6 = 0;
+    var M6Button = document.getElementById("M6BButton");
+    M6Button.addEventListener('click', () => {
+      M6 = (M6 + 1) % 2;
+    //  M6 == 1 ? M6Button.className = "button2On" : M6Button.className = "button2";
+      sendMotorCode(6, 1);
+    })
+    var M7 = 0;
+    var M7Button = document.getElementById("M7BButton");
+    M6Button.addEventListener('click', () => {
+    //  M6 = (M6 + 1) % 2;
+    //  M6 == 1 ? M6Button.className = "button2On" : M6Button.className = "button2";
+      sendMotorCode(7, 1);
     })
 
     var x = document.getElementById("find");
