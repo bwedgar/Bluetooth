@@ -124,24 +124,25 @@
   </span>
   <script>
     var myCharacteristic;
-var redValue=document.getElementById("redValue");
-var greenValue=document.getElementById("greenValue");
-var blueValue=document.getElementById("blueValue");
+    var redValue = document.getElementById("redValue");
+    var greenValue = document.getElementById("greenValue");
+    var blueValue = document.getElementById("blueValue");
 
     var redSlider = document.getElementById("red");
     redSlider.oninput = function() {
-      sendRGB();
-      redValue.innerHTML=redSlider.value;
+        redValue.innerHTML = redSlider.value;
+          sendRGB();
+
     }
     var greenSlider = document.getElementById("green");
     greenSlider.oninput = function() {
       sendRGB();
-        greenValue.innerHTML=greenSlider.value;
+      greenValue.innerHTML = greenSlider.value;
     }
     var blueSlider = document.getElementById("blue");
     blueSlider.oninput = function() {
       sendRGB();
-        blueValue.innerHTML=blueSlider.value;
+      blueValue.innerHTML = blueSlider.value;
     }
 
     sendRGB = () => {
