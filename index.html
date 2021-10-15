@@ -115,13 +115,40 @@
   <button name="motor" id="M6BButton" class="button2">M6</button>
     <button name="motor" id="M7BButton" class="button2">M7</button>
   </span>
-red <input type="range" min="0" max="255" value="130" class="slider" id="red"><br>
+  <br>
+  <span>
+    <br>
+  red <input type="range" min="0" max="255" value="130" class="slider" id="red"><br>
   green <input type="range" min="0" max="255" value="130" class="slider" id="green"><br>
   blue <input type="range" min="0" max="255" value="130" class="slider" id="blue"><br>
-
+</span>
   <script>
         var myCharacteristic;
 
+
+
+        var redSlider = document.getElementById("red");
+        redSlider.oninput=function() {
+        sendRGB();
+        }
+        var greenSlider = document.getElementById("green");
+        greenSlider.oninput=function() {
+    sendRGB();
+        }
+        var blueSlider = document.getElementById("blue");
+        blueSlider.oninput=function() {
+      sendRGB();
+        }
+
+        sendRGB=()=> {
+          w=new Uint8Array(3);
+          w[0]=redSlider.value;
+          w[1]=greenSlider.value;
+          w[2]=blueSlider.value;
+            myCharacteristic.writeValue(w);
+
+        }
+        
     /*
 CODING BYTE SENT TO CONTROLLER
 engines/coaches  0NNNSRL   NNN=engine number 0-15 S = Stopped or Moving R=Reverse or Forward L=Lights Off or on
@@ -410,10 +437,7 @@ sendCode(code2);
       myCharacteristic.writeValue(new Uint8Array([0x02]))
     })
 
-    var redSlider = document.getElementById("red");
-    redSlider.addEventListener('change', () => {
-      console.log(redSlider.value)
-    }
+
 
 */
     x.addEventListener('click', function(event) {
