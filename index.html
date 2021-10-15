@@ -136,13 +136,13 @@
     }
     var greenSlider = document.getElementById("green");
     greenSlider.oninput = function() {
-      sendRGB();
       greenValue.innerHTML = greenSlider.value;
+  sendRGB();
     }
     var blueSlider = document.getElementById("blue");
     blueSlider.oninput = function() {
-      sendRGB();
       blueValue.innerHTML = blueSlider.value;
+  sendRGB();
     }
 
     sendRGB = () => {
