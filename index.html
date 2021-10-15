@@ -115,6 +115,9 @@
   <button name="motor" id="M6BButton" class="button2">M6</button>
     <button name="motor" id="M7BButton" class="button2">M7</button>
   </span>
+red <input type="range" min="0" max="255" value="130" class="slider" id="red"><br>
+  green <input type="range" min="0" max="255" value="130" class="slider" id="green"><br>
+  blue <input type="range" min="0" max="255" value="130" class="slider" id="blue"><br>
 
   <script>
         var myCharacteristic;
@@ -406,6 +409,11 @@ sendCode(code2);
     document.getElementById("pin2OFF").addEventListener('click', function() {
       myCharacteristic.writeValue(new Uint8Array([0x02]))
     })
+
+    var redSlider = document.getElementById("red");
+    redSlider.addEventListener('change', () => {
+      console.log(redSlider.value)
+    }
 
 */
     x.addEventListener('click', function(event) {
