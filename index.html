@@ -84,6 +84,12 @@
   <br style="clear:both" />
 
   <span>
+      <button name="sunrise" id="sunrise" class="button2">sunrise</button>
+    <button name="sunset" id="sunset" class="button2">sunset</button>
+  </span>
+  <br style="clear:both" />
+
+  <span>
     <button name="light" id="L0Button" class="button2">L0</button>
     <button name="light" id="L1Button" class="button2">L1</button>
     <button name="light" id="L2Button" class="button2">L2</button>
@@ -94,6 +100,8 @@
     <button name="light" id="L7Button" class="button2">L7</button>
   </span>
   <br style="clear:both" />
+
+
   <span>
     <button name="motor" id="M0Button" class="button2">M0</button>
     <button name="motor" id="M1Button" class="button2">M1</button>
@@ -434,16 +442,17 @@ lights on frame  11NN NNNL   NNNN=light number 0-31  L=light Off or On   count=1
 
     var x = document.getElementById("find");
 
-    /*document.getElementById("pin2ON").addEventListener('click', function() {
+    /*
+    document.getElementById("pin2ON").addEventListener('click', function() {
       myCharacteristic.writeValue(new Uint8Array([0x01]))
     })
     document.getElementById("pin2OFF").addEventListener('click', function() {
       myCharacteristic.writeValue(new Uint8Array([0x02]))
     })
 
-
-
 */
+
+
     x.addEventListener('click', function(event) {
 
       navigator.bluetooth.requestDevice({
