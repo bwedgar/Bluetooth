@@ -76,7 +76,7 @@
   <button id="find">find bluetooth MyESP32 6</button><br>
   <button id="start" class="button">start</button><br>
   <button id="play" class="button">play</button><br>
-  <textarea id="commands" cols=50 rows=20></textarea><br>
+  <textarea id="commands" cols=50 rows=20 oninput="update()"></textarea><br>
   <div id="output"></div><br>
 
   <audio id="steam" src="steam.mp3" preload="auto"></audio>
@@ -143,11 +143,7 @@
         this.gainNode.gain.value = 1;
         //  gainNode.gain.setValueAtTime(0, audioCtx.currentTime);
         this.panner = audioCtx.createStereoPanner();
-
       }
-
-
-
 
       play(pannerNumber) {
         this.track.connect(this.gainNode).connect(this.panner).connect(audioCtx.destination);
@@ -178,15 +174,17 @@
 
 
   //  commands.innerHTML = "5,S,3,6\n6,F,2,1"
-    commands.innerHTML =localStorage.getItem("content")
-    text = commands.innerHTML
+    commands.value =localStorage.getItem("content")
+  //  text = commands.innerHTML
 
 
 
-    commands.addEventListener('oninput', function(event) {
-      //alert(commands.innerHTML)
-      localStorage.setItem("content", commands.innerHTML)
-    });
+  //  commands.addEventListener('onchange', function(event) {
+update=function(){
+
+  // alert(commands.value)
+      localStorage.setItem("content", commands.value)
+    }
 
     //BLE device types
     //servo 00
@@ -270,7 +268,7 @@
 
     }
 
-    for (t of text.split("\n")) {
+    for (t of commands.value.split("\n")) {
       toActions(t)
     }
 
