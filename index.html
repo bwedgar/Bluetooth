@@ -71,7 +71,7 @@
 
 <body style="background-color:white;color:black;font-family:courier;font-size:40px;text-align:center;>
   <div style=" font-size:300px;border: 6px solid red;border-radius: 100px;margin:auto;width:75%">T </div>
-  <div><br>BLE controller v2.4 <a style="color:red;" href="https://bwedgar.github.io">bwedgar</a></div>
+  <div><br>BLE controller v2.5 <a style="color:red;" href="https://bwedgar.github.io">bwedgar</a></div>
   <br>
   <button id="find">find bluetooth MyESP32 6</button>
   <BR>
@@ -140,7 +140,7 @@
         console.log(this.audioElement.play());
 
         this.duration = this.audioElement.duration;
-        output.innerHTML = output.innerHTML + this.duration + "  ";
+        //output.innerHTML = output.innerHTML + this.duration + "  ";
         this.track = audioCtx.createMediaElementSource(this.audioElement);
         this.gainNode = audioCtx.createGain();
         this.gainNode.gain.value = 1;
@@ -175,9 +175,9 @@
       }
     }
 
-    document.getElementById("start").addEventListener("click", () => {
-      start();
-    });
+  //  document.getElementById("start").addEventListener("click", () => {
+    //  start();
+//    });
 
 
 
@@ -255,8 +255,8 @@
 
 
     x.addEventListener('click', function(event) {
-
-      seagullSound.play(0);
+start();
+    //  seagullSound.play(0);
 
       /*
 
