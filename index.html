@@ -71,21 +71,18 @@
 
 <body style="background-color:white;color:black;font-family:courier;font-size:40px;text-align:center;>
   <div style=" font-size:300px;border: 6px solid red;border-radius: 100px;margin:auto;width:75%">T </div>
-  <div><br>BLE controller v2.8 <a style="color:red;" href="https://bwedgar.github.io">bwedgar</a></div>
+  <div><br>BLE controller v2.10 <a style="color:red;" href="https://bwedgar.github.io">bwedgar</a></div>
   <br>
-  <button id="find">find bluetooth MyESP32 6</button>
-  <BR>
-  <button id="codeDisplay">code</button>
+  <button id="find">find bluetooth MyESP32 6</button><br>
+  <button id="start" class="button">start</button><br>
+  <button id="play" class="button">play</button><br>
+  <textarea id="commands" cols=50 rows=20></textarea><br>
+  <div id="output"></div><br>
 
   <audio id="steam" src="steam.mp3" preload="auto"></audio>
   <audio id="seagull" src="seagull.mp3" preload="auto"></audio>
   <audio id="Cats" src="Cats.mp3" preload="auto"></audio>
   <audio id="Chickens" src="Chickens.mp3" preload="auto"></audio>
-
-  <button id="start" class="button">start</button><br>
-  <button id="play" class="button">play</button><br>
-  <br>
-  <div id="output"></div>
 
 
   <script>
@@ -175,11 +172,21 @@
       }
     }
 
-    //  document.getElementById("start").addEventListener("click", () => {
-    //  start();
-    //    });
+    commands = document.getElementById("commands")
+
+    output = document.getElementById("output")
 
 
+  //  commands.innerHTML = "5,S,3,6\n6,F,2,1"
+    commands.innerHTML =localStorage.getItem("content")
+    text = commands.innerHTML
+
+
+
+    commands.addEventListener('oninput', function(event) {
+      //alert(commands.innerHTML)
+      localStorage.setItem("content", commands.innerHTML)
+    });
 
     //BLE device types
     //servo 00
@@ -191,20 +198,18 @@
     servo = function(id, pos) {
       //id 0-8,  pos 0-8
       //deciphering code for esp32
-      code = (0 * 64 + id * 8 + pos)
-      sendCode(code);
+      code = (0 * 64 + id * 8 + pos * 1)
       codeString = code.toString(2).padStart(8, "0")
       codeId = Math.floor(code / 8) - Math.floor(code / 64) * 64
       codePos = code - Math.floor(code / 8) * 8
 
-      output.innerHTML = (codeString + " " + codeId + " " + codePos)
+      output.innerHTML += (codeString) + "<br>"
     }
 
     fibre = function(id, state) {
       //id 0-8, state 0-8
-      code = 1 * 64 + id * 8 + state
-      sendCode(code);
-      output.innerHTML = (code.toString(2).padStart(8, "0"))
+      code = 1 * 64 + id * 8 + state * 1
+      output.innerHTML += (code.toString(2).padStart(8, "0")) + "<br>"
     }
 
     on = 1
@@ -212,9 +217,8 @@
 
     lights = function(id, colour, change) {
       //id 0-4 color 0-2 change 0-1
-      code = 2 * 64 + id * 16 + colour * 4 + change
-      sendCode(code);
-      output.innerHTML = (code.toString(2).padStart(8, "0"))
+      code = 2 * 64 + id * 16 + colour * 4 + change * 1
+      output.innerHTML += (code.toString(2).padStart(8, "0")) + "<br>"
     }
 
     east = 0
@@ -233,18 +237,46 @@
 
     loco = function(track, nextStop) {}
 
-    sound = function(name, pannerNumber) {
-      name.play(pannerNumber);
-      output.innerHTML = "playing " + name.soundName;
-    };
+    main = 0
+    bypass = 1
+
+    play = function(name, pan) {};
+
+    toActions = function(line) {
+      parameters = line.split(",")
+      if (parameters[1] == "S") {
+
+        action = setTimeout(servo, parameters[0] * 1000, parameters[2], parameters[3])
+      }
+      if (parameters[1] == "F") {
+
+        action = setTimeout(fibre, parameters[0] * 1000, parameters[2], parameters[3])
+      }
+
+      if (parameters[1] == "L") {
+
+        action = setTimeout(lights, parameters[0] * 1000, parameters[2], parameters[3], parameters[4])
+      }
+
+      if (parameters[1] == "T") {
+
+        action = setTimeout(track, parameters[0] * 1000, parameters[2], parameters[3])
+      }
+
+      if (parameters[1] == "P") {
+
+        action = setTimeout(play, parameters[0] * 1000, parameters[2], parameters[3], parameters[4])
+      }
+
+    }
+
+    for (t of text.split("\n")) {
+      toActions(t)
+    }
 
     play = document.getElementById("play");
     play.addEventListener('click', function(event) {
-      action = setTimeout(servo, 2000, 5, 7);
-      action = setTimeout(sound, 3000, steamSound, 8);
-      action = setTimeout(servo, 8000, 7, 3);
-  action = setTimeout(sound, 14000, seagullSound, 7);
-      //  action = setTimeout(lights, 7000, sky, red, up);
+
 
     });
 
