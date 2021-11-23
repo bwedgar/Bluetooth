@@ -71,7 +71,7 @@
 
 <body style="background-color:white;color:black;font-family:courier;font-size:40px;text-align:center;>
   <div style=" font-size:300px;border: 6px solid red;border-radius: 100px;margin:auto;width:75%">T </div>
-  <div><br>BLE controller v2.1 <a style="color:red;" href="https://bwedgar.github.io">bwedgar</a></div>
+  <div><br>BLE controller v2.3 <a style="color:red;" href="https://bwedgar.github.io">bwedgar</a></div>
   <br>
   <button id="find">find bluetooth MyESP32 6</button>
   <BR>
@@ -98,7 +98,7 @@
     sendCode = (code) => {
       v = new Uint8Array(1);
       v[0] = code;
-      myCharacteristic.writeValue(v);
+  //    myCharacteristic.writeValue(v);
     }
 
     pannerList = [
@@ -179,9 +179,7 @@
       start();
     });
 
-    document.getElementById("play").addEventListener("click", () => {
-      playTracks();
-    });
+
 
     //BLE device types
     //servo 00
@@ -249,7 +247,13 @@
     x = document.getElementById("start");
 
 
+
+
     x.addEventListener('click', function(event) {
+
+      seagullSound.play(0);
+
+      /*
 
       navigator.bluetooth.requestDevice({
           filters: [{
@@ -293,7 +297,7 @@
           // And of course: error handling!
           console.error('Connection failed!', error);
         });
-
+*/
 
     });
   </script>
