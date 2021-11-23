@@ -71,7 +71,7 @@
 
 <body style="background-color:white;color:black;font-family:courier;font-size:40px;text-align:center;>
   <div style=" font-size:300px;border: 6px solid red;border-radius: 100px;margin:auto;width:75%">T </div>
-  <div><br>BLE controller v2.11 <a style="color:red;" href="https://bwedgar.github.io">bwedgar</a></div>
+  <div><br>BLE controller v2.12 <a style="color:red;" href="https://bwedgar.github.io">bwedgar</a></div>
   <br>
   <button id="find">find bluetooth MyESP32 6</button><br>
   <button id="start" class="button">start</button><br>
@@ -231,8 +231,8 @@ update=function(){
     main = 0
     bypass = 1
 
-    play = function(name, pan) {
-      name.play(pan);
+    playSound = function(name, pan) {
+      steamSound.play(pan);
     };
 
     toActions = function(line) {
@@ -258,7 +258,7 @@ update=function(){
 
       if (parameters[1] == "P") {
 
-        action = setTimeout(play, parameters[0] * 1000, parameters[2], parameters[3], parameters[4])
+        action = setTimeout(playSound, parameters[0] * 1000, parameters[2], parameters[3])
       }
 
     }
