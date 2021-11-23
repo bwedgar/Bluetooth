@@ -234,17 +234,17 @@
     loco = function(track, nextStop) {}
 
     sound = function(name, pannerNumber) {
-    //  name.play(pannerNumber);
-    ChickensSound.play(0);
+    name.play(pannerNumber);
+  //  ChickensSound.play(0);
     };
 
     play = document.getElementById("play");
     play.addEventListener('click', function(event) {
     action = setTimeout(servo, 3000, 5, 7);
-    action = setTimeout(sound, 3010, ChickensSound, 0);
+    action = setTimeout(sound, 4000, steamSound, 8);
     action = setTimeout(servo, 5000, 7, 3);
 
-    action = setTimeout(lights, 7000, sky, red, up);
+  //  action = setTimeout(lights, 7000, sky, red, up);
 
 });
 
@@ -256,7 +256,6 @@
 
     x.addEventListener('click', function(event) {
 start();
-    //  seagullSound.play(0);
 
       /*
 
