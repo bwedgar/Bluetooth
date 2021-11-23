@@ -70,8 +70,8 @@
 </head>
 
 <body style="background-color:white;color:black;font-family:courier;font-size:40px;text-align:center;>
-  <div style=" font-size:300px;border: 6px solid red;border-radius: 100px;margin:auto;width:75%" >T </div>
-  <div><br>BLE controller v2.0 <a style="color:red;" href="https://bwedgar.github.io">bwedgar</a></div>
+  <div style=" font-size:300px;border: 6px solid red;border-radius: 100px;margin:auto;width:75%">T </div>
+  <div><br>BLE controller v2.1 <a style="color:red;" href="https://bwedgar.github.io">bwedgar</a></div>
   <br>
   <button id="find">find bluetooth MyESP32 6</button>
   <BR>
@@ -127,27 +127,10 @@
         CatsSound = new Sound("Cats");
         ChickensSound = new Sound("Chickens");
 
-        tracks = [
-          new Track(1, CatsSound, 1),
-          new Track(15, steamSound, 7),
-          new Track(30, steamSound, 8),
-          new Track(40, ChickensSound, 2),
-          new Track(40, seagullSound, 0),
-          new Track(40, CatsSound, 1)
-        ]
 
       }
     }
 
-    playTracks = () => {
-      for (let i = 0; i < tracks.length; i++) {
-        setTimeout(function() {
-          tracks[i].play();
-          output.innerHTML = output.innerHTML + (tracks[i].time + "  " + tracks[i].soundName.fileName);
-        }, tracks[i].time * 1000);
-      }
-
-    }
 
     class Sound {
       constructor(soundName) {
@@ -162,7 +145,7 @@
         this.gainNode = audioCtx.createGain();
         this.gainNode.gain.value = 1;
         //  gainNode.gain.setValueAtTime(0, audioCtx.currentTime);
-          this.panner = audioCtx.createStereoPanner();
+        this.panner = audioCtx.createStereoPanner();
 
       }
 
@@ -172,7 +155,7 @@
       play(pannerNumber) {
         this.track.connect(this.gainNode).connect(this.panner).connect(audioCtx.destination);
         this.audioElement.play();
-        this.audioElement.muted=false;
+        this.audioElement.muted = false;
         this.start = pannerList[pannerNumber][0];
         this.end = pannerList[pannerNumber][1];
         this.panner.pan.setValueAtTime(this.start, audioCtx.currentTime);
@@ -222,7 +205,7 @@
     fibre = function(id, state) {
       //id 0-8, state 0-8
       code = 1 * 64 + id * 8 + state
-        sendCode(code);
+      sendCode(code);
       alert(code.toString(2).padStart(8, "0"))
     }
 
@@ -232,7 +215,7 @@
     lights = function(id, colour, change) {
       //id 0-4 color 0-2 change 0-1
       code = 2 * 64 + id * 16 + colour * 4 + change
-        sendCode(code);
+      sendCode(code);
       alert(code.toString(2).padStart(8, "0"))
     }
 
@@ -252,18 +235,18 @@
 
     loco = function(track, nextStop) {}
 
-    sound = function(name,pannerNumber) {
-      play(name,pannerNumber);
+    sound = function(name, pannerNumber) {
+      name.play( pannerNumber);
     };
 
     action = setTimeout(servo, 3000, 5, 7);
-    action = setTimeout(sound, 3010, ChickensSound,0);
+    action = setTimeout(sound, 3010, ChickensSound, 0);
     action = setTimeout(servo, 5000, 7, 3);
 
     action = setTimeout(lights, 7000, sky, red, up);
 
 
-x=document.getElementById("start");
+    x = document.getElementById("start");
 
 
     x.addEventListener('click', function(event) {
