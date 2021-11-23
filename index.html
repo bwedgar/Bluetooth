@@ -95,6 +95,12 @@
     var CatsSound;
     var ChickensSound;
 
+    sendCode = (code) => {
+      v = new Uint8Array(1);
+      v[0] = code;
+      myCharacteristic.writeValue(v);
+    }
+
     pannerList = [
       [0.01, 0.01], //[0] centre
       [-1, -1], //[1]=left
@@ -251,16 +257,12 @@
     };
 
     action = setTimeout(servo, 3000, 5, 7);
-    action = setTimeout(sound, 3010, chickensSound,0);
+    action = setTimeout(sound, 3010, ChickensSound,0);
     action = setTimeout(servo, 5000, 7, 3);
 
     action = setTimeout(lights, 7000, sky, red, up);
 
-    sendCode = (code) => {
-      v = new Uint8Array(1);
-      v[0] = code;
-      myCharacteristic.writeValue(v);
-    }
+
 
 
 
