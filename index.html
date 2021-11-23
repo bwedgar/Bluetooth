@@ -71,7 +71,7 @@
 
 <body style="background-color:white;color:black;font-family:courier;font-size:40px;text-align:center;>
   <div style=" font-size:300px;border: 6px solid red;border-radius: 100px;margin:auto;width:75%">T </div>
-  <div><br>BLE controller v2.6 <a style="color:red;" href="https://bwedgar.github.io">bwedgar</a></div>
+  <div><br>BLE controller v2.7 <a style="color:red;" href="https://bwedgar.github.io">bwedgar</a></div>
   <br>
   <button id="find">find bluetooth MyESP32 6</button>
   <BR>
@@ -98,7 +98,7 @@
     sendCode = (code) => {
       v = new Uint8Array(1);
       v[0] = code;
-  //    myCharacteristic.writeValue(v);
+      //    myCharacteristic.writeValue(v);
     }
 
     pannerList = [
@@ -175,9 +175,9 @@
       }
     }
 
-  //  document.getElementById("start").addEventListener("click", () => {
+    //  document.getElementById("start").addEventListener("click", () => {
     //  start();
-//    });
+    //    });
 
 
 
@@ -197,14 +197,14 @@
       codeId = Math.floor(code / 8) - Math.floor(code / 64) * 64
       codePos = code - Math.floor(code / 8) * 8
 
-      output.innerHTML=(codeString + " " + codeId + " " + codePos)
+      output.innerHTML = (codeString + " " + codeId + " " + codePos)
     }
 
     fibre = function(id, state) {
       //id 0-8, state 0-8
       code = 1 * 64 + id * 8 + state
       sendCode(code);
-    output.innerHTML=(code.toString(2).padStart(8, "0"))
+      output.innerHTML = (code.toString(2).padStart(8, "0"))
     }
 
     on = 1
@@ -214,7 +214,7 @@
       //id 0-4 color 0-2 change 0-1
       code = 2 * 64 + id * 16 + colour * 4 + change
       sendCode(code);
-    output.innerHTML=(code.toString(2).padStart(8, "0"))
+      output.innerHTML = (code.toString(2).padStart(8, "0"))
     }
 
     east = 0
@@ -234,19 +234,19 @@
     loco = function(track, nextStop) {}
 
     sound = function(name, pannerNumber) {
-    name.play(pannerNumber);
-output.innerHTML="playing"
+      name.play(pannerNumber);
+      output.innerHTML = "playing " + name.soundName;
     };
 
     play = document.getElementById("play");
     play.addEventListener('click', function(event) {
-    action = setTimeout(servo, 2000, 5, 7);
-    action = setTimeout(sound, 3000, steamSound, 8);
-    action = setTimeout(servo, 8000, 7, 3);
+      action = setTimeout(servo, 2000, 5, 7);
+      action = setTimeout(sound, 3000, steamSound, 8);
+      action = setTimeout(servo, 8000, 7, 3);
+  action = setTimeout(sound, 14000, seagullSound, 7);
+      //  action = setTimeout(lights, 7000, sky, red, up);
 
-  //  action = setTimeout(lights, 7000, sky, red, up);
-
-});
+    });
 
 
     x = document.getElementById("start");
@@ -255,7 +255,7 @@ output.innerHTML="playing"
 
 
     x.addEventListener('click', function(event) {
-start();
+      start();
 
       /*
 
