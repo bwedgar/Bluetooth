@@ -71,7 +71,7 @@
 
 <body style="background-color:white;color:black;font-family:courier;font-size:40px;text-align:center;>
   <div style=" font-size:300px;border: 6px solid red;border-radius: 100px;margin:auto;width:75%">T </div>
-  <div><br>BLE controller v2.10 <a style="color:red;" href="https://bwedgar.github.io">bwedgar</a></div>
+  <div><br>BLE controller v2.11 <a style="color:red;" href="https://bwedgar.github.io">bwedgar</a></div>
   <br>
   <button id="find">find bluetooth MyESP32 6</button><br>
   <button id="start" class="button">start</button><br>
@@ -172,17 +172,11 @@
 
     output = document.getElementById("output")
 
-
-  //  commands.innerHTML = "5,S,3,6\n6,F,2,1"
     commands.value =localStorage.getItem("content")
-  //  text = commands.innerHTML
 
 
 
-  //  commands.addEventListener('onchange', function(event) {
 update=function(){
-
-  // alert(commands.value)
       localStorage.setItem("content", commands.value)
     }
 
@@ -200,8 +194,7 @@ update=function(){
       codeString = code.toString(2).padStart(8, "0")
       codeId = Math.floor(code / 8) - Math.floor(code / 64) * 64
       codePos = code - Math.floor(code / 8) * 8
-
-      output.innerHTML += (codeString) + "<br>"
+      output.innerHTML += (codeString) + "<br>";
     }
 
     fibre = function(id, state) {
@@ -238,7 +231,9 @@ update=function(){
     main = 0
     bypass = 1
 
-    play = function(name, pan) {};
+    play = function(name, pan) {
+      name.play(pan);
+    };
 
     toActions = function(line) {
       parameters = line.split(",")
@@ -280,8 +275,6 @@ update=function(){
 
 
     x = document.getElementById("start");
-
-
 
 
     x.addEventListener('click', function(event) {
