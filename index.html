@@ -69,132 +69,192 @@
 
 </head>
 
-<body style="background-color:black;color:red;font-family:courier;font-size:40px;text-align:center;>
-  <div style=" font-size:300px;border: 6px solid red;border-radius: 100px;margin:auto;width:75%">T</div>
-  <div><br>Bluetooth by <a style="color:red;" href="https://bwedgar.github.io">bwedgar</a></div>
+<body style="background-color:white;color:black;font-family:courier;font-size:40px;text-align:center;>
+  <div style=" font-size:300px;border: 6px solid red;border-radius: 100px;margin:auto;width:75%" >T </div>
+  <div><br>BLE controller <a style="color:red;" href="https://bwedgar.github.io">bwedgar</a></div>
   <br>
   <button id="find">find bluetooth MyESP32 6</button>
   <BR>
-  <button id="codeDisplay" class="button1">code</button>
-  <br style="clear:both" />
-  <button class="button1">X0</button>
-  <button id="E0MotionButton" class="button1">Stopped</button>
-  <button id="E0DirectionButton" class="button1">Reverse</button>
-  <button id="E0LightsButton" class="button1">Lights off</button>
-  <br style="clear:both" />
+  <button id="codeDisplay">code</button>
 
-  <span>
-      <button name="sunrise" id="sunrise" class="button2">sunrise</button>
-    <button name="sunset" id="sunset" class="button2">sunset</button>
-  </span>
-  <br style="clear:both" />
+  <audio id="steam" src="steam.mp3" preload="auto"></audio>
+  <audio id="seagull" src="seagull.mp3" preload="auto"></audio>
+  <audio id="Cats" src="Cats.mp3" preload="auto"></audio>
+  <audio id="Chickens" src="Chickens.mp3" preload="auto"></audio>
 
-  <span>
-    <button name="light" id="L0Button" class="button2">L0</button>
-    <button name="light" id="L1Button" class="button2">L1</button>
-    <button name="light" id="L2Button" class="button2">L2</button>
-    <button name="light" id="L3Button" class="button2">L3</button>
-    <button name="light" id="L4Button" class="button2">L4</button>
-    <button name="light" id="L5Button" class="button2">L5</button>
-    <button name="light" id="L6Button" class="button2">L6</button>
-    <button name="light" id="L7Button" class="button2">L7</button>
-  </span>
-  <br style="clear:both" />
-
-
-  <span>
-    <button name="motor" id="M0Button" class="button2">M0</button>
-    <button name="motor" id="M1Button" class="button2">M1</button>
-    <button name="motor" id="M2Button" class="button2">M2</button>
-    <button name="motor" id="M3Button" class="button2">M3</button>
-    <button name="motor" id="M4Button" class="button2">M4</button>
-    <button name="motor" id="M5Button" class="button2">M5</button>
-    <button name="motor" id="M6Button" class="button2">M6</button>
-    <button name="motor" id="M7Button" class="button2">M7</button>
-  </span>
-  <br style="clear:both" />
-  <span>
-    <button name="motor" id="M0BButton" class="button2">M0</button>
-    <button name="motor" id="M1BButton" class="button2">M1</button>
-    <button name="motor" id="M2BButton" class="button2">M2</button>
-    <button name="motor" id="M3BButton" class="button2">M3</button>
-    <button name="motor" id="M4BButton" class="button2">M4</button>
-    <button name="motor" id="M5BButton" class="button2">M5</button>
-    <button name="motor" id="M6BButton" class="button2">M6</button>
-    <button name="motor" id="M7BButton" class="button2">M7</button>
-  </span>
+  <button id="start" class="button">start</button><br>
+  <button id="play" class="button">play</button><br>
   <br>
-  <span>
-    <br>
-    red <input type="range" min="0" max="255" value="130" class="slider" id="red"><span id="redValue">10</span><br>
-    green <input type="range" min="0" max="255" value="130" class="slider" id="green"><span id="greenValue"></span><br>
-    blue <input type="range" min="0" max="255" value="130" class="slider" id="blue"><span id="blueValue"></span><br>
-  </span>
+  <div id="output"></div>
+
+
   <script>
-    var myCharacteristic;
-    var redValue = document.getElementById("redValue");
-    var greenValue = document.getElementById("greenValue");
-    var blueValue = document.getElementById("blueValue");
+    var tracks;
+    var steamSound;
+    var seagullSound;
+    var CatsSound;
+    var ChickensSound;
 
-    var redSlider = document.getElementById("red");
-    redSlider.oninput = function() {
-        redValue.innerHTML = redSlider.value;
-          sendRGB();
-
-    }
-    var greenSlider = document.getElementById("green");
-    greenSlider.oninput = function() {
-      greenValue.innerHTML = greenSlider.value;
-  sendRGB();
-    }
-    var blueSlider = document.getElementById("blue");
-    blueSlider.oninput = function() {
-      blueValue.innerHTML = blueSlider.value;
-  sendRGB();
-    }
-
-    sendRGB = () => {
-      w = new Uint8Array(3);
-      w[0] = redSlider.value;
-      w[1] = greenSlider.value;
-      w[2] = blueSlider.value;
-      myCharacteristic.writeValue(w);
-    }
-
-    /*
-CODING BYTE SENT TO CONTROLLER
-engines/coaches  0NNNSRL   NNN=engine number 0-15 S = Stopped or Moving R=Reverse or Forward L=Lights Off or on
-lights on frame  11NN NNNL   NNNN=light number 0-31  L=light Off or On   count=12
-*/
-    lightNames = [
-      "scene 0",
-      "scene1",
-      "scene2",
-      "scene3",
-      "sunrise",
-      "daytime",
-      "sunset"
+    pannerList = [
+      [0.01, 0.01], //[0] centre
+      [-1, -1], //[1]=left
+      [1, 1], //[2]=right
+      [-1, 0.01], //[3]=left to centre
+      [0.01, 1], //[4]=centre to right
+      [1, 0.01], //[5]= right to centre
+      [0.01, -1], //[6]=centre to left
+      [-1, 1], //[7] left to right
+      [1, -1] // [8] right to left
     ];
 
 
+    var started = false;
+    output = document.getElementById("output");
 
-    /*  motors on frame 10 NN NNNM NNNN = motor number 0 - 31 M = Motor Position 0 or 1  Count=16
-     */
+    start = () => {
+      if (started == false) {
+        started = true;
+        audioCtx = new(window.AudioContext || window.webkitAudioContext)();
 
-    motorNames = [
-      "actuator 0 and LHS+RHS",
-      "actuator 1 and loop0 connect",
-      "actuator 2 and loop1 connect",
-      "actuator 3 and loop2 connect",
-      "actuator 4 and loops direction and stop",
-      "actuator 5",
-      "lift"
-    ];
+        steamSound = new Sound("steam");
+        seagullSound = new Sound("seagull");
+        CatsSound = new Sound("Cats");
+        ChickensSound = new Sound("Chickens");
 
-    var time = 0; //time (0-24*4-1) divided 4 gives hours on 24 hours clock advances every 30 secs so day takes 48 minutes
-    var sequence = [
-      [40, L0, 1]
-    ]; //[time,item,state(on or off)]
+        tracks = [
+          new Track(1, CatsSound, 1),
+          new Track(15, steamSound, 7),
+          new Track(30, steamSound, 8),
+          new Track(40, ChickensSound, 2),
+          new Track(40, seagullSound, 0),
+          new Track(40, CatsSound, 1)
+        ]
+
+      }
+    }
+
+    playTracks = () => {
+      for (let i = 0; i < tracks.length; i++) {
+        setTimeout(function() {
+          tracks[i].play();
+          output.innerHTML = output.innerHTML + (tracks[i].time + "  " + tracks[i].soundName.fileName);
+        }, tracks[i].time * 1000);
+      }
+
+    }
+
+    class Sound {
+      constructor(soundName) {
+        this.soundName = soundName;
+        this.fileName = this.soundName + ".mp3";
+        this.audioElement = document.getElementById(soundName);
+        console.log(this.audioElement.play());
+
+        this.duration = this.audioElement.duration;
+        output.innerHTML = output.innerHTML + this.duration + "  ";
+        this.track = audioCtx.createMediaElementSource(this.audioElement);
+        this.gainNode = audioCtx.createGain();
+        this.gainNode.gain.value = 1;
+        //  gainNode.gain.setValueAtTime(0, audioCtx.currentTime);
+          this.panner = audioCtx.createStereoPanner();
+
+      }
+
+
+
+
+      play(pannerNumber) {
+        this.track.connect(this.gainNode).connect(this.panner).connect(audioCtx.destination);
+        this.audioElement.play();
+        this.audioElement.muted=false;
+        this.start = pannerList[pannerNumber][0];
+        this.end = pannerList[pannerNumber][1];
+        this.panner.pan.setValueAtTime(this.start, audioCtx.currentTime);
+        this.panner.pan.linearRampToValueAtTime(this.end, audioCtx.currentTime + this.duration);
+
+      }
+    }
+
+    class Track {
+      constructor(time, soundName, panValue) {
+        this.time = time;
+        this.soundName = soundName;
+        this.panValue = panValue;
+      }
+      play() {
+        this.soundName.play(this.panValue);
+      }
+    }
+
+    document.getElementById("start").addEventListener("click", () => {
+      start();
+    });
+
+    document.getElementById("play").addEventListener("click", () => {
+      playTracks();
+    });
+
+    //BLE device types
+    //servo 00
+    //fibre 01
+    //lights 10
+    //tracks 11
+
+
+    servo = function(id, pos) {
+      //id 0-8,  pos 0-8
+      //deciphering code for esp32
+      code = (0 * 64 + id * 8 + pos)
+      sendCode(code);
+      codeString = code.toString(2).padStart(8, "0")
+      codeId = Math.floor(code / 8) - Math.floor(code / 64) * 64
+      codePos = code - Math.floor(code / 8) * 8
+
+      alert(codeString + " " + codeId + " " + codePos)
+    }
+
+    fibre = function(id, state) {
+      //id 0-8, state 0-8
+      code = 1 * 64 + id * 8 + state
+        sendCode(code);
+      alert(code.toString(2).padStart(8, "0"))
+    }
+
+    on = 1
+    off = 0
+
+    lights = function(id, colour, change) {
+      //id 0-4 color 0-2 change 0-1
+      code = 2 * 64 + id * 16 + colour * 4 + change
+        sendCode(code);
+      alert(code.toString(2).padStart(8, "0"))
+    }
+
+    east = 0
+    south = 1
+    west = 2
+    sky = 3
+
+    red = 0
+    green = 1
+    blue = 2
+
+    up = 1
+    down = 0
+
+
+
+    loco = function(track, nextStop) {}
+
+    sound = function(name,pannerNumber) {
+      play(name,pannerNumber);
+    };
+
+    action = setTimeout(servo, 3000, 5, 7);
+    action = setTimeout(sound, 3010, chickensSound,0);
+    action = setTimeout(servo, 5000, 7, 3);
+
+    action = setTimeout(lights, 7000, sky, red, up);
 
     sendCode = (code) => {
       v = new Uint8Array(1);
@@ -202,255 +262,6 @@ lights on frame  11NN NNNL   NNNN=light number 0-31  L=light Off or On   count=1
       myCharacteristic.writeValue(v);
     }
 
-    sendLightCode = (lightNumber, on) => {
-      codeDisplay.innerHTML = (128 + 64 + lightNumber * 2 + on).toString(2).padStart(8, "0");
-      code2 = 128 + 64 + lightNumber * 2 + on;
-      console.log(code2);
-      sendCode(code2)
-    }
-    sendMotorCode = (motorNumber, on) => {
-      codeDisplay.innerHTML = (128 + 0 + motorNumber * 2 + on).toString(2).padStart(8, "0");
-      code2 = (128 + 0 + motorNumber * 2 + on);
-      console.log(code2);
-      sendCode(code2);
-    }
-    var codeDisplay = document.getElementById("codeDisplay");
-    var engineCodes = [
-      [0, 0, 0],
-      [0, 0, 0],
-      [0, 0, 0],
-      [0, 0, 0],
-      [0, 0, 0],
-      [0, 0, 0],
-      [0, 0, 0],
-      [0, 0, 0],
-      [0, 0, 0],
-      [0, 0, 0],
-      [0, 0, 0],
-      [0, 0, 0],
-      [0, 0, 0],
-      [0, 0, 0],
-      [0, 0, 0],
-      [0, 0, 0]
-    ]; //0=stopped,0=reverse,0=lights off
-    sendEngineCode = (engineNumber) => {
-      codeDisplay.innerHTML = (engineNumber * 8 + engineCodes[engineNumber][0] * 4 + engineCodes[engineNumber][1] * 2 + engineCodes[engineNumber][2] * 1).toString(2).padStart(8, "0");
-      code2 = (engineNumber * 8 + engineCodes[engineNumber][0] * 4 + engineCodes[engineNumber][1] * 2 + engineCodes[engineNumber][2] * 1)
-      console.log(code2);
-      sendCode(code2);
-
-    }
-
-
-
-
-    var E0Motion = document.getElementById("E0MotionButton");
-    E0Motion.addEventListener('click', () => {
-
-      engineCodes[0][0] = (engineCodes[0][0] + 1) % 2
-      engineCodes[0][0] == 1 ? E0Motion.innerHTML = 'Moving' : E0Motion.innerHTML = 'Stopped';
-      sendEngineCode(0);
-    })
-    var E0Direction = document.getElementById("E0DirectionButton");
-    E0Direction.addEventListener('click', () => {
-      engineCodes[0][1] = (engineCodes[0][1] + 1) % 2;
-      engineCodes[0][1] == 1 ? E0Direction.innerHTML = 'Forward' : E0Direction.innerHTML = 'Reverse';
-      sendEngineCode(0);
-    })
-    var E0Lights = document.getElementById("E0LightsButton");
-    E0Lights.addEventListener('click', () => {
-      engineCodes[0][2] = (engineCodes[0][2] + 1) % 2;
-      engineCodes[0][2] == 1 ? E0Lights.innerHTML = 'Lights On' : E0Lights.innerHTML = 'Lights Off';
-      sendEngineCode(0);
-    })
-
-    /******************LIGHTS**************/
-    var L0 = 0;
-    var L0Button = document.getElementById("L0Button");
-    L0Button.addEventListener('click', () => {
-      L0 = (L0 + 1) % 2;
-      //  L0 == 1 ? L0Button.innerHTML = 'L0 On' : L0Button.innerHTML = 'L0 Off';
-      L0 == 1 ? L0Button.className = "button2On" : L0Button.className = "button2"
-      sendLightCode(0, L0);
-    })
-    var L1 = 0;
-    var L1Button = document.getElementById("L1Button");
-    L1Button.addEventListener('click', () => {
-      L1 = (L1 + 1) % 2;
-      L1 == 1 ? L1Button.className = "button2On" : L1Button.className = "button2"
-      sendLightCode(1, L1);
-    })
-    var L2 = 0;
-    var L2Button = document.getElementById("L2Button");
-    L2Button.addEventListener('click', () => {
-      L2 = (L2 + 1) % 2;
-      L2 == 1 ? L2Button.className = "button2On" : L2Button.className = "button2"
-      sendLightCode(2, L2);
-    })
-    var L3 = 0;
-    var L3Button = document.getElementById("L3Button");
-    L3Button.addEventListener('click', () => {
-      L3 = (L3 + 1) % 2;
-      L3 == 1 ? L3Button.className = "button2On" : L3Button.className = "button2"
-      sendLightCode(3, L3);
-    })
-    var L4 = 0;
-    var L4Button = document.getElementById("L4Button");
-    L4Button.addEventListener('click', () => {
-      L4 = (L4 + 1) % 2;
-      L4 == 1 ? L4Button.className = "button2On" : L4Button.className = "button2"
-      sendLightCode(4, L4);
-    })
-    var L5 = 0;
-    var L5Button = document.getElementById("L5Button");
-    L5Button.addEventListener('click', () => {
-      L5 = (L5 + 1) % 2;
-      L5 == 1 ? L5Button.className = "button2On" : L5Button.className = "button2"
-      sendLightCode(5, L5);
-    })
-    var L6 = 0;
-    var L6Button = document.getElementById("L6Button");
-    L6Button.addEventListener('click', () => {
-      L6 = (L6 + 1) % 2;
-      L6 == 1 ? L6Button.className = "button2On" : L6Button.className = "button2"
-      sendLightCode(6, L6);
-    })
-    var L7 = 0;
-    var L7Button = document.getElementById("L7Button");
-    L7Button.addEventListener('click', () => {
-      L7 = (L7 + 1) % 2;
-      L7 == 1 ? L7Button.className = "button2On" : L7Button.className = "button2"
-      sendLightCode(7, L7);
-    })
-
-
-    /***************MOTORS******************/
-    var M0 = 0;
-    var M0Button = document.getElementById("M0Button");
-    M0Button.addEventListener('click', () => {
-      M0 = (M0 + 1) % 2;
-      //  M0 == 1 ? M0Button.className = "button2On" : M0Button.className = "button2";
-      sendMotorCode(0, 0);
-    })
-    var M1 = 0;
-    var M1Button = document.getElementById("M1Button");
-    M1Button.addEventListener('click', () => {
-      M1 = (M1 + 1) % 2;
-      //  M1 == 1 ? M1Button.className = "button2On" : M1Button.className = "button2";
-      sendMotorCode(1, 0);
-    })
-    var M2 = 0;
-    var M2Button = document.getElementById("M2Button");
-    M2Button.addEventListener('click', () => {
-      M2 = (M2 + 1) % 2;
-      //  M2 == 1 ? M2Button.className = "button2On" : M2Button.className = "button2";
-      sendMotorCode(2, 0);
-    })
-    var M3 = 0;
-    var M3Button = document.getElementById("M3Button");
-    M3Button.addEventListener('click', () => {
-      M3 = (M3 + 1) % 2;
-      //  M3 == 1 ? M3Button.className = "button2On" : M3Button.className = "button2";
-      sendMotorCode(3, 0);
-    })
-    var M4 = 0;
-    var M4Button = document.getElementById("M4Button");
-    M4Button.addEventListener('click', () => {
-      M4 = (M4 + 1) % 2;
-      //  M4 == 1 ? M4Button.className = "button2On" : M4Button.className = "button2";
-      sendMotorCode(4, 0);
-    })
-    var M5 = 0;
-    var M5Button = document.getElementById("M5Button");
-    M5Button.addEventListener('click', () => {
-      M5 = (M5 + 1) % 2;
-      //    M5 == 1 ? M5Button.className = "button2On" : M5Button.className = "button2";
-      sendMotorCode(5, 0);
-    })
-    var M6 = 0;
-    var M6Button = document.getElementById("M6Button");
-    M6Button.addEventListener('click', () => {
-      M6 = (M6 + 1) % 2;
-      //  M6 == 1 ? M6Button.className = "button2On" : M6Button.className = "button2";
-      sendMotorCode(6, 0);
-    })
-    var M7 = 0;
-    var M7Button = document.getElementById("M7Button");
-    M6Button.addEventListener('click', () => {
-      //  M6 = (M6 + 1) % 2;
-      //  M6 == 1 ? M6Button.className = "button2On" : M6Button.className = "button2";
-      sendMotorCode(7, 0);
-    })
-
-    /***************MOTORS******************/
-    var M0 = 0;
-    var M0Button = document.getElementById("M0BButton");
-    M0Button.addEventListener('click', () => {
-      M0 = (M0 + 1) % 2;
-      //  M0 == 1 ? M0Button.className = "button2On" : M0Button.className = "button2";
-      sendMotorCode(0, 1);
-    })
-    var M1 = 0;
-    var M1Button = document.getElementById("M1BButton");
-    M1Button.addEventListener('click', () => {
-      M1 = (M1 + 1) % 2;
-      //  M1 == 1 ? M1Button.className = "button2On" : M1Button.className = "button2";
-      sendMotorCode(1, 1);
-    })
-    var M2 = 0;
-    var M2Button = document.getElementById("M2BButton");
-    M2Button.addEventListener('click', () => {
-      M2 = (M2 + 1) % 2;
-      //  M2 == 1 ? M2Button.className = "button2On" : M2Button.className = "button2";
-      sendMotorCode(2, 1);
-    })
-    var M3 = 0;
-    var M3Button = document.getElementById("M3BButton");
-    M3Button.addEventListener('click', () => {
-      M3 = (M3 + 1) % 2;
-      //  M3 == 1 ? M3Button.className = "button2On" : M3Button.className = "button2";
-      sendMotorCode(3, 1);
-    })
-    var M4 = 0;
-    var M4Button = document.getElementById("M4BButton");
-    M4Button.addEventListener('click', () => {
-      M4 = (M4 + 1) % 2;
-      //  M4 == 1 ? M4Button.className = "button2On" : M4Button.className = "button2";
-      sendMotorCode(4, 1);
-    })
-    var M5 = 0;
-    var M5Button = document.getElementById("M5BButton");
-    M5Button.addEventListener('click', () => {
-      M5 = (M5 + 1) % 2;
-      //    M5 == 1 ? M5Button.className = "button2On" : M5Button.className = "button2";
-      sendMotorCode(5, 1);
-    })
-    var M6 = 0;
-    var M6Button = document.getElementById("M6BButton");
-    M6Button.addEventListener('click', () => {
-      M6 = (M6 + 1) % 2;
-      //  M6 == 1 ? M6Button.className = "button2On" : M6Button.className = "button2";
-      sendMotorCode(6, 1);
-    })
-    var M7 = 0;
-    var M7Button = document.getElementById("M7BButton");
-    M6Button.addEventListener('click', () => {
-      //  M6 = (M6 + 1) % 2;
-      //  M6 == 1 ? M6Button.className = "button2On" : M6Button.className = "button2";
-      sendMotorCode(7, 1);
-    })
-
-    var x = document.getElementById("find");
-
-    /*
-    document.getElementById("pin2ON").addEventListener('click', function() {
-      myCharacteristic.writeValue(new Uint8Array([0x01]))
-    })
-    document.getElementById("pin2OFF").addEventListener('click', function() {
-      myCharacteristic.writeValue(new Uint8Array([0x02]))
-    })
-
-*/
 
 
     x.addEventListener('click', function(event) {

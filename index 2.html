@@ -1,0 +1,139 @@
+<!DOCTYPE html>
+<html>
+
+<head>
+  <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, minimum-scale=1.0, user-scalable=no, minimal-ui">
+  <link rel="apple-touch-icon" href="launch.png">
+  <link rel="apple-touch-startup-image" href="launch.png">
+  <meta name="apple-mobile-web-app-title" content="Korero">
+  <meta name="apple-mobile-web-app-capable" content="yes">
+  <meta name="mobile-web-app-capable" content="yes">
+  <meta name="apple-mobile-web-app-status-bar-style" content="black">
+
+  <script type="text/javascript" src="unmute.js"></script>
+
+</head>
+
+<body>
+  <audio id="steam" src="steam.mp3" preload="auto"></audio>
+  <audio id="seagull" src="seagull.mp3" preload="auto"></audio>
+  <audio id="Cats" src="Cats.mp3" preload="auto"></audio>
+  <audio id="Chickens" src="Chickens.mp3" preload="auto"></audio>
+
+  <button id="start" class="button">start</button><br>
+  <button id="play" class="button">play</button><br>
+  <br>
+  <div id="output"></div>
+
+
+  <script>
+    var tracks;
+    var steamSound;
+    var seagullSound;
+    var CatsSound;
+    var ChickensSound;
+
+    pannerList = [
+      [0.01, 0.01], //[0] centre
+      [-1, -1], //[1]=left
+      [1, 1], //[2]=right
+      [-1, 0.01], //[3]=left to centre
+      [0.01, 1], //[4]=centre to right
+      [1, 0.01], //[5]= right to centre
+      [0.01, -1], //[6]=centre to left
+      [-1, 1], //[7] left to right
+      [1, -1] // [8] right to left
+    ];
+
+
+    var started = false;
+    output = document.getElementById("output");
+
+    start = () => {
+      if (started == false) {
+        started = true;
+        audioCtx = new(window.AudioContext || window.webkitAudioContext)();
+
+        steamSound = new Sound("steam");
+        seagullSound = new Sound("seagull");
+        CatsSound = new Sound("Cats");
+        ChickensSound = new Sound("Chickens");
+
+        tracks = [
+          new Track(1, CatsSound, 1),
+          new Track(15, steamSound, 7),
+          new Track(30, steamSound, 8),
+          new Track(40, ChickensSound, 2),
+          new Track(40, seagullSound, 0),
+          new Track(40, CatsSound, 1)
+        ]
+
+      }
+    }
+
+    playTracks = () => {
+      for (let i = 0; i < tracks.length; i++) {
+        setTimeout(function() {
+          tracks[i].play();
+          output.innerHTML = output.innerHTML + (tracks[i].time + "  " + tracks[i].soundName.fileName);
+        }, tracks[i].time * 1000);
+      }
+
+    }
+
+    class Sound {
+      constructor(soundName) {
+        this.soundName = soundName;
+        this.fileName = this.soundName + ".mp3";
+        this.audioElement = document.getElementById(soundName);
+        console.log(this.audioElement.play());
+
+        this.duration = this.audioElement.duration;
+        output.innerHTML = output.innerHTML + this.duration + "  ";
+        this.track = audioCtx.createMediaElementSource(this.audioElement);
+        this.gainNode = audioCtx.createGain();
+        this.gainNode.gain.value = 1;
+        //  gainNode.gain.setValueAtTime(0, audioCtx.currentTime);
+          this.panner = audioCtx.createStereoPanner();
+
+      }
+
+
+
+
+      play(pannerNumber) {
+        this.track.connect(this.gainNode).connect(this.panner).connect(audioCtx.destination);
+        this.audioElement.play();
+        this.audioElement.muted=false;
+        this.start = pannerList[pannerNumber][0];
+        this.end = pannerList[pannerNumber][1];
+        this.panner.pan.setValueAtTime(this.start, audioCtx.currentTime);
+        this.panner.pan.linearRampToValueAtTime(this.end, audioCtx.currentTime + this.duration);
+
+      }
+    }
+
+    class Track {
+      constructor(time, soundName, panValue) {
+        this.time = time;
+        this.soundName = soundName;
+        this.panValue = panValue;
+      }
+      play() {
+        this.soundName.play(this.panValue);
+      }
+    }
+
+    document.getElementById("start").addEventListener("click", () => {
+      start();
+    });
+
+    document.getElementById("play").addEventListener("click", () => {
+      playTracks();
+    });
+  </script>
+
+  <br><br> v110
+</body>
+
+</html>
