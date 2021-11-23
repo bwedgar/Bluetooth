@@ -71,7 +71,7 @@
 
 <body style="background-color:white;color:black;font-family:courier;font-size:40px;text-align:center;>
   <div style=" font-size:300px;border: 6px solid red;border-radius: 100px;margin:auto;width:75%">T </div>
-  <div><br>BLE controller v2.3 <a style="color:red;" href="https://bwedgar.github.io">bwedgar</a></div>
+  <div><br>BLE controller v2.4 <a style="color:red;" href="https://bwedgar.github.io">bwedgar</a></div>
   <br>
   <button id="find">find bluetooth MyESP32 6</button>
   <BR>
@@ -234,14 +234,19 @@
     loco = function(track, nextStop) {}
 
     sound = function(name, pannerNumber) {
-      name.play( pannerNumber);
+    //  name.play(pannerNumber);
+    ChickensSound.play(0);
     };
 
+    play = document.getElementById("play");
+    play.addEventListener('click', function(event) {
     action = setTimeout(servo, 3000, 5, 7);
     action = setTimeout(sound, 3010, ChickensSound, 0);
     action = setTimeout(servo, 5000, 7, 3);
 
     action = setTimeout(lights, 7000, sky, red, up);
+
+});
 
 
     x = document.getElementById("start");
