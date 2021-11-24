@@ -71,7 +71,7 @@
 
 <body style="background-color:white;color:black;font-family:courier;font-size:40px;text-align:center;>
   <div style=" font-size:300px;border: 6px solid red;border-radius: 100px;margin:auto;width:75%">T </div>
-  <div><br>BLE controller v2.6 <a style="color:red;" href="https://bwedgar.github.io">bwedgar</a></div>
+  <div><br>BLE controller v2.7 <a style="color:red;" href="https://bwedgar.github.io">bwedgar</a></div>
   <br>
   <button id="setup" class="button">setup</button><br>
   <button id="run" class="button">run</button><br>
@@ -104,9 +104,9 @@
 
     sendCode = (code) => {
       v = new Uint8Array(1);
-      v[0] = code;
-      console.log(code.toString(2))
-      //  myCharacteristic.writeValue(v);
+      v[0] = eval("0b"+code.toString(2));
+      console.log(v[0].toString(2))
+       myCharacteristic.writeValue(v);
     }
 
     pannerList = [
@@ -303,7 +303,6 @@
           // Step 5: Write to the characteristic
           var data = new Uint8Array([0x41]);
           console.log("writing to characteristic");
-
           return characteristic.writeValue(data);
         })
         .catch(function(error) {
