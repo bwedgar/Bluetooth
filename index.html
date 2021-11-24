@@ -71,7 +71,7 @@
 
 <body style="background-color:white;color:black;font-family:courier;font-size:40px;text-align:center;>
   <div style=" font-size:300px;border: 6px solid red;border-radius: 100px;margin:auto;width:75%">T </div>
-  <div><br>BLE controller v2.16 <a style="color:red;" href="https://bwedgar.github.io">bwedgar</a></div>
+  <div><br>BLE controller v2.17 <a style="color:red;" href="https://bwedgar.github.io">bwedgar</a></div>
   <br>
   <button id="find">find bluetooth MyESP32 6</button><br>
   <button id="start" class="button">start</button><br>
@@ -191,6 +191,7 @@ update=function(){
       //id 0-8,  pos 0-8
       //deciphering code for esp32
       code = (0 * 64 + id * 8 + pos * 1)
+      sendCode(code)
       codeString = code.toString(2).padStart(8, "0")
       codeId = Math.floor(code / 8) - Math.floor(code / 64) * 64
       codePos = code - Math.floor(code / 8) * 8
@@ -200,6 +201,8 @@ update=function(){
     fibre = function(id, state) {
       //id 0-8, state 0-8
       code = 1 * 64 + id * 8 + state * 1
+      sendCode(code)
+
       output.innerHTML += (code.toString(2).padStart(8, "0")) + "<br>"
     }
 
@@ -210,6 +213,7 @@ update=function(){
       //id 0-4 color 0-2 change 0-1
       code = 2 * 64 + id * 16 + colour * 4 + change * 1
       output.innerHTML += (code.toString(2).padStart(8, "0")) + "<br>"
+      sendCode(code)
     }
 
     east = 0
