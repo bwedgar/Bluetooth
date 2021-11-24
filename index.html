@@ -71,7 +71,7 @@
 
 <body style="background-color:white;color:black;font-family:courier;font-size:40px;text-align:center;>
   <div style=" font-size:300px;border: 6px solid red;border-radius: 100px;margin:auto;width:75%">T </div>
-  <div><br>BLE controller v2.17 <a style="color:red;" href="https://bwedgar.github.io">bwedgar</a></div>
+  <div><br>BLE controller v2.18 <a style="color:red;" href="https://bwedgar.github.io">bwedgar</a></div>
   <br>
   <button id="find">find bluetooth MyESP32 6</button><br>
   <button id="start" class="button">start</button><br>
@@ -95,7 +95,7 @@
     sendCode = (code) => {
       v = new Uint8Array(1);
       v[0] = code;
-      myCharacteristic.writeValue(v);
+    //  myCharacteristic.writeValue(v);
     }
 
     pannerList = [
@@ -202,7 +202,6 @@ update=function(){
       //id 0-8, state 0-8
       code = 1 * 64 + id * 8 + state * 1
       sendCode(code)
-
       output.innerHTML += (code.toString(2).padStart(8, "0")) + "<br>"
     }
 
