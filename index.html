@@ -71,7 +71,7 @@
 
 <body style="background-color:white;color:black;font-family:courier;font-size:40px;text-align:center;>
   <div style=" font-size:300px;border: 6px solid red;border-radius: 100px;margin:auto;width:75%">T </div>
-  <div><br>BLE controller v3.0 <a style="color:red;" href="https://bwedgar.github.io">bwedgar</a></div>
+  <div><br>BLE controller v3.1 <a style="color:red;" href="https://bwedgar.github.io">bwedgar</a></div>
   <br>
   <button id="setup" class="button">setup</button><br>
   <button id="run" class="button">run</button><br>
@@ -91,6 +91,8 @@
     var CatsSound;
     var ChickensSound;
 
+    var     myCharacteristic;
+
     var output = document.getElementById("output")
   var commands = document.getElementById("commands")
     commands.value = localStorage.getItem("content")
@@ -106,7 +108,7 @@
       v = new Uint8Array(1);
       v[0] = eval("0b"+code.toString(2));
       console.log(v[0].toString(2))
-    //   myCharacteristic.writeValue(v);
+      myCharacteristic.writeValue(v);
     }
 
     pannerList = [
