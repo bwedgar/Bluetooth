@@ -71,7 +71,7 @@
 
 <body style="background-color:white;color:black;font-family:courier;font-size:40px;text-align:center;>
   <div style=" font-size:300px;border: 6px solid red;border-radius: 100px;margin:auto;width:75%">T </div>
-  <div><br>BLE controller v2.15 <a style="color:red;" href="https://bwedgar.github.io">bwedgar</a></div>
+  <div><br>BLE controller v2.16 <a style="color:red;" href="https://bwedgar.github.io">bwedgar</a></div>
   <br>
   <button id="find">find bluetooth MyESP32 6</button><br>
   <button id="start" class="button">start</button><br>
@@ -145,14 +145,14 @@
         this.panner = audioCtx.createStereoPanner();
       }
 
-      play(pannerNumber) {
+      play(pannerNumber,time) {
         this.track.connect(this.gainNode).connect(this.panner).connect(audioCtx.destination);
         this.audioElement.play();
         this.audioElement.muted = false;
         this.start = pannerList[pannerNumber][0];
         this.end = pannerList[pannerNumber][1];
         this.panner.pan.setValueAtTime(this.start, audioCtx.currentTime);
-        this.panner.pan.linearRampToValueAtTime(this.end, audioCtx.currentTime + this.duration);
+        this.panner.pan.linearRampToValueAtTime(this.end, audioCtx.currentTime + time+this.duration);
 
       }
     }
@@ -231,8 +231,8 @@ update=function(){
     main = 0
     bypass = 1
 
-    playSound = function(name, pan) {
-      eval(name).play(pan);
+    playSound = function(name, pan,time) {
+      eval(name).play(pan,time);
     };
 
     toActions = function(line) {
@@ -258,7 +258,7 @@ update=function(){
 
       if (parameters[1] == "P") {
 
-        action = setTimeout(playSound, parameters[0] * 1000, parameters[2], parameters[3])
+        action = setTimeout(playSound, parameters[0] * 1000, parameters[2], parameters[3],parameters[0]*1000)
       }
 
     }
