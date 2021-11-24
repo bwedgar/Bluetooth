@@ -71,7 +71,7 @@
 
 <body style="background-color:white;color:black;font-family:courier;font-size:40px;text-align:center;>
   <div style=" font-size:300px;border: 6px solid red;border-radius: 100px;margin:auto;width:75%">T </div>
-  <div><br>BLE controller v2.4 <a style="color:red;" href="https://bwedgar.github.io">bwedgar</a></div>
+  <div><br>BLE controller v2.5 <a style="color:red;" href="https://bwedgar.github.io">bwedgar</a></div>
   <br>
   <button id="setup" class="button">setup</button><br>
   <button id="run" class="button">run</button><br>
@@ -98,6 +98,9 @@
     updateLocalStorage = function() {
       localStorage.setItem("content", commands.value)
     }
+
+        setup = document.getElementById("setup");
+        run = document.getElementById("run");
 
     sendCode = (code) => {
       v = new Uint8Array(1);
@@ -164,20 +167,6 @@
 
       }
     }
-    /*
-        class Track {
-          constructor(time, soundName, panValue) {
-            this.time = time;
-            this.soundName = soundName;
-            this.panValue = panValue;
-          }
-          play() {
-            this.soundName.play(this.panValue);
-          }
-        }
-        */
-
-
 
 
     //BLE device types
@@ -267,17 +256,12 @@
     }
 
 
-
-    run = document.getElementById("run");
     run.addEventListener('click', function(event) {
       output.innerHTML = ""
       for (t of commands.value.split("\n")) {
         toActions(t)
       }
     });
-
-
-    setup = document.getElementById("setup");
 
 
     setup.addEventListener('click', function(event) {
