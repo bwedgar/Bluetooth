@@ -71,12 +71,11 @@
 
 <body style="background-color:white;color:black;font-family:courier;font-size:40px;text-align:center;>
   <div style=" font-size:300px;border: 6px solid red;border-radius: 100px;margin:auto;width:75%">T </div>
-  <div><br>BLE controller v2.18 <a style="color:red;" href="https://bwedgar.github.io">bwedgar</a></div>
+  <div><br>BLE controller v2.3 <a style="color:red;" href="https://bwedgar.github.io">bwedgar</a></div>
   <br>
-  <button id="find">find bluetooth MyESP32 6</button><br>
-  <button id="start" class="button">start</button><br>
-  <button id="play" class="button">play</button><br>
-  <textarea id="commands" cols=50 rows=20 oninput="update()"></textarea><br>
+  <button id="setup" class="button">setup</button><br>
+  <button id="run" class="button">run</button><br>
+  <textarea id="commands" cols=50 rows=20 oninput="updateLocalStorage()"></textarea><br>
   <div id="output"></div><br>
 
   <audio id="steam" src="steam.mp3" preload="auto"></audio>
@@ -92,10 +91,19 @@
     var CatsSound;
     var ChickensSound;
 
+    var output = document.getElementById("output")
+  var commands = document.getElementById("commands")
+    commands.value = localStorage.getItem("content")
+
+    updateLocalStorage = function() {
+      localStorage.setItem("content", commands.value)
+    }
+
     sendCode = (code) => {
       v = new Uint8Array(1);
       v[0] = code;
-    //  myCharacteristic.writeValue(v);
+      alert(code)
+      //  myCharacteristic.writeValue(v);
     }
 
     pannerList = [
@@ -114,7 +122,7 @@
     var started = false;
     output = document.getElementById("output");
 
-    start = () => {
+    setupSound = () => {
       if (started == false) {
         started = true;
         audioCtx = new(window.AudioContext || window.webkitAudioContext)();
@@ -145,40 +153,32 @@
         this.panner = audioCtx.createStereoPanner();
       }
 
-      play(pannerNumber,time) {
+      play(pannerNumber, time) {
         this.track.connect(this.gainNode).connect(this.panner).connect(audioCtx.destination);
         this.audioElement.play();
         this.audioElement.muted = false;
         this.start = pannerList[pannerNumber][0];
         this.end = pannerList[pannerNumber][1];
         this.panner.pan.setValueAtTime(this.start, audioCtx.currentTime);
-        this.panner.pan.linearRampToValueAtTime(this.end, audioCtx.currentTime + time+this.duration);
+        this.panner.pan.linearRampToValueAtTime(this.end, audioCtx.currentTime + time + this.duration);
 
       }
     }
-
-    class Track {
-      constructor(time, soundName, panValue) {
-        this.time = time;
-        this.soundName = soundName;
-        this.panValue = panValue;
-      }
-      play() {
-        this.soundName.play(this.panValue);
-      }
-    }
-
-    commands = document.getElementById("commands")
-
-    output = document.getElementById("output")
-
-    commands.value =localStorage.getItem("content")
+    /*
+        class Track {
+          constructor(time, soundName, panValue) {
+            this.time = time;
+            this.soundName = soundName;
+            this.panValue = panValue;
+          }
+          play() {
+            this.soundName.play(this.panValue);
+          }
+        }
+        */
 
 
 
-update=function(){
-      localStorage.setItem("content", commands.value)
-    }
 
     //BLE device types
     //servo 00
@@ -234,8 +234,8 @@ update=function(){
     main = 0
     bypass = 1
 
-    playSound = function(name, pan,time) {
-      eval(name).play(pan,time);
+    playSound = function(name, pan, time) {
+      eval(name).play(pan, time);
     };
 
     toActions = function(line) {
@@ -261,27 +261,27 @@ update=function(){
 
       if (parameters[1] == "P") {
 
-        action = setTimeout(playSound, parameters[0] * 1000, parameters[2], parameters[3],parameters[0]*1000)
+        action = setTimeout(playSound, parameters[0] * 1000, parameters[2], parameters[3], parameters[0] * 1000)
       }
 
     }
 
-    for (t of commands.value.split("\n")) {
-      toActions(t)
-    }
-
-    play = document.getElementById("play");
-    play.addEventListener('click', function(event) {
 
 
+    run = document.getElementById("run");
+    run.addEventListener('click', function(event) {
+      output.innerHTML = ""
+      for (t of commands.value.split("\n")) {
+        toActions(t)
+      }
     });
 
 
-    x = document.getElementById("start");
+    setup = document.getElementById("setup");
 
 
-    x.addEventListener('click', function(event) {
-      start();
+    setup.addEventListener('click', function(event) {
+      setupSound();
 
 
 
@@ -291,7 +291,6 @@ update=function(){
           }],
           optionalServices: ['4fafc201-1fb5-459e-8fcc-c5c9c331914b']
         })
-        //  });
 
 
 
