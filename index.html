@@ -73,10 +73,10 @@
   <div style=" font-size:300px;border: 6px solid red;border-radius: 100px;margin:auto;width:75%">T </div>
   <div><br>BLE controller v3.2.1 <a style="color:red;" href="https://bwedgar.github.io">bwedgar</a></div>
   <br>
-  <button id="setup" class="button">setup</button><br>
-  <button id="run" class="button">run</button><br>
-  <textarea id="commands" cols=50 rows=20 oninput="updateLocalStorage()"></textarea><br>
-  <div id="output"></div><br>
+  <button id="setup" style="font-size:5vw;">setup</button>    
+  <button id="run" style="font-size:5vw;">run</button>
+  <textarea id="commands" cols=50 rows=10 oninput="updateLocalStorage()" style="font-size:5vw;"></textarea><br>
+  <div id="output" style="font-size:5vw;"></div><br>
 
   <audio id="steam" src="steam.mp3" preload="auto"></audio>
   <audio id="seagull" src="seagull.mp3" preload="auto"></audio>
@@ -108,7 +108,7 @@
       v = new Uint8Array(1);
       v[0] = eval("0b"+code.toString(2));
       console.log(v[0].toString(2))
-      myCharacteristic.writeValue(v);
+    //  myCharacteristic.writeValue(v);
     }
 
     pannerList = [
@@ -199,9 +199,9 @@
     on = 1
     off = 0
 
-    lights = function(channel, change) {
+    lights = function(channel, speed,change) {
       //channel 4 bits 0-10 east,south,west,skyx2 change  two bits 0-1
-      code = 2*64+channel*16 + change * 1
+      code = 2*64+channel*4 + speed*2+ change * 1
       output.innerHTML += (code.toString(2).padStart(8, "0")) + "<br>"
       sendCode(code)
     }
@@ -238,7 +238,7 @@
 
       if (parameters[1] == "L") {
 
-        action = setTimeout(lights, parameters[0] * 1000, parameters[2], parameters[3])
+        action = setTimeout(lights, parameters[0] * 1000, parameters[2], parameters[3],parameters[4])
       }
 
       if (parameters[1] == "T") {
