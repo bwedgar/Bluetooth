@@ -71,7 +71,7 @@
 
 <body style="background-color:white;color:black;font-family:courier;font-size:40px;text-align:center;>
   <div style=" font-size:300px;border: 6px solid red;border-radius: 100px;margin:auto;width:75%">T </div>
-  <div><br>BLE controller v3.2.4 <a style="color:red;" href="https://bwedgar.github.io">bwedgar</a></div>
+  <div><br>BLE controller v3.2.5 <a style="color:red;" href="https://bwedgar.github.io">bwedgar</a></div>
   <br>
   <button id="setup" style="font-size:5vw;">setup</button>
   <button id="run" style="font-size:5vw;">run</button>
@@ -181,28 +181,23 @@
 track=function(id,speed,direction){
 // id 0-1, speed 0-7, direction 0-1
 code = (3 * 64 + id * 4 + pos * 1)
-sendCode(code)
 output.innerHTML += (code.toString(2).padStart(8, "0")) + "<br>"
-
+sendCode(code)
 }
     servo = function(id, pos) {
       //id 0-7,  pos 0-7
-      //deciphering code for esp32
       code = (0 * 64 + id * 8 + pos * 1)
-      sendCode(code)
-    //  codeString = code.toString(2).padStart(8, "0")
-    //  codeId = Math.floor(code / 8) - Math.floor(code / 64) * 64
-    //  codePos = code - Math.floor(code / 8) * 8
-    //  output.innerHTML += (codeString) + "<br>";
       output.innerHTML += (code.toString(2).padStart(8, "0")) + "<br>"
+      sendCode(code)
 
     }
 
     fibre = function(id, state) {
       //id 0-8, state 0-8
       code = 1 * 64 + id * 8 + state * 1
-      sendCode(code)
       output.innerHTML += (code.toString(2).padStart(8, "0")) + "<br>"
+      sendCode(code)
+
     }
 
     on = 1
