@@ -70,7 +70,7 @@
 
 <body style="background-color:white;color:black;font-family:courier;font-size:40px;text-align:center;>
   <div style=" font-size:300px;border: 6px solid red;border-radius: 100px;margin:auto;width:75%">T</div>
-  <div><br>BLE controller v3.2.8 <a style="color:red;" href="https://bwedgar.github.io">bwedgar</a></div>
+  <div><br>BLE controller v3.2.9 <a style="color:red;" href="https://bwedgar.github.io">bwedgar</a></div>
   <br>
   <button id="setup" style="font-size:5vw;">setup</button>
   <button id="run" style="font-size:5vw;">run</button>
@@ -84,10 +84,10 @@
 
   <script>
     var tracks;
-    var steamSound;
-    var seagullSound;
-    var CatsSound;
-    var ChickensSound;
+    var steam ;
+    var seagull ;
+    var  cats;
+    var chickens;
 
     var myCharacteristic;
 
@@ -102,6 +102,10 @@
     setup = document.getElementById("setup");
     run = document.getElementById("run");
 
+displayTime=()=>{
+ output.innerHTML =Math.floor((time-startTime)/1000);
+
+}
     sendCode = (code) => {
       v = new Uint8Array(1);
       v[0] = eval("0b" + code.toString(2));
@@ -131,8 +135,8 @@
 
       steam  = new Sound("steam");
       seagull  = new Sound("seagull");
-      CatsSound = new Sound("Cats");
-      ChickensSound = new Sound("Chickens");
+      cats  = new Sound("cats");
+      chickens  = new Sound("chickens");
     }
 
 
@@ -175,21 +179,21 @@
     track = function(id, speed, direction) {
       // id 0-1, speed 0-7, direction 0-1
       code = (3 * 64 + id * 4 + speed * 2 + direction * 1)
-      output.innerHTML += (code.toString(2).padStart(8, "0")) + "<br>"
+    //  output.innerHTML += (code.toString(2).padStart(8, "0")) + "<br>"
       sendCode(code)
     }
 
     servo = function(id, pos) {
       //id 0-7,  pos 0-7
       code = (0 * 64 + id * 8 + pos * 1)
-      output.innerHTML += (code.toString(2).padStart(8, "0")) + "<br>"
+      //output.innerHTML += (code.toString(2).padStart(8, "0")) + "<br>"
       sendCode(code)
     }
 
     fibre = function(id, state) {
       //id 0-8, state 0-8
       code = 1 * 64 + id * 8 + state * 1
-      output.innerHTML += (code.toString(2).padStart(8, "0")) + "<br>"
+    //  output.innerHTML += (code.toString(2).padStart(8, "0")) + "<br>"
       sendCode(code)
     }
 
@@ -199,7 +203,7 @@
     lights = function(channel, speed, change) {
       //channel 4 bits 0-10 east,south,west,skyx2 / speed 1 bit/ change 1  bit
       code = 2 * 64 + channel * 4 + speed * 2 + change * 1
-      output.innerHTML += (code.toString(2).padStart(8, "0")) + "<br>"
+    //  output.innerHTML += (code.toString(2).padStart(8, "0")) + "<br>"
       sendCode(code)
     }
 
@@ -248,6 +252,8 @@
 
     run.addEventListener('click', function(event) {
       output.innerHTML = ""
+      startTime=now();
+      setInterval(displayTime,1000);
       for (t of commands.value.split("\n")) {
         toActions(t)
       }
