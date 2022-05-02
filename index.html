@@ -16,7 +16,6 @@
   <meta name="mobile-web-app-capable" content="yes">
   <meta name="apple-mobile-web-app-status-bar-style" content="black">
 
-
   <meta http-equiv="refresh" content="600">
   <style>
     .button1 {
@@ -70,8 +69,8 @@
 </head>
 
 <body style="background-color:white;color:black;font-family:courier;font-size:40px;text-align:center;>
-  <div style=" font-size:300px;border: 6px solid red;border-radius: 100px;margin:auto;width:75%">T </div>
-  <div><br>BLE controller v3.2.7 <a style="color:red;" href="https://bwedgar.github.io">bwedgar</a></div>
+  <div style=" font-size:300px;border: 6px solid red;border-radius: 100px;margin:auto;width:75%">T</div>
+  <div><br>BLE controller v3.2.8 <a style="color:red;" href="https://bwedgar.github.io">bwedgar</a></div>
   <br>
   <button id="setup" style="font-size:5vw;">setup</button>
   <button id="run" style="font-size:5vw;">run</button>
@@ -83,7 +82,6 @@
   <audio id="Cats" src="Cats.mp3" preload="auto"></audio>
   <audio id="Chickens" src="Chickens.mp3" preload="auto"></audio>
 
-
   <script>
     var tracks;
     var steamSound;
@@ -91,22 +89,22 @@
     var CatsSound;
     var ChickensSound;
 
-    var     myCharacteristic;
+    var myCharacteristic;
 
     var output = document.getElementById("output")
-  var commands = document.getElementById("commands")
+    var commands = document.getElementById("commands")
     commands.value = localStorage.getItem("content")
 
     updateLocalStorage = function() {
       localStorage.setItem("content", commands.value)
     }
 
-        setup = document.getElementById("setup");
-        run = document.getElementById("run");
+    setup = document.getElementById("setup");
+    run = document.getElementById("run");
 
     sendCode = (code) => {
       v = new Uint8Array(1);
-      v[0] = eval("0b"+code.toString(2));
+      v[0] = eval("0b" + code.toString(2));
       //alert(v[0].toString(2))
       myCharacteristic.writeValue(v);
     }
@@ -123,22 +121,18 @@
       [1, -1] // [8] right to left
     ];
 
-
     var started = false;
     output = document.getElementById("output");
 
     setupSound = () => {
-    //  if (started == false) {
-        started = true;
-        audioCtx = new(window.AudioContext || window.webkitAudioContext)();
+      //  if (started == false) {
+      started = true;
+      audioCtx = new(window.AudioContext || window.webkitAudioContext)();
 
-        steamSound = new Sound("steam");
-        seagullSound = new Sound("seagull");
-        CatsSound = new Sound("Cats");
-        ChickensSound = new Sound("Chickens");
-alert("set u sound")
-
-  //    }
+      steam  = new Sound("steam");
+      seagull  = new Sound("seagull");
+      CatsSound = new Sound("Cats");
+      ChickensSound = new Sound("Chickens");
     }
 
 
@@ -178,18 +172,18 @@ alert("set u sound")
     //tracks 11
 
 
-track=function(id,speed,direction){
-// id 0-1, speed 0-7, direction 0-1
-code = (3 * 64 + id * 4 + speed*2 + direction * 1)
-output.innerHTML += (code.toString(2).padStart(8, "0")) + "<br>"
-sendCode(code)
-}
+    track = function(id, speed, direction) {
+      // id 0-1, speed 0-7, direction 0-1
+      code = (3 * 64 + id * 4 + speed * 2 + direction * 1)
+      output.innerHTML += (code.toString(2).padStart(8, "0")) + "<br>"
+      sendCode(code)
+    }
+
     servo = function(id, pos) {
       //id 0-7,  pos 0-7
       code = (0 * 64 + id * 8 + pos * 1)
       output.innerHTML += (code.toString(2).padStart(8, "0")) + "<br>"
       sendCode(code)
-
     }
 
     fibre = function(id, state) {
@@ -197,66 +191,58 @@ sendCode(code)
       code = 1 * 64 + id * 8 + state * 1
       output.innerHTML += (code.toString(2).padStart(8, "0")) + "<br>"
       sendCode(code)
-
     }
 
     on = 1
     off = 0
 
-    lights = function(channel, speed,change) {
+    lights = function(channel, speed, change) {
       //channel 4 bits 0-10 east,south,west,skyx2 / speed 1 bit/ change 1  bit
-      code = 2*64+channel*4 + speed*2+ change * 1
+      code = 2 * 64 + channel * 4 + speed * 2 + change * 1
       output.innerHTML += (code.toString(2).padStart(8, "0")) + "<br>"
       sendCode(code)
     }
-/*
-    east = 0-2
-    south = 3-5
-    west = 6-8
-    sky = 9-10
 
-    up = 1
-    down = 0
+    /*
+        east = 0-2
+        south = 3-5
+        west = 6-8
+        sky = 9-10
+
+        up = 1
+        down = 0
 
 
 
-    loco = function(track, nextStop) {}
+        loco = function(track, nextStop) {}
 
-    main = 0
-    bypass = 1
-*/
+        main = 0
+        bypass = 1
+    */
     playSound = function(name, pan, time) {
       eval(name).play(pan, time);
     };
 
-
-
     toActions = function(line) {
       parameters = line.split(",")
-      if (parameters[1] == "S") {
-
+      if (parameters[1] == "s") {
         action = setTimeout(servo, parameters[0] * 1000, parameters[2], parameters[3])
       }
-      if (parameters[1] == "F") {
-
+      if (parameters[1] == "f") {
         action = setTimeout(fibre, parameters[0] * 1000, parameters[2], parameters[3])
       }
 
-      if (parameters[1] == "L") {
-
-        action = setTimeout(lights, parameters[0] * 1000, parameters[2], parameters[3],parameters[4])
+      if (parameters[1] == "l") {
+        action = setTimeout(lights, parameters[0] * 1000, parameters[2], parameters[3], parameters[4])
       }
 
-      if (parameters[1] == "T") {
-
-        action = setTimeout(track, parameters[0] * 1000, parameters[2], parameters[3],parameters[4])
+      if (parameters[1] == "t") {
+        action = setTimeout(track, parameters[0] * 1000, parameters[2], parameters[3], parameters[4])
       }
 
-      if (parameters[1] == "P") {
-
+      if (parameters[1] == "p") {
         action = setTimeout(playSound, parameters[0] * 1000, parameters[2], parameters[3], parameters[0] * 1000)
       }
-
     }
 
 
@@ -271,8 +257,6 @@ sendCode(code)
     setup.addEventListener('click', function(event) {
       setupSound();
 
-
-
       navigator.bluetooth.requestDevice({
           filters: [{
             namePrefix: 'MyESP32'
@@ -280,27 +264,22 @@ sendCode(code)
           optionalServices: ['4fafc201-1fb5-459e-8fcc-c5c9c331914b']
         })
 
-
-
         .then(function(device) {
           // Step 2: Connect to it
           console.log("connecting to device");
           return device.gatt.connect();
-
         })
 
         .then(function(server) {
           // Step 3: Get the Service
           console.log("connecting to service");
           return server.getPrimaryService('4fafc201-1fb5-459e-8fcc-c5c9c331914b');
-
         })
 
         .then(function(service) {
           // Step 4: get the Characteristic
           console.log("getting characteristic");
           return service.getCharacteristic('beb5483e-36e1-4688-b7f5-ea07361b26a8');
-
         })
         .then(function(characteristic) {
           myCharacteristic = characteristic;
@@ -309,6 +288,7 @@ sendCode(code)
           console.log("writing to characteristic");
           return characteristic.writeValue(data);
         })
+
         .catch(function(error) {
           // And of course: error handling!
           console.error('Connection failed!', error);
