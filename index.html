@@ -70,18 +70,18 @@
 
 <body style="background-color:white;color:black;font-family:courier;font-size:40px;text-align:center;>
   <div style=" font-size:300px;border: 6px solid red;border-radius: 100px;margin:auto;width:75%">T</div>
-  <div><br>BLE controller v3.2.18 <a style="color:red;" href="https://bwedgar.github.io">bwedgar</a></div>
+  <div><br>BLE controller v3.2.19 <a style="color:red;" href="https://bwedgar.github.io">bwedgar</a></div>
   <br>
   <button id="setup" style="font-size:5vw;">setup</button>
   <button id="run" style="font-size:5vw;">run</button>
   <textarea id="commands" cols=50 rows=10 oninput="updateLocalStorage()" style="font-size:5vw;"></textarea><br>
   <div id="output" style="font-size:5vw;"></div><br>
-<!--
+
   <audio id="steam" src="steam.mp3" preload="auto"></audio>
   <audio id="seagull" src="seagull.mp3" preload="auto"></audio>
   <audio id="cats" src="cats.mp3" preload="auto"></audio>
   <audio id="chickens" src="chickens.mp3" preload="auto"></audio>
--->
+
   <script>
     var tracks;
     var steam ;
@@ -110,7 +110,7 @@ displayTime=()=>{
       v = new Uint8Array(1);
       v[0] = eval("0b" + code.toString(2));
       myCharacteristic.writeValue(v);
-    output.innerHTML += code.toString(2).padStart(8, "0") +"<br>"
+  //  output.innerHTML += code.toString(2).padStart(8, "0") +"<br>"
     }
 
     pannerList = [
