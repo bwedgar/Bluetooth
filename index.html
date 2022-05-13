@@ -111,6 +111,7 @@ displayTime=()=>{
       v[0] = eval("0b" + code.toString(2));
       //alert(v[0].toString(2))
       myCharacteristic.writeValue(v);
+       output.innerHTML += (code.toString(2).padStart(8, "0")) + "<br>"
     }
 
     pannerList = [
