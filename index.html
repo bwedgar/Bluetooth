@@ -70,7 +70,7 @@
 
 <body style="background-color:white;color:black;font-family:courier;font-size:40px;text-align:center;>
   <div style=" font-size:300px;border: 6px solid red;border-radius: 100px;margin:auto;width:75%">T</div>
-  <div><br>BLE controller v3.2.15 <a style="color:red;" href="https://bwedgar.github.io">bwedgar</a></div>
+  <div><br>BLE controller v3.2.16 <a style="color:red;" href="https://bwedgar.github.io">bwedgar</a></div>
   <br>
   <button id="setup" style="font-size:5vw;">setup</button>
   <button id="run" style="font-size:5vw;">run</button>
@@ -111,7 +111,7 @@ displayTime=()=>{
       v[0] = eval("0b" + code.toString(2));
       //alert(v[0].toString(2))
       myCharacteristic.writeValue(v);
-       output.innerHTML += (code.toString(2).padStart(8, "0")) + "<br>"
+       alert(code.toString(2).padStart(8, "0"))
     }
 
     pannerList = [
