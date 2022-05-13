@@ -76,12 +76,12 @@
   <button id="run" style="font-size:5vw;">run</button>
   <textarea id="commands" cols=50 rows=10 oninput="updateLocalStorage()" style="font-size:5vw;"></textarea><br>
   <div id="output" style="font-size:5vw;"></div><br>
-
+<!--
   <audio id="steam" src="steam.mp3" preload="auto"></audio>
   <audio id="seagull" src="seagull.mp3" preload="auto"></audio>
   <audio id="cats" src="cats.mp3" preload="auto"></audio>
   <audio id="chickens" src="chickens.mp3" preload="auto"></audio>
-
+-->
   <script>
     var tracks;
     var steam ;
@@ -109,10 +109,9 @@ displayTime=()=>{
     sendCode = (code) => {
       v = new Uint8Array(1);
       v[0] = eval("0b" + code.toString(2));
-      //alert(v[0].toString(2))
       myCharacteristic.writeValue(v);
-       alert(code.toString(2).padStart(8, "0"))
-       output.innerHTML += code.toString(2).padStart(8, "0") +"<br>"
+    //  alert(code)//.toString(2).padStart(8, "0"))
+    output.innerHTML += code.toString(2).padStart(8, "0") +"<br>"
     }
 
     pannerList = [
@@ -179,23 +178,20 @@ displayTime=()=>{
 
 
     track = function(track0Direction,track0Speed,track1Direction,track1Speed) {
-      // track0direct=0-1 track0speed=0-3 track1Direction=0-1 track1Speed=0-3
-      code = (3 * 64 + track0Direction * 32 +track0Speed * 8 + track1Direction * 4 +track1Speed )
-    //  output.innerHTML += (code.toString(2).padStart(8, "0")) + "<br>"
+    // track0direct=0-1 track0speed=0-3 track1Direction=0-1 track1Speed=0-3
+      code = (3 * 64 + Number(track0Direction) * 32 +Number(track0Speed) * 8 + Number(track1Direction) * 4 +Number(track1Speed) )
       sendCode(code)
     }
 
     servo = function(id, pos) {
       //id 0-7,  pos 0-7
-      code = (0 * 64 + id * 8 + pos * 1)
-      //output.innerHTML += (code.toString(2).padStart(8, "0")) + "<br>"
+      code = (0 * 64 + Number(id) * 8 + Number(pos) * 1)
       sendCode(code)
     }
 
     fibre = function(id, state) {
       //id 0-8, state 0-8
-      code = 1 * 64 + id * 8 + state * 1
-    //  output.innerHTML += (code.toString(2).padStart(8, "0")) + "<br>"
+      code = 1 * 64 + Number(id) * 8 + Number(state) * 1
       sendCode(code)
     }
 
@@ -204,8 +200,7 @@ displayTime=()=>{
 
     lights = function(channel, speed, change) {
       //channel 4 bits 0-10 east,south,west,skyx2 / speed 1 bit/ change 1  bit
-      code = 2 * 64 + channel * 4 + speed * 2 + change * 1
-    //  output.innerHTML += (code.toString(2).padStart(8, "0")) + "<br>"
+      code = 2 * 64 + Number(channel) * 4 + Number(speed) * 2 + Number(change) * 1
       sendCode(code)
     }
 
