@@ -70,23 +70,45 @@
 
 <body style="background-color:white;color:black;font-family:courier;font-size:40px;text-align:center;>
   <div style=" font-size:300px;border: 6px solid red;border-radius: 100px;margin:auto;width:75%">T</div>
-  <div><br>BLE controller v3.2.20 <a style="color:red;" href="https://bwedgar.github.io">bwedgar</a></div>
+  <div><br>BLE controller v3.2.21 <a style="color:red;" href="https://bwedgar.github.io">bwedgar</a></div>
   <br>
   <button id="setup" style="font-size:5vw;">setup</button>
   <button id="run" style="font-size:5vw;">run</button>
+  <br>
+  <span>
+    FRONT: <input type="radio" class="front" name="front" value=0x11100001 id="flf">
+  </span>
+  <span>
+    <input type="radio" class="front" name="front" value=0x11110000 id="s">
+  </span>
+  <span>
+    <input type="radio" class="front" name="front" value=0x11110001 id="frf">
+  </span>
+  <br>
+
+  <span>
+    BACK: <input type="radio" class="front" name="back" value=0x11000001 id="flf">
+  </span>
+  <span>
+    <input type="radio" class="front" name="back" value=0x11010000 id="s">
+  </span>
+  <span>
+    <input type="radio" class="front" name="back" value=0x11010001 id="frf">
+  </span>
+  <br>
   <textarea id="commands" cols=50 rows=10 oninput="updateLocalStorage()" style="font-size:5vw;"></textarea><br>
   <div id="output" style="font-size:5vw;"></div><br>
 
   <audio id="steam" src="steam.mp3" preload="auto"></audio>
-  <audio id="seagull" src="seagull.mp3" preload="auto"></audio>
+   <audio id="seagull" src="seagull.mp3" preload="auto"></audio>
   <audio id="cats" src="cats.mp3" preload="auto"></audio>
   <audio id="chickens" src="chickens.mp3" preload="auto"></audio>
 
   <script>
     var tracks;
-    var steam ;
-    var seagull ;
-    var  cats;
+    var steam;
+    var seagull;
+    var cats;
     var chickens;
 
     var myCharacteristic;
@@ -102,15 +124,15 @@
     setup = document.getElementById("setup");
     run = document.getElementById("run");
 
-displayTime=()=>{
- output.innerHTML =Math.floor((Date.now()-startTime)/1000);
+    displayTime = () => {
+      output.innerHTML = Math.floor((Date.now() - startTime) / 1000);
 
-}
+    }
     sendCode = (code) => {
       v = new Uint8Array(1);
       v[0] = eval("0b" + code.toString(2));
       myCharacteristic.writeValue(v);
-  //  output.innerHTML += code.toString(2).padStart(8, "0") +"<br>"
+      //  output.innerHTML += code.toString(2).padStart(8, "0") +"<br>"
     }
 
     pannerList = [
@@ -133,10 +155,10 @@ displayTime=()=>{
       started = true;
       audioCtx = new(window.AudioContext || window.webkitAudioContext)();
 
-      steam  = new Sound("steam");
-      seagull  = new Sound("seagull");
-      cats  = new Sound("cats");
-      chickens  = new Sound("chickens");
+      steam = new Sound("steam");
+      seagull = new Sound("seagull");
+      cats = new Sound("cats");
+      chickens = new Sound("chickens");
     }
 
 
@@ -176,9 +198,9 @@ displayTime=()=>{
     //tracks 11
 
 
-    track = function(track0Direction,track0Speed,track1Direction,track1Speed) {
-    // track0direct=0-1 track0speed=0-3 track1Direction=0-1 track1Speed=0-3
-      code = (3 * 64 + Number(track0Direction) * 32 +Number(track0Speed) * 8 + Number(track1Direction) * 4 +Number(track1Speed) )
+    track = function(track0Direction, track0Speed, track1Direction, track1Speed) {
+      // track0direct=0-1 track0speed=0-3 track1Direction=0-1 track1Speed=0-3
+      code = (3 * 64 + Number(track0Direction) * 32 + Number(track0Speed) * 8 + Number(track1Direction) * 4 + Number(track1Speed))
       sendCode(code)
     }
 
@@ -237,7 +259,7 @@ displayTime=()=>{
       }
 
       if (parameters[1] == "t") {
-        action = setTimeout(track, parameters[0] * 1000, parameters[2], parameters[3], parameters[4],parameters[5])
+        action = setTimeout(track, parameters[0] * 1000, parameters[2], parameters[3], parameters[4], parameters[5])
       }
 
       if (parameters[1] == "p") {
@@ -248,8 +270,8 @@ displayTime=()=>{
 
     run.addEventListener('click', function(event) {
       output.innerHTML = ""
-      startTime=Date.now();
-      setInterval(displayTime,1000);
+      startTime = Date.now();
+      setInterval(displayTime, 1000);
       for (command of commands.value.split("\n")) {
         toActions(command)
       }
@@ -258,6 +280,15 @@ displayTime=()=>{
 
     setup.addEventListener('click', function(event) {
       setupSound();
+    });
+
+      radioButtons = document.querySelectorAll('.front');
+
+      for (const radioButton of radioButtons) {
+        radioButton.addEventListener('click', function(e) {
+          sendCode(radioButton.value);
+        });
+      }
 
       navigator.bluetooth.requestDevice({
           filters: [{
@@ -297,7 +328,7 @@ displayTime=()=>{
         });
 
 
-    });
+  //  });
   </script>
 
 </body>
