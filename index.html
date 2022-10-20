@@ -70,7 +70,7 @@
 
 <body style="background-color:white;color:black;font-family:courier;font-size:40px;text-align:center;>
   <div style=" font-size:300px;border: 6px solid red;border-radius: 100px;margin:auto;width:75%">T</div>
-  <div><br>BLE controller v3.2.22  </div>
+  <div><br>BLE controller v3.2.23  </div>
   <br>
   <button id="setup" style="font-size:5vw;">setup</button>
   <button id="run" style="font-size:5vw;">run</button>
@@ -100,15 +100,15 @@
   <div id="output" style="font-size:5vw;"></div><br>
 
   <audio id="steam" src="steam.mp3" preload="auto"></audio>
-   <audio id="seagull" src="seagull.mp3" preload="auto"></audio>
+   <audio id="seagulls" src="seagulls.mp3" preload="auto"></audio>
   <audio id="cats" src="cats.mp3" preload="auto"></audio>
   <audio id="chickens" src="chickens.mp3" preload="auto"></audio>
 
   <script>
-    var trackCode;
+    var trackCodeFront;
     var tracks;
     var steam;
-    var seagull;
+    var seagulls;
     var cats;
     var chickens;
 
@@ -287,7 +287,7 @@
 
       for (const radioButton of radioButtonsFront) {
         radioButton.addEventListener('click', function(e) {
-          trackCode=radioButton.value;
+          trackCodeFront=radioButton.value;
         });
       }
 
@@ -295,7 +295,8 @@
 
       for (const radioButton of radioButtonsBack) {
         radioButton.addEventListener('click', function(e) {
-          sendCode(radioButton.value+trackCode);
+          console.log(radioButton.value | trackCodeFront);
+          //sendCode(radioButton.value  |trackCodeFront);
         });
       }
 
