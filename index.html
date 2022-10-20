@@ -70,30 +70,30 @@
 
 <body style="background-color:white;color:black;font-family:courier;font-size:40px;text-align:center;>
   <div style=" font-size:300px;border: 6px solid red;border-radius: 100px;margin:auto;width:75%">T</div>
-  <div><br>BLE controller v3.2.30  </div>
+  <div><br>BLE controller v3.2.31  </div>
   <br>
   <button id="setup" style="font-size:5vw;">setup</button>
   <button id="run" style="font-size:5vw;">run</button>
   <br>
   <span>
-    FRONT: <input type="radio" class="front" name="front" value=0x11001000 id="front.left.slow">
+    FRONT: <input type="radio" class="front" name="front" value=0b11001000 id="front.left.slow">
   </span>
   <span>
-    <input type="radio" class="front" name="front" value=0x11000000 id="front.left.stopped">
+    <input type="radio" class="front" name="front" value=0b11000000 id="front.left.stopped">
   </span>
   <span>
-    <input type="radio" class="front" name="front" value=0x11101000 id="front.right.slow">
+    <input type="radio" class="front" name="front" value=0b11101000 id="front.right.slow">
   </span>
   <br>
 
   <span>
-    BACK: <input type="radio" class="back" name="back" value=0x11000001 id="back.left.slow">
+    BACK: <input type="radio" class="back" name="back" value=0b11000001 id="back.left.slow">
   </span>
   <span>
-    <input type="radio" class="back" name="back" value=0x11010000 id="back.left.stopped">
+    <input type="radio" class="back" name="back" value=0b11010000 id="back.left.stopped">
   </span>
   <span>
-    <input type="radio" class="back" name="back" value=0x11101000 id="back.right.slow">
+    <input type="radio" class="back" name="back" value=0b11101000 id="back.right.slow">
   </span>
   <br>
   <textarea id="commands" cols=50 rows=10 oninput="updateLocalStorage()" style="font-size:5vw;"></textarea><br>
