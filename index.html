@@ -70,7 +70,7 @@
 
 <body style="background-color:white;color:black;font-family:courier;font-size:40px;text-align:center;>
   <div style=" font-size:300px;border: 6px solid red;border-radius: 100px;margin:auto;width:75%">T</div>
-  <div><br>BLE controller v3.2.23  </div>
+  <div><br>BLE controller v3.2.24  </div>
   <br>
   <button id="setup" style="font-size:5vw;">setup</button>
   <button id="run" style="font-size:5vw;">run</button>
@@ -295,8 +295,8 @@
 
       for (const radioButton of radioButtonsBack) {
         radioButton.addEventListener('click', function(e) {
-          console.log(radioButton.value | trackCodeFront);
-         sendCode(radioButton.value  |trackCodeFront);
+          alert(radioButton.value | trackCodeFront);
+         sendCode(radioButton.value  | trackCodeFront);
         });
       }
 
