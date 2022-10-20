@@ -70,7 +70,7 @@
 
 <body style="background-color:white;color:black;font-family:courier;font-size:40px;text-align:center;>
   <div style=" font-size:300px;border: 6px solid red;border-radius: 100px;margin:auto;width:75%">T</div>
-  <div><br>BLE controller v3.2.33  </div>
+  <div><br>BLE controller v3.2.34  </div>
   <br>
   <button id="setup" style="font-size:5vw;">setup</button>
   <button id="run" style="font-size:5vw;">run</button>
@@ -90,10 +90,10 @@
     BACK: <input type="radio" class="back" name="back" value=0b11000001 id="back.left.slow">
   </span>
   <span>
-    <input type="radio" class="back" name="back" value=0b11010000 id="back.left.stopped">
+    <input type="radio" class="back" name="back" value=0b11000000 id="back.left.stopped">
   </span>
   <span>
-    <input type="radio" class="back" name="back" value=0b11101000 id="back.right.slow">
+    <input type="radio" class="back" name="back" value=0b11000101 id="back.right.slow">
   </span>
   <br>
   <textarea id="commands" cols=50 rows=10 oninput="updateLocalStorage()" style="font-size:5vw;"></textarea><br>
@@ -125,6 +125,9 @@
 
     setup = document.getElementById("setup");
     run = document.getElementById("run");
+
+        radioButtonsFront = document.querySelectorAll('.front');
+            radioButtonsBack = document.querySelectorAll('.back');
 
     displayTime = () => {
       output.innerHTML = Math.floor((Date.now() - startTime) / 1000);
@@ -163,7 +166,7 @@
       chickens = new Sound("chickens");
     }
 
-    radioButtonsFront = document.querySelectorAll('.front');
+
 
     for (  radioButton of radioButtonsFront) {
       radioButton.addEventListener('click', function(e) {
@@ -172,7 +175,7 @@
       });
     }
 
-    radioButtonsBack = document.querySelectorAll('.back');
+
 
     for (  radioButton of radioButtonsBack) {
       radioButton.addEventListener('click', function(e) {
