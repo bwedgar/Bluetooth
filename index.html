@@ -70,7 +70,7 @@
 
 <body style="background-color:white;color:black;font-family:courier;font-size:40px;text-align:center;>
   <div style=" font-size:300px;border: 6px solid red;border-radius: 100px;margin:auto;width:75%">T</div>
-  <div><br>BLE controller v3.2.26  </div>
+  <div><br>BLE controller v3.2.27  </div>
   <br>
   <button id="setup" style="font-size:5vw;">setup</button>
   <button id="run" style="font-size:5vw;">run</button>
@@ -87,13 +87,13 @@
   <br>
 
   <span>
-    BACK: <input type="radio" class="front" name="back" value=0x11000001 id="back.left.slow">
+    BACK: <input type="radio" class="back" name="back" value=0x11000001 id="back.left.slow">
   </span>
   <span>
-    <input type="radio" class="front" name="back" value=0x11010000 id="back.left.stopped">
+    <input type="radio" class="back" name="back" value=0x11010000 id="back.left.stopped">
   </span>
   <span>
-    <input type="radio" class="front" name="back" value=0x11101000 id="back.right.slow">
+    <input type="radio" class="back" name="back" value=0x11101000 id="back.right.slow">
   </span>
   <br>
   <textarea id="commands" cols=50 rows=10 oninput="updateLocalStorage()" style="font-size:5vw;"></textarea><br>
@@ -174,7 +174,7 @@
 
     for (  radioButton of radioButtonsBack) {
       radioButton.addEventListener('click', function(e) {
-        alert("radioButton.value | trackCodeFront");
+        alert(radioButton.value | trackCodeFront);
        sendCode(radioButton.value  | trackCodeFront);
       });
     }
