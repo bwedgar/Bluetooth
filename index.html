@@ -70,14 +70,14 @@
 
 <body style="background-color:white;color:black;font-family:courier;font-size:40px;text-align:center;>
   <div style=" font-size:300px;border: 6px solid red;border-radius: 100px;margin:auto;width:75%">T</div>
-  <div><br>BLE controller v3.2.43  </div>
+  <div><br>BLE controller v3.2.44  </div>
   <br>
   <button id="setup" style="font-size:5vw;">setup</button>
   <button id="run" style="font-size:5vw;">run</button>
   <br>
 
   <span>
-TB <input type="radio" class="back" name="back" value=0b11000011 id="back.left.fast">
+B <input type="radio" class="back" name="back" value=0b11000011 id="back.left.fast">
   </span>
   <span>
    <input type="radio" class="back" name="back" value=0b11000010 id="back.left.medium">
@@ -100,7 +100,7 @@ TB <input type="radio" class="back" name="back" value=0b11000011 id="back.left.f
   <br>
 
   <span>
-TF <input type="radio" class="front" name="front" value=0b11011000 id="front.left.fast">
+F <input type="radio" class="front" name="front" value=0b11011000 id="front.left.fast">
   </span>
   <span>
    <input type="radio" class="front" name="front" value=0b11010000 id="front.left.medium">
@@ -124,7 +124,7 @@ TF <input type="radio" class="front" name="front" value=0b11011000 id="front.lef
   <br>
 
   <span>
- SN <input type="radio" class="servonumber" name="servonumber" value=0b00000000>
+N <input type="radio" class="servonumber" name="servonumber" value=0b00000000>
   </span>
   <span>
    <input type="radio" class="servonumber" name="servonumber" value=0b00001000 >
@@ -150,7 +150,7 @@ TF <input type="radio" class="front" name="front" value=0b11011000 id="front.lef
   <br>
 
   <span>
- SP <input type="radio" class="servo" name="servo" value=0b00000000>
+P <input type="radio" class="servo" name="servo" value=0b00000000>
   </span>
   <span>
    <input type="radio" class="servo" name="servo" value=0b00000001 >
@@ -172,6 +172,29 @@ TF <input type="radio" class="front" name="front" value=0b11011000 id="front.lef
   </span>
   <span>
     <input type="radio" class="servo" name="servo" value=0b00000111>
+  </span>
+  <br>
+
+  <span>
+L <input type="radio" class="light" name="light" value=0b01000000>
+  </span>
+  <span>
+   <input type="radio" class="light" name="light" value=0b01000001 >
+  </span>
+  <span>
+     <input type="radio" class="light" name="light" value=0b01000010>
+  </span>
+  <span>
+    <input type="radio" class="light" name="light" value=0b01000011 >
+  </span>
+  <span>
+    <input type="radio" class="light" name="light" value=0b01000100>
+  </span>
+  <span>
+    <input type="radio" class="light" name="light" value=0b01000101 >
+  </span>
+  <span>
+    <input type="radio" class="light" name="light" value=0b01000110>
   </span>
   <br>
 
@@ -216,6 +239,7 @@ TF <input type="radio" class="front" name="front" value=0b11011000 id="front.lef
             radioButtonsBack = document.querySelectorAll('.back');
               radioButtonsServoNumber = document.querySelectorAll('.servonumber');
       radioButtonsServo = document.querySelectorAll('.servo');
+          radioButtonsLight = document.querySelectorAll('.light');
 
     displayTime = () => {
       output.innerHTML = Math.floor((Date.now() - startTime) / 1000);
@@ -283,6 +307,13 @@ TF <input type="radio" class="front" name="front" value=0b11011000 id="front.lef
       radioButton.addEventListener('click', function(e) {
 //alert(this.value)
        sendCode(this.value | servoNumber);
+      });
+    }
+
+    for (  radioButton of radioButtonsLight) {
+      radioButton.addEventListener('click', function(e) {
+//alert(this.value)
+       sendCode(this.value );
       });
     }
 
