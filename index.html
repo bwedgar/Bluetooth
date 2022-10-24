@@ -70,7 +70,7 @@
 
 <body style="background-color:white;color:black;font-family:courier;font-size:40px;text-align:center;>
   <div style=" font-size:300px;border: 6px solid red;border-radius: 100px;margin:auto;width:75%">T</div>
-  <div><br>BLE controller v3.2.42  </div>
+  <div><br>BLE controller v3.2.43  </div>
   <br>
   <button id="setup" style="font-size:5vw;">setup</button>
   <button id="run" style="font-size:5vw;">run</button>
@@ -224,7 +224,7 @@ TF <input type="radio" class="front" name="front" value=0b11011000 id="front.lef
     sendCode = (code) => {
       v = new Uint8Array(1);
       v[0] = eval("0b" + code.toString(2));
-      alert(v[0]);
+    //  alert("sending code:: "+v[0]);
       myCharacteristic.writeValue(v);
       //  output.innerHTML += code.toString(2).padStart(8, "0") +"<br>"
     }
@@ -281,8 +281,8 @@ TF <input type="radio" class="front" name="front" value=0b11011000 id="front.lef
 
     for (  radioButton of radioButtonsServo) {
       radioButton.addEventListener('click', function(e) {
-alert(this.value)
-       sendCode(this.value || servoNumber);
+//alert(this.value)
+       sendCode(this.value | servoNumber);
       });
     }
 
