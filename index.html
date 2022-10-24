@@ -70,7 +70,7 @@
 
 <body style="background-color:white;color:black;font-family:courier;font-size:40px;text-align:center;>
   <div style=" font-size:300px;border: 6px solid red;border-radius: 100px;margin:auto;width:75%">T</div>
-  <div><br>BLE controller v3.2.39  </div>
+  <div><br>BLE controller v3.2.40  </div>
   <br>
   <button id="setup" style="font-size:5vw;">setup</button>
   <button id="run" style="font-size:5vw;">run</button>
@@ -120,6 +120,34 @@
   <span>
     <input type="radio" class="front" name="front" value=0b11111000 id="front.right.fast">
   </span>
+
+  <br>
+
+  <span>
+    0: <input type="radio" class="servonumber" name="0" value=0b00000000>
+  </span>
+  <span>
+   <input type="radio" class="servonumber" name="0" value=0b00001000 >
+  </span>
+  <span>
+     <input type="radio" class="servonumber" name="0" value=0b00010000>
+  </span>
+  <span>
+    <input type="radio" class="servonumber" name="0" value=0b00011000 >
+  </span>
+  <span>
+    <input type="radio" class="servonumber" name="0" value=0b00100000>
+  </span>
+  <span>
+    <input type="radio" class="servonumber" name="0" value=0b00101000 >
+  </span>
+  <span>
+    <input type="radio" class="servonumber" name="0" value=0b00110000>
+  </span>
+  <span>
+    <input type="radio" class="servonumber" name="0" value=0b00111000>
+  </span>
+  <br>
   <br>
 
   <span>
@@ -163,6 +191,9 @@
   <script>
     var trackCodeFront;
     var trackCodeBack;
+    servoNumber=0;
+
+
     var tracks;
     var steam;
     var seagulls;
@@ -184,6 +215,7 @@
 
         radioButtonsFront = document.querySelectorAll('.front');
             radioButtonsBack = document.querySelectorAll('.back');
+              radioButtonsServoNumber = document.querySelectorAll('.servonumber');
       radioButtonsServo = document.querySelectorAll('.servo');
 
     displayTime = () => {
@@ -193,6 +225,7 @@
     sendCode = (code) => {
       v = new Uint8Array(1);
       v[0] = eval("0b" + code.toString(2));
+      alert(v[0]);
       myCharacteristic.writeValue(v);
       //  output.innerHTML += code.toString(2).padStart(8, "0") +"<br>"
     }
@@ -241,10 +274,16 @@
       });
     }
 
+    for (  radioButton of radioButtonsServoNumber) {
+      radioButton.addEventListener('click', function(e) {
+       servoNumber=this.value;
+      });
+    }
+
     for (  radioButton of radioButtonsServo) {
       radioButton.addEventListener('click', function(e) {
-            trackCodeBack=this.value;
-       sendCode(this.value);
+
+       sendCode(this.value || servoNumber);
       });
     }
 
