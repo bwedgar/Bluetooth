@@ -70,7 +70,7 @@
 
 <body style="background-color:white;color:black;font-family:courier;font-size:40px;text-align:center;>
   <div style=" font-size:300px;border: 6px solid red;border-radius: 100px;margin:auto;width:75%">T</div>
-  <div><br>BLE controller v3.3.4 </div>
+  <div><br>BLE controller v3.3.5 </div>
   <br>
   <button id="setup" style="font-size:5vw;">setup</button>
   <button id="run" style="font-size:5vw;">run</button>
@@ -357,9 +357,9 @@
     //tracks 11
 
 
-    track = function(track0Direction, track0Speed, track1Direction, track1Speed) {
-      // track0direct=0-1 track0speed=0-3 track1Direction=0-1 track1Speed=0-3
-      code = (3 * 64 + Number(track0Direction) * 32 + Number(track0Speed) * 8 + Number(track1Direction) * 4 + Number(track1Speed))
+    track = function(track0Position,   track1Position ) {
+      // track0position=0-7 track1Position=0-7
+      code = (3 * 64 + Number(track0Position) * 8 + Number(track1Position)  )
       sendCode(code)
     }
 
@@ -418,7 +418,7 @@
       }
 
       if (parameters[1] == "t") {
-        action = setTimeout(track, parameters[0] * 1000, parameters[2], parameters[3], parameters[4], parameters[5])
+        action = setTimeout(track, parameters[0] * 1000, parameters[2], parameters[3] )
       }
 
       if (parameters[1] == "p") {
