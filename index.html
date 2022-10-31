@@ -70,7 +70,7 @@
 
 <body style="background-color:white;color:black;font-family:courier;font-size:40px;text-align:center;>
   <div style=" font-size:300px;border: 6px solid red;border-radius: 100px;margin:auto;width:75%">T</div>
-  <div><br>BLE controller v3.3.1 </div>
+  <div><br>BLE controller v3.3.2 </div>
   <br>
   <button id="setup" style="font-size:5vw;">setup</button>
   <button id="run" style="font-size:5vw;">run</button>
@@ -100,25 +100,28 @@
   <br>
 
   <span>
-    F <input type="radio" class="front" name="front" value=0b11011000 id="front.left.fast">
+    F <input type="radio" class="front" name="front" value=0b11000000  >
   </span>
   <span>
-    <input type="radio" class="front" name="front" value=0b11010000 id="front.left.medium">
+    <input type="radio" class="front" name="front" value=0b11001000  >
   </span>
   <span>
-    <input type="radio" class="front" name="front" value=0b11001000 id="front.left.slow">
+    <input type="radio" class="front" name="front" value=0b11010000 >
   </span>
   <span>
-    <input type="radio" class="front" name="front" value=0b11000000 id="front.left.stopped">
+    <input type="radio" class="front" name="front" value=0b11011000>
   </span>
   <span>
-    <input type="radio" class="front" name="front" value=0b11101000 id="front.right.slow">
+    <input type="radio" class="front" name="front" value=0b11100000>
   </span>
   <span>
-    <input type="radio" class="front" name="front" value=0b11110000 id="front.right.medium">
+    <input type="radio" class="front" name="front" value=0b11101000>
   </span>
   <span>
-    <input type="radio" class="front" name="front" value=0b11111000 id="front.right.fast">
+    <input type="radio" class="front" name="front" value=0b11110000>
+  </span>
+  <span>
+    <input type="radio" class="front" name="front" value=0b11111000>
   </span>
 
   <br>
@@ -247,7 +250,8 @@
     sendCode = (code) => {
       v = new Uint8Array(1);
       v[0] = eval("0b" + code.toString(2));
-      //  alert("sending code:: " + v[0]);
+      console.log("sending code: ",code);
+
       myCharacteristic.writeValue(v);
       //  output.innerHTML += code.toString(2).padStart(8, "0") +"<br>"
     }
