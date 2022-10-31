@@ -70,7 +70,7 @@
 
 <body style="background-color:white;color:black;font-family:courier;font-size:40px;text-align:center;>
   <div style=" font-size:300px;border: 6px solid red;border-radius: 100px;margin:auto;width:75%">T</div>
-  <div><br>BLE controller v3.2.52 </div>
+  <div><br>BLE controller v3.3.1 </div>
   <br>
   <button id="setup" style="font-size:5vw;">setup</button>
   <button id="run" style="font-size:5vw;">run</button>
@@ -238,7 +238,7 @@
     radioButtonsServoNumber = document.querySelectorAll('.servonumber');
     radioButtonsServo = document.querySelectorAll('.servo');
     radioButtonsLight = document.querySelectorAll('.light');
-  radioButtonsLightOff = document.querySelectorAll('.lightoff');
+    radioButtonsLightOff = document.querySelectorAll('.lightoff');
 
     displayTime = () => {
       output.innerHTML = Math.floor((Date.now() - startTime) / 1000);
@@ -247,7 +247,7 @@
     sendCode = (code) => {
       v = new Uint8Array(1);
       v[0] = eval("0b" + code.toString(2));
-  //  alert("sending code:: " + v[0]);
+      //  alert("sending code:: " + v[0]);
       myCharacteristic.writeValue(v);
       //  output.innerHTML += code.toString(2).padStart(8, "0") +"<br>"
     }
@@ -311,10 +311,11 @@
 
     for (radioButton of radioButtonsLight) {
       radioButton.addEventListener('click', function(e) {
-      //  alert("radio clicked  "+this.value)
-        if (this.checked) { sendCode(this.value | 0b00000000);}
-        else
-        sendCode(this.value | 0b00000001);
+        //  alert("radio clicked  "+this.value)
+        if (this.checked) {
+          sendCode(this.value | 0b00000000);
+        } else
+          sendCode(this.value | 0b00000001);
       });
     }
 
@@ -430,7 +431,80 @@
       output.innerHTML = ""
       startTime = Date.now();
       setInterval(displayTime, 1000);
-      for (command of commands.value.split("\n")) {
+      text = commands.value;
+
+      //find definitions
+      class Instruction {
+        constructor(time, command) {
+          this.time = time;
+          this.command = command;
+        }
+      }
+
+      class Definition {
+        constructor(name, instructions) {
+          this.name = name;
+          this.instructions = instructions;
+        }
+      }
+
+
+      definitionTexts = text.match(/(define)(.*?)(end)/mgs);
+      for (d of definitionTexts) {
+        //  console.log(d)
+      }
+      definitionNumber = 0;
+      definitions = [];
+      for (definitionText of definitionTexts) {
+        name = definitionText.split("\n")[0].split(" ")[1]
+        instructionTexts = definitionText.split("\n").slice(1, -1)
+        instructions = [];
+        instructionNumber = 0;
+        for (instructionText of instructionTexts) {
+          time = instructionText.split(",")[0]
+          command = instructionText.split(",").slice(1)
+          instruction = new Instruction(time, command)
+          instructions[instructionNumber] = instruction;
+          instructionNumber++;
+        }
+        definitions[definitionNumber] = new Definition(name, instructions);
+        definitionNumber++
+      }
+      //  console.log(definitions[1].instructions[0].command)
+
+      //remove definitions from text
+      text = text.replace(/(define?)(.*?)(end?)/msg, "")
+      //console.log(text);
+
+      //go through all lines
+      for (line of text.split(/\n|\r/)) {
+
+      //  console.log("line: ", line)
+        //replace names directly after a digit (time) then a comma with the definitions
+        reference = line.match(/(\d+),(\w{2,40})/);
+      //  console.log(reference)
+        if (reference != null) {
+          time = reference[1]
+          name = reference[2]
+        //  console.log("reference: ", time, name)
+          //find the definition
+          for (definition of definitions) {
+            if (definition.name == name) {
+              //   console.log("time; ",definition.instructions[0].time ," command: ",definition.instructions[0].command)
+              for (i of definition.instructions) {
+                text = text + (parseInt(i.time) + parseInt(time)).toString() + "," + i.command + "\n";
+              }
+          //    console.log("text: ", text);
+            }
+          }
+        }
+      }
+
+      //remove all references from text
+      text = text.replace(/\d+,\w{2,40}\n/msg, "")
+      console.log("FINAL text: \n", text);
+      //}
+      for (command of text.split("\n")) {
         toActions(command)
       }
     });
