@@ -71,7 +71,7 @@
 
 <body style="background-color:white;color:black;font-family:courier;font-size:40px;text-align:center;>
   <div style=" font-size:300px;border: 6px solid red;border-radius: 100px;margin:auto;width:75%">T</div>
-  <div><br>BLE controller v3.3.8 </div>
+  <div><br>BLE controller v3.3.9 </div>
   <br>
   <button id="setup" style="font-size:5vw;">setup</button>
   <button id="run" style="font-size:5vw;">run</button>
@@ -406,6 +406,7 @@
     };
 
     toActions = function(line) {
+      alert(line);
       parameters = line.split(",")
       if (parameters[1] == "s") {
         action = setTimeout(servo, parameters[0] * 1000, parameters[2], parameters[3])
