@@ -18,6 +18,12 @@
 
   <meta http-equiv="refresh" content="600">
   <style>
+
+  span {
+  display: inline-block;
+  width: 30px;
+}
+
     .button1 {
       background-color: black; //#4CAF50;
       /* Green */
@@ -71,14 +77,17 @@
 
 <body style="background-color:white;color:black;font-family:courier;font-size:40px;text-align:center;>
   <div style=" font-size:300px;border: 6px solid red;border-radius: 100px;margin:auto;width:75%">T</div>
-  <div><br>BLE controller v3.3.9 </div>
+  <div><br>BLE controller v3.3.10 </div>
   <br>
   <button id="setup" style="font-size:5vw;">setup</button>
   <button id="run" style="font-size:5vw;">run</button>
   <br>
 
   <span>
-    B  <input type="radio" class="back" name="back" value=0b11000111   >
+    B
+  </span>
+  <span>
+  <input type="radio" class="back" name="back" value=0b11000111   >
   </span>
   <span>
     <input type="radio" class="back" name="back" value=0b11000110 >
@@ -98,9 +107,15 @@
   <span>
     <input type="radio" class="back" name="back" value=0b11000001>
   </span>
+  <span>
+
+  </span>
 <br>
   <span>
-      F   <input type="radio" class="front" name="front" value=0b11001000  >
+      F
+  </span>
+  <span>
+     <input type="radio" class="front" name="front" value=0b11001000  >
   </span>
   <span>
     <input type="radio" class="front" name="front" value=0b11010000 >
@@ -120,11 +135,15 @@
   <span>
     <input type="radio" class="front" name="front" value=0b11111000>
   </span>
-
+  <span>
+  </span>
   <br>
 
   <span>
-    N <input type="radio" class="servonumber" name="servonumber" value=0b00000000>
+    N
+  </span>
+  <span>
+  <input type="radio" class="servonumber" name="servonumber" value=0b00000000>
   </span>
   <span>
     <input type="radio" class="servonumber" name="servonumber" value=0b00001000>
@@ -150,7 +169,10 @@
   <br>
 
   <span>
-    P <input type="radio" class="servo" name="servo" value=0b00000000>
+    P
+  </span>
+  <span>
+   <input type="radio" class="servo" name="servo" value=0b00000000>
   </span>
   <span>
     <input type="radio" class="servo" name="servo" value=0b00000001>
@@ -176,7 +198,10 @@
   <br>
 
   <span>
-    L <input type="checkbox" class="light" name="light" value=0b01110000>
+    L
+  </span>
+  <span>
+  <input type="checkbox" class="light" name="light" value=0b01110000>
   </span>
   <span>
     <input type="checkbox" class="light" name="light" value=0b01101000>
@@ -196,12 +221,14 @@
   <span>
     <input type="checkbox" class="light" name="light" value=0b01000000>
   </span>
+  <span>
+  </span>
   <br>
 
 
 
   <textarea id="commands" cols=50 rows=10 oninput="updateLocalStorage()" style="font-size:5vw;"></textarea><br>
-  <div id="output" style="font-size:5vw;"></div><br>
+<div id="output" style="font-size:5vw;"></div><br>
 
   <audio id="steam" src="steam.mp3" preload="auto"></audio>
   <audio id="seagulls" src="seagulls.mp3" preload="auto"></audio>
@@ -241,16 +268,16 @@
     radioButtonsLightOff = document.querySelectorAll('.lightoff');
 
     displayTime = () => {
-      output.innerHTML = Math.floor((Date.now() - startTime) / 1000);
+    //  output.innerHTML = Math.floor((Date.now() - startTime) / 1000);
 
     }
     sendCode = (code) => {
       v = new Uint8Array(1);
-      v[0] = eval("0b" + code.toString(2));
-      console.log("sending code: ",code);
+     v[0] = eval("0b" + code.toString(2));
+      console.log("sending code: ",code.toString(2).padStart(8, "0"));
 
-      myCharacteristic.writeValue(v);
-      //  output.innerHTML += code.toString(2).padStart(8, "0") +"<br>"
+     myCharacteristic.writeValue(v);
+     //output.innerHTML = code.toString(2).padStart(8, "0") //+"<br>"
     }
 
     pannerList = [
@@ -406,7 +433,7 @@
     };
 
     toActions = function(line) {
-      alert(line);
+      //alert(line);
       parameters = line.split(",")
       if (parameters[1] == "s") {
         action = setTimeout(servo, parameters[0] * 1000, parameters[2], parameters[3])
@@ -434,6 +461,7 @@
       startTime = Date.now();
       setInterval(displayTime, 1000);
       text = commands.value;
+      //console.log("text: "+text);
 
       //find definitions
       class Instruction {
@@ -450,7 +478,7 @@
         }
       }
 
-
+/*
       definitionTexts = text.match(/(define)(.*?)(end)/mgs);
       for (d of definitionTexts) {
         //  console.log(d)
@@ -477,10 +505,13 @@
       //remove definitions from text
       text = text.replace(/(define?)(.*?)(end?)/msg, "")
       //console.log(text);
-
+*/
+/*
+text=commands.value;
+alert(text);
       //go through all lines
       for (line of text.split(/\n|\r/)) {
-
+  console.log("line: "+line);
       //  console.log("line: ", line)
         //replace names directly after a digit (time) then a comma with the definitions
         reference = line.match(/(\d+),(\w{2,40})/);
@@ -506,6 +537,8 @@
       text = text.replace(/\d+,\w{2,40}\n/msg, "")
       console.log("FINAL text: \n", text);
       //}
+      */
+      //send each line of text to the actions routine
       for (command of text.split("\n")) {
         toActions(command)
       }
