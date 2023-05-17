@@ -76,7 +76,7 @@
 
 <body style="background-color:white;color:black;font-family:courier;font-size:40px;text-align:center;>
   <div style=" font-size:300px;border: 6px solid red;border-radius: 100px;margin:auto;width:75%">T</div>
-  <div><br>BLE controller v16 </div>
+  <div><br>BLE controller v17 </div>
   <br>
   <button id="setup" style="font-size:5vw;">setup</button>
   <button id="run" style="font-size:5vw;">run</button>
@@ -274,7 +274,7 @@
       v[0] = eval("0b" + code.toString(2));
       console.log("sending code: ", code.toString(2).padStart(8, "0"));
 
-      //myCharacteristic.writeValue(v);
+      myCharacteristic.writeValue(v);
       output.innerText = Math.floor((Date.now() - startTime) / 1000) + "  " + code.toString(2).padStart(8, "0")
     }
 
