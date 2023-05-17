@@ -18,11 +18,10 @@
 
   <meta http-equiv="refresh" content="600">
   <style>
-
-  span {
-  display: inline-block;
-  width: 21px;
-}
+    span {
+      display: inline-block;
+      width: 21px;
+    }
 
     .button1 {
       background-color: black; //#4CAF50;
@@ -77,7 +76,7 @@
 
 <body style="background-color:white;color:black;font-family:courier;font-size:40px;text-align:center;>
   <div style=" font-size:300px;border: 6px solid red;border-radius: 100px;margin:auto;width:75%">T</div>
-  <div><br>BLE controller v15 </div>
+  <div><br>BLE controller v16 </div>
   <br>
   <button id="setup" style="font-size:5vw;">setup</button>
   <button id="run" style="font-size:5vw;">run</button>
@@ -87,10 +86,10 @@
     B
   </span>
   <span>
-  <input type="radio" class="back" name="back" value=0b11000111   >
+    <input type="radio" class="back" name="back" value=0b11000111>
   </span>
   <span>
-    <input type="radio" class="back" name="back" value=0b11000110 >
+    <input type="radio" class="back" name="back" value=0b11000110>
   </span>
   <span>
     <input type="radio" class="back" name="back" value=0b11000101>
@@ -110,15 +109,15 @@
   <span>
 
   </span>
-<br>
+  <br>
   <span>
-      F
+    F
   </span>
   <span>
-     <input type="radio" class="front" name="front" value=0b11001000  >
+    <input type="radio" class="front" name="front" value=0b11001000>
   </span>
   <span>
-    <input type="radio" class="front" name="front" value=0b11010000 >
+    <input type="radio" class="front" name="front" value=0b11010000>
   </span>
   <span>
     <input type="radio" class="front" name="front" value=0b11011000>
@@ -143,7 +142,7 @@
     N
   </span>
   <span>
-  <input type="radio" class="servonumber" name="servonumber" value=0b00000000>
+    <input type="radio" class="servonumber" name="servonumber" value=0b00000000>
   </span>
   <span>
     <input type="radio" class="servonumber" name="servonumber" value=0b00001000>
@@ -172,7 +171,7 @@
     P
   </span>
   <span>
-   <input type="radio" class="servo" name="servo" value=0b00000000>
+    <input type="radio" class="servo" name="servo" value=0b00000000>
   </span>
   <span>
     <input type="radio" class="servo" name="servo" value=0b00000001>
@@ -201,7 +200,7 @@
     L
   </span>
   <span>
-  <input type="checkbox" class="light" name="light" value=0b01110000>
+    <input type="checkbox" class="light" name="light" value=0b01110000>
   </span>
   <span>
     <input type="checkbox" class="light" name="light" value=0b01101000>
@@ -225,10 +224,9 @@
   </span>
   <br>
 
-<!-- oninput="updateLocalStorage()"  -->
+  <div id="output" style="font-size:5vw;"></div><br>
+  <textarea id="commands" cols=50 rows=10 oninput="updateLocalStorage()" style="font-size:5vw;"></textarea><br>
 
-  <textarea id="commands" cols=50 rows=10  oninput="updateLocalStorage()"  style="font-size:5vw;"></textarea><br>
-<div id="output" style="font-size:5vw;"></div><br>
 
   <audio id="steam" src="steam.mp3" preload="auto"></audio>
   <audio id="seagulls" src="seagulls.mp3" preload="auto"></audio>
@@ -251,10 +249,10 @@
 
     var output = document.getElementById("output")
     var commands = document.getElementById("commands")
-     commands.value = localStorage.getItem("content")
+    commands.value = localStorage.getItem("content")
 
     updateLocalStorage = function() {
-     localStorage.setItem("content", commands.value)
+      localStorage.setItem("content", commands.value)
     }
 
     setup = document.getElementById("setup");
@@ -268,16 +266,16 @@
     radioButtonsLightOff = document.querySelectorAll('.lightoff');
 
     displayTime = () => {
-    //  output.innerHTML = Math.floor((Date.now() - startTime) / 1000);
+      //  output.innerHTML = Math.floor((Date.now() - startTime) / 1000);
 
     }
     sendCode = (code) => {
       v = new Uint8Array(1);
-     v[0] = eval("0b" + code.toString(2));
-      console.log("sending code: ",code.toString(2).padStart(8, "0"));
+      v[0] = eval("0b" + code.toString(2));
+      console.log("sending code: ", code.toString(2).padStart(8, "0"));
 
-     myCharacteristic.writeValue(v);
-     output.innerHTML = Math.floor((Date.now() - startTime) / 1000)+"  "+code.toString(2).padStart(8, "0") //+"<br>"
+      //myCharacteristic.writeValue(v);
+      output.innerText = Math.floor((Date.now() - startTime) / 1000) + "  " + code.toString(2).padStart(8, "0")
     }
 
     pannerList = [
@@ -385,9 +383,9 @@
     //tracks 11
 
 
-    track = function(track0Position,   track1Position ) {
+    track = function(track0Position, track1Position) {
       // track0position=0-7 track1Position=0-7
-      code = (3 * 64 + Number(track0Position) * 8 + Number(track1Position)  )
+      code = (3 * 64 + Number(track0Position) * 8 + Number(track1Position))
       sendCode(code)
     }
 
@@ -412,22 +410,6 @@
       sendCode(code)
     }
 
-    /*
-        east = 0-2
-        south = 3-5
-        west = 6-8
-        sky = 9-10
-
-        up = 1
-        down = 0
-
-
-
-        loco = function(track, nextStop) {}
-
-        main = 0
-        bypass = 1
-    */
     playSound = function(name, pan, time) {
       eval(name).play(pan, time);
     };
@@ -447,7 +429,7 @@
       }
 
       if (parameters[1] == "t") {
-        action = setTimeout(track, parameters[0] * 1000, parameters[2], parameters[3] )
+        action = setTimeout(track, parameters[0] * 1000, parameters[2], parameters[3])
       }
 
       if (parameters[1] == "p") {
@@ -461,148 +443,110 @@
       startTime = Date.now();
       setInterval(displayTime, 1000);
       text = commands.value;
-      //console.log("text: "+text);
+      console.log(text)
+      sw = ""
+      for (i = 0; i < text.length; i++) {
+        sw += text[i].charCodeAt() + ","
+      }
+      console.log(sw)
 
+      //text = ": light l;\n: up 1,0;\n: steady 1,1;\n: down 0,1;\n: fibre f;\n: track t;\n: servo s;\n: eastRed light,6;\n: eastGreen light,7;\n"
+      //text = text + ": eastBlue light,8;\n: sunrise \n0,eastRed,up\n5,eastGreen,up\n;\n4,sunrise\n6,sunrise\n30,l,3,1,0"
 
+      //find the terms and their definitions
 
+      words = text.matchAll(/: ([a-zA-Z0-9_,\s*]*);/g)
 
-      words= text.matchAll(/: ([a-zA-Z0-9_,\s*]*);/g)
+      //make a list of terms and their definitions
+      terms = []
+      definitions = []
 
-//make a list of terms and their definitions
-
-terms=[]
-definitions=[]
-
-for (w of words){
-   t=w[1].split(" ")[0]
-   terms.push(t)
-   d=w[1].slice(t.length+1)
-   definitions.push(d)
-}
-
-//find the definitions for each term
-
-for ([i,d] of definitions.entries()) {
-   console.log("term: "+terms[i])
-   console.log("definition: "+d)
-
-   //find all of the strings in the definition
-   strings=d.split(" ")
-   console.log("strings: "+strings)
-   for (string of strings){
-      console.log("string: "+string)
-      time=string.match(/^(\d+?),[a-zA-Z0-9]+$/)
-      if (time!=null) {
-         console.log("time before a term: "+time[1])
+      for (w of words) {
+        t = w[1].split(/\s|\n|$/)[0]
+        terms.push(t)
+        d = w[1].slice(t.length + 1)
+        definitions.push(d)
       }
 
-      stringTime=string.match(/^(\d+?),.*,.*,.*/)
-      if (stringTime!=null) {
-         //console.log("stringTime: "+stringTime)
-         stringTimeValue=stringTime[1]
-         console.log("time before a string: "+stringTimeValue)
+      console.log("terms and defintions before substituation: ")
+      for (i = 0; i < terms.length; i++) {
+        console.log("terms: " + terms[i] + "  definition: " + definitions[i])
       }
-   items=string.split(",")
-   for (item of items){
-      //if a item is in the list of terms then replace it with that word's definition
-      //console.log("item "+item)
 
-      index=terms.findIndex(e => item===e)
-      if (index>-1) {
-         definitions[i]=definitions[i].replace(item,definitions[index])
-         //if the definition starts with a time (number) followed by a term
-      }
-   }
-}
-      console.log("substituted: "+definitions[i])
-
-
-}
-  console.log("text: ",text)
-  console.log("definitions: "+definitions)
-  console.log("terms: "+terms)
-  for (i =0;i<terms.length;i++)  {text=text.replaceAll(terms[i],definitions[i])}
-  //remove definitions
-  text=text.replace(/:.*?;/g,"")
-  console.log("text: "+text)
-
-/*    //find definitions
-    class Instruction {
-      constructor(time, command) {
-        this.time = time;
-        this.command = command;
-      }
-    }
-
-    class Definition {
-      constructor(name, instructions) {
-        this.name = name;
-        this.instructions = instructions;
-      }
-    }
-
-
-      definitionTexts = text.match(/(define)(.*?)(end)/mgs);
-      for (d of definitionTexts) {
-        //  console.log(d)
-      }
-      definitionNumber = 0;
-      definitions = [];
-      for (definitionText of definitionTexts) {
-        name = definitionText.split("\n")[0].split(" ")[1]
-        instructionTexts = definitionText.split("\n").slice(1, -1)
-        instructions = [];
-        instructionNumber = 0;
-        for (instructionText of instructionTexts) {
-          time = instructionText.split(",")[0]
-          command = instructionText.split(",").slice(1)
-          instruction = new Instruction(time, command)
-          instructions[instructionNumber] = instruction;
-          instructionNumber++;
+      //substitute terms within definitions by their definitions
+      for (i = 0; i < terms.length; i++) {
+        for (j = 0; j < terms.length; j++) {
+          definitions[i] = definitions[i].replaceAll(terms[j], definitions[j])
         }
-        definitions[definitionNumber] = new Definition(name, instructions);
-        definitionNumber++
       }
-      //  console.log(definitions[1].instructions[0].command)
 
-      //remove definitions from text
-      text = text.replace(/(define?)(.*?)(end?)/msg, "")
-      //console.log(text);
-*/
-/*
-text=commands.value;
-alert(text);
-      //go through all lines
-      for (line of text.split(/\n|\r/)) {
-  console.log("line: "+line);
-      //  console.log("line: ", line)
-        //replace names directly after a digit (time) then a comma with the definitions
-        reference = line.match(/(\d+),(\w{2,40})/);
-      //  console.log(reference)
-        if (reference != null) {
-          time = reference[1]
-          name = reference[2]
-        //  console.log("reference: ", time, name)
-          //find the definition
-          for (definition of definitions) {
-            if (definition.name == name) {
-              //   console.log("time; ",definition.instructions[0].time ," command: ",definition.instructions[0].command)
-              for (i of definition.instructions) {
-                text = text + (parseInt(i.time) + parseInt(time)).toString() + "," + i.command + "\n";
-              }
-          //    console.log("text: ", text);
-            }
+      console.log("AFTER SUBSTITUTIONS")
+      console.log("terms and defintions before substituation: ")
+      for (i = 0; i < terms.length; i++) {
+        console.log("terms: " + terms[i] + "  definition: " + definitions[i])
+      }
+      //  console.log("text: "+text)
+
+
+      //remove definitions
+      text = text.replace(/:(.|\n)*?;/g, "")
+      text = text.replace(/\n\n/g, "")
+
+      //substitute terms in text with the defifinition of that term
+      for (i = 0; i < terms.length; i++) {
+        text = text.replaceAll(terms[i], definitions[i])
+      }
+
+      lines = []
+      lines = text.split("\n")
+      console.log("text: " + text)
+
+      newText = ""
+      wordTime = 0
+
+
+
+
+      console.log("new text: " + newText)
+
+      lines = text.split("\n")
+
+      for (i = 0; i < lines.length; i++) {
+        //if the line has form "4,5" then store the number 4 as word time
+        captureWordTime = lines[i].match(/^(\d+),\d+,.*/)
+
+        if (captureWordTime != null) {
+          wordTime = parseInt(captureWordTime[1])
+          console.log("lines: " + lines[i] + "   word time: " + wordTime)
+          restOfLine = lines[i].match(/^\d+,(.+?)$/)
+          if (restOfLine != null) {
+            lines[i] = restOfLine[1]
           }
         }
+
+        if (lines[i]=="") {
+          wordTime=0
+        }
+
+        captureCommandTime = lines[i].match(/^(\d+),\w+/)
+        if (captureCommandTime != null) {
+          commandTime = captureCommandTime[1]
+          console.log("lines: " + lines[i] + " word time:  " + parseInt(wordTime) + " command time:  " + parseInt(commandTime))
+          restOfCommand = lines[i].match(/\d+,(.*)/)
+          console.log("rest: " + restOfCommand[1])
+          newCommandTime = parseInt(commandTime) + parseInt(wordTime)
+          console.log("newCommandTime: " + newCommandTime)
+          newCommand = newCommandTime + "," + restOfCommand[1]
+          newText += newCommand + "\n"
+          //console.log("new command: "+newCommand)
+        }
       }
 
-      //remove all references from text
-      text = text.replace(/\d+,\w{2,40}\n/msg, "")
-      console.log("FINAL text: \n", text);
-      //}
-      */
+      console.log("after word time: " + newText)
+
+
       //send each line of text to the actions routine
-      for (command of text.split("\n")) {
+      for (command of newText.split("\n")) {
         toActions(command)
       }
     });
@@ -650,9 +594,6 @@ alert(text);
         // And of course: error handling!
         console.error('Connection failed!', error);
       });
-
-
-    //  });
   </script>
 
 </body>
