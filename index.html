@@ -76,7 +76,7 @@
 
 <body style="background-color:white;color:black;font-family:courier;font-size:40px;text-align:center;>
   <div style=" font-size:300px;border: 6px solid red;border-radius: 100px;margin:auto;width:75%">T</div>
-  <div><br>BLE controller v19 </div>
+  <div><br>BLE controller v20 </div>
   <br>
     <button id="pair" style="font-size:5vw;">pair</button>
   <button id="setup" style="font-size:5vw;">setup</button>
@@ -453,8 +453,8 @@
       }
       console.log(sw)
 
-    // text = ": light l;\n: up 1,0;\n: steady 1,1;\n: down 0,1;\n: fibre f;\n: track t;\n: servo s;\n: eastRed light,6;\n: eastGreen light,7;\n"
-  //   text = text + ": eastBlue light,8;\n: sunrise \n0,eastRed,up\n5,eastGreen,up\n;\n4,sunrise\n6,sunrise\n30,l,3,1,0"
+    text = ": light l;\n: up 1,0;\n: steady 1,1;\n: down 0,1;\n: fibre f;\n: track t;\n: servo s;\n: eastRed light,6;\n: eastGreen light,7;\n"
+      text = text + ": eastBlue light,8;\n: sunrise \n0,eastRed,up\n5,eastGreen,up\n;\n4,sunrise\n6,sunrise\n30,l,3,1,0"
 
       //find the terms and their definitions
 
@@ -597,7 +597,7 @@ pair.addEventListener('click',function(event){
         // And of course: error handling!
         console.error('Connection failed!', error);
       });
-    }
+    });
   </script>
 
 </body>
