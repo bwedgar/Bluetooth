@@ -76,7 +76,7 @@
 
 <body style="background-color:white;color:black;font-family:courier;font-size:40px;text-align:center;>
   <div style=" font-size:300px;border: 6px solid red;border-radius: 100px;margin:auto;width:75%">T</div>
-  <div><br>BLE controller v18 </div>
+  <div><br>BLE controller v17 </div>
   <br>
   <button id="setup" style="font-size:5vw;">setup</button>
   <button id="run" style="font-size:5vw;">run</button>
@@ -439,7 +439,6 @@
 
 
     run.addEventListener('click', function(event) {
-      connect();
       output.innerHTML = ""
       startTime = Date.now();
       setInterval(displayTime, 1000);
@@ -451,8 +450,16 @@
       }
       console.log(sw)
 
-    // text = ": light l;\n: up 1,0;\n: steady 1,1;\n: down 0,1;\n: fibre f;\n: track t;\n: servo s;\n: eastRed light,6;\n: eastGreen light,7;\n"
+  // text = ": light l;\n: up 1,0;\n: steady 1,1;\n: down 0,1;\n: fibre f;\n: track t;\n: servo s;\n: eastRed light,6;\n: eastGreen light,7;\n"
   //   text = text + ": eastBlue light,8;\n: sunrise \n0,eastRed,up\n5,eastGreen,up\n;\n4,sunrise\n6,sunrise\n30,l,3,1,0"
+
+//FORTH
+  text = ": brighter "+stack[1]+",l,"+stack[0]+",1,0\n"
+  text+= ": dimmer "+stack[1]+",l,"+stack[0]+",0,1\n"
+
+
+    text = text + ": eastBlue 8;\n: sunrise \n0 eastRed brighten\n5 eastGreen brighten ;"
+//s0 is top of stack
 
       //find the terms and their definitions
 
@@ -558,7 +565,7 @@
     });
 
 
-function connect(){
+
     navigator.bluetooth.requestDevice({
         filters: [{
           namePrefix: 'MyESP32'
@@ -595,7 +602,6 @@ function connect(){
         // And of course: error handling!
         console.error('Connection failed!', error);
       });
-    }
   </script>
 
 </body>
