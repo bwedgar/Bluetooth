@@ -76,8 +76,9 @@
 
 <body style="background-color:white;color:black;font-family:courier;font-size:40px;text-align:center;>
   <div style=" font-size:300px;border: 6px solid red;border-radius: 100px;margin:auto;width:75%">T</div>
-  <div><br>BLE controller v18 </div>
+  <div><br>BLE controller v19 </div>
   <br>
+    <button id="pair" style="font-size:5vw;">pair</button>
   <button id="setup" style="font-size:5vw;">setup</button>
   <button id="run" style="font-size:5vw;">run</button>
   <br>
@@ -255,6 +256,7 @@
       localStorage.setItem("content", commands.value)
     }
 
+  pair = document.getElementById("pair");
     setup = document.getElementById("setup");
     run = document.getElementById("run");
 
@@ -439,7 +441,7 @@
 
 
     run.addEventListener('click', function(event) {
-      connect();
+
       output.innerHTML = ""
       startTime = Date.now();
       setInterval(displayTime, 1000);
@@ -558,7 +560,7 @@
     });
 
 
-function connect(){
+pair.addEventListener('click',function(event){
     navigator.bluetooth.requestDevice({
         filters: [{
           namePrefix: 'MyESP32'
