@@ -20,7 +20,7 @@
   <style>
     span {
       display: inline-block;
-      width: 21px;
+      width: 12px;
     }
 
     .button1 {
@@ -54,7 +54,6 @@
     }
 
     .button2On {
-
       background-color: grey; //#4CAF50;
       /* Green */
       width: 10%;
@@ -74,14 +73,16 @@
 
 </head>
 
-<body style="background-color:white;color:black;font-family:courier;font-size:40px;text-align:center;>
-  <div style=" font-size:300px;border: 6px solid red;border-radius: 100px;margin:auto;width:75%">T</div>
-  <div><br>BLE controller v20 </div>
+<body style="background-color:white;color:black;font-family:courier;font-size:50px;text-align:center;"
+  <div>BLE controller v21 </div>
   <br>
-    <button id="pair" style="font-size:5vw;">pair</button>
-  <button id="setup" style="font-size:5vw;">setup</button>
-  <button id="run" style="font-size:5vw;">run</button>
+  <button id="pair" style="font-size:50px;">pair</button>
+
+  <button id="run" style="font-size:50px;">run</button>
   <br>
+
+  <textarea id="commands" cols=50 rows=25 oninput="updateLocalStorage()" style="font-size:20px;"></textarea><br>
+
 
   <span>
     B
@@ -225,26 +226,20 @@
   </span>
   <br>
 
-  <div id="output" style="font-size:5vw;"></div><br>
-  <textarea id="commands" cols=50 rows=10 oninput="updateLocalStorage()" style="font-size:5vw;"></textarea><br>
-
-
-  <audio id="steam" src="steam.mp3" preload="auto"></audio>
-  <audio id="seagulls" src="seagulls.mp3" preload="auto"></audio>
-  <audio id="cats" src="cats.mp3" preload="auto"></audio>
-  <audio id="chickens" src="chickens.mp3" preload="auto"></audio>
 
   <script>
     var trackCodeFront;
     var trackCodeBack;
     var servoNumber = 0;
 
+    var sounds = []
+
+    for (i = 0; i < 12; i++) {
+      //  console.log(i+".mp3");
+      sounds[i] = new Audio(i.toString() + ".mp3");
+    }
 
     var tracks;
-    var steam;
-    var seagulls;
-    var cats;
-    var chickens;
 
     var myCharacteristic;
 
@@ -256,7 +251,7 @@
       localStorage.setItem("content", commands.value)
     }
 
-  pair = document.getElementById("pair");
+    pair = document.getElementById("pair");
     setup = document.getElementById("setup");
     run = document.getElementById("run");
 
@@ -269,13 +264,12 @@
 
     displayTime = () => {
       //  output.innerHTML = Math.floor((Date.now() - startTime) / 1000);
-
     }
+
     sendCode = (code) => {
       v = new Uint8Array(1);
       v[0] = eval("0b" + code.toString(2));
       console.log("sending code: ", code.toString(2).padStart(8, "0"));
-
       myCharacteristic.writeValue(v);
       output.innerText = Math.floor((Date.now() - startTime) / 1000) + "  " + code.toString(2).padStart(8, "0")
     }
@@ -295,27 +289,12 @@
     var started = false;
     output = document.getElementById("output");
 
-    setupSound = () => {
-      //  if (started == false) {
-      started = true;
-      audioCtx = new(window.AudioContext || window.webkitAudioContext)();
-
-      steam = new Sound("steam");
-      seagull = new Sound("seagull");
-      cats = new Sound("cats");
-      chickens = new Sound("chickens");
-    }
-
-
-
     for (radioButton of radioButtonsFront) {
       radioButton.addEventListener('click', function(e) {
         trackCodeFront = this.value;
         sendCode(this.value | trackCodeBack);
       });
     }
-
-
 
     for (radioButton of radioButtonsBack) {
       radioButton.addEventListener('click', function(e) {
@@ -348,35 +327,56 @@
     }
 
 
+    /*
+        function play(name, panner, time) {
+          audioElement = document.getElementById(name);
+          duration = audioElement.duration;
+          track = audioCtx.createMediaElementSource(audioElement);
+          gainNode = audioCtx.createGain();
+          gainNode.gain.value = 1;
+          //  gainNode.gain.setValueAtTime(0, audioCtx.currentTime);
+          panner = audioCtx.createStereoPanner();
 
-    class Sound {
-      constructor(soundName) {
-        this.soundName = soundName;
-        this.fileName = this.soundName + ".mp3";
-        this.audioElement = document.getElementById(soundName);
-        console.log(this.audioElement.play());
+          track.connect(gainNode).connect(panner).connect(audioCtx.destination);
+          audioElement.play();
+          audioElement.muted = false;
+          start = pannerList[pannerNumber][0];
+          end = pannerList[pannerNumber][1];
+          panner.pan.setValueAtTime(start, audioCtx.currentTime);
+          panner.pan.linearRampToValueAtTime(end, audioCtx.currentTime + time + duration);
+        }
 
-        this.duration = this.audioElement.duration;
-        output.innerHTML = output.innerHTML + this.duration + "  ";
-        this.track = audioCtx.createMediaElementSource(this.audioElement);
-        this.gainNode = audioCtx.createGain();
-        this.gainNode.gain.value = 1;
-        //  gainNode.gain.setValueAtTime(0, audioCtx.currentTime);
-        this.panner = audioCtx.createStereoPanner();
-      }
+        */
 
-      play(pannerNumber, time) {
-        this.track.connect(this.gainNode).connect(this.panner).connect(audioCtx.destination);
-        this.audioElement.play();
-        this.audioElement.muted = false;
-        this.start = pannerList[pannerNumber][0];
-        this.end = pannerList[pannerNumber][1];
-        this.panner.pan.setValueAtTime(this.start, audioCtx.currentTime);
-        this.panner.pan.linearRampToValueAtTime(this.end, audioCtx.currentTime + time + this.duration);
+    /*
+        class Sound {
+          constructor(soundName) {
+            this.soundName = soundName;
+            this.fileName = this.soundName + ".mp3";
+            this.audioElement = document.getElementById(soundName);
+            console.log(this.audioElement.play());
 
-      }
-    }
+            this.duration = this.audioElement.duration;
+            output.innerHTML = output.innerHTML + this.duration + "  ";
+            this.track = audioCtx.createMediaElementSource(this.audioElement);
+            this.gainNode = audioCtx.createGain();
+            this.gainNode.gain.value = 1;
+            //  gainNode.gain.setValueAtTime(0, audioCtx.currentTime);
+            this.panner = audioCtx.createStereoPanner();
+          }
 
+          play(pannerNumber, time) {
+            this.track.connect(this.gainNode).connect(this.panner).connect(audioCtx.destination);
+            this.audioElement.play();
+            this.audioElement.muted = false;
+            this.start = pannerList[pannerNumber][0];
+            this.end = pannerList[pannerNumber][1];
+            this.panner.pan.setValueAtTime(this.start, audioCtx.currentTime);
+            this.panner.pan.linearRampToValueAtTime(this.end, audioCtx.currentTime + time + this.duration);
+
+          }
+        }
+    */
 
     //BLE device types
     //servo 00
@@ -388,59 +388,41 @@
     track = function(track0Position, track1Position) {
       // track0position=0-7 track1Position=0-7
       code = (3 * 64 + Number(track0Position) * 8 + Number(track1Position))
+      console.log(code)
       sendCode(code)
     }
 
     servo = function(id, pos) {
       //id 0-7,  pos 0-7
       code = (0 * 64 + Number(id) * 8 + Number(pos) * 1)
+      console.log(code)
       sendCode(code)
     }
 
     fibre = function(id, state) {
-      //id 0-8, state 0-8
+      //id 0-7, state 0-7
       code = 1 * 64 + Number(id) * 8 + Number(state) * 1
+      console.log(code)
       sendCode(code)
     }
 
-    on = 1
-    off = 0
 
-    lights = function(channel, speed, change) {
-      //channel 4 bits 0-10 east,south,west,skyx2 / speed 1 bit/ change 1  bit
-      code = 2 * 64 + Number(channel) * 4 + Number(speed) * 2 + Number(change) * 1
+    lights = function(channel, up, down) {
+      //channel 4 bits 0-10 east,south,west,skyWhite,skyBlue / up 1 bit/ down 1  bit
+      code = 2 * 64 + Number(channel) * 4 + Number(up) * 2 + Number(down) * 1
+      console.log(code)
       sendCode(code)
     }
 
     playSound = function(name, pan, time) {
-      eval(name).play(pan, time);
+      console.log("PLAYSOUND  " + name)
+      sounds[name].play();
     };
 
-    toActions = function(line) {
-      //alert(line);
-      parameters = line.split(",")
-      if (parameters[1] == "s") {
-        action = setTimeout(servo, parameters[0] * 1000, parameters[2], parameters[3])
-      }
-      if (parameters[1] == "f") {
-        action = setTimeout(fibre, parameters[0] * 1000, parameters[2], parameters[3])
-      }
-
-      if (parameters[1] == "l") {
-        action = setTimeout(lights, parameters[0] * 1000, parameters[2], parameters[3], parameters[4])
-      }
-
-      if (parameters[1] == "t") {
-        action = setTimeout(track, parameters[0] * 1000, parameters[2], parameters[3])
-      }
-
-      if (parameters[1] == "p") {
-        action = setTimeout(playSound, parameters[0] * 1000, parameters[2], parameters[3], parameters[0] * 1000)
-      }
-    }
-
-
     run.addEventListener('click', function(event) {
+      //set up the sound system
+      started = true;
+      audioCtx = new(window.AudioContext || window.webkitAudioContext)();
 
       output.innerHTML = ""
       startTime = Date.now();
@@ -453,150 +435,207 @@
       }
       console.log(sw)
 
-    text = ": light l;\n: up 1,0;\n: steady 1,1;\n: down 0,1;\n: fibre f;\n: track t;\n: servo s;\n: eastRed light,6;\n: eastGreen light,7;\n"
-      text = text + ": eastBlue light,8;\n: sunrise \n0,eastRed,up\n5,eastGreen,up\n;\n4,sunrise\n6,sunrise\n30,l,3,1,0"
+      stack = [];
 
-      //find the terms and their definitions
+      function dup() {
+        t = stack.pop()
+        stack.push(t)
+        stack.push(t)
+      }
 
-      words = text.matchAll(/: ([a-zA-Z0-9_,\s*]*);/g)
+      function drop() {
+        stack.pop()
+      }
 
-      //make a list of terms and their definitions
-      terms = []
+      function add() {
+        a = stack.pop()
+        b = stack.pop()
+        stack.push(a + b)
+      }
+
+      //remove hard returns from the text
+      text = text.replaceAll("\n", " ");
+      console.log("TEXT")
+      console.log(text)
+
       definitions = []
+      //find all the definitions (text between : and ;)
+      const pattern = /:(.*?);/g;
 
-      for (w of words) {
-        t = w[1].split(/\s|\n|$/)[0]
-        terms.push(t)
-        d = w[1].slice(t.length + 1)
-        definitions.push(d)
+      const matches = [];
+      let match;
+
+      while ((match = pattern.exec(text)) !== null) {
+        definitions.push(match[1]);
+      }
+      console.log("DEFINITIONS")
+      for (d of definitions) {
+        console.log(d)
       }
 
-      console.log("terms and defintions before substituation: ")
-      for (i = 0; i < terms.length; i++) {
-        console.log("terms: " + terms[i] + "  definition: " + definitions[i])
+      //make a list of words and their meanings
+      words = []
+      meanings = []
+
+      for (d of definitions) {
+        t = d.split(/\s/)[1]
+        words.push(t)
+        m = d.slice(t.length + 1)
+        meanings.push(m)
       }
 
-      //substitute terms within definitions by their definitions
-      for (i = 0; i < terms.length; i++) {
-        for (j = 0; j < terms.length; j++) {
-          definitions[i] = definitions[i].replaceAll(terms[j], definitions[j])
+      console.log("WORDS and MEANINGS ")
+      for (i = 0; i < words.length; i++) {
+        console.log("words: " + words[i] + "  meaning: " + meanings[i])
+      }
+
+      //substitute words within meanings by the words' meanings
+      for (i = 0; i < words.length; i++) {
+        for (j = 0; j < words.length; j++) {
+          meanings[i] = meanings[i].replaceAll(words[j], meanings[j])
+
         }
       }
 
-      console.log("AFTER SUBSTITUTIONS")
-      console.log("terms and defintions before substituation: ")
-      for (i = 0; i < terms.length; i++) {
-        console.log("terms: " + terms[i] + "  definition: " + definitions[i])
-      }
-       console.log("text: "+text)
-
-
-      //remove definitions
-      text = text.replace(/:(.|\n)*?;/g, "")
-      text = text.replace(/\n\n/g, "")
-
-      //substitute terms in text with the defifinition of that term
-      for (i = 0; i < terms.length; i++) {
-        text = text.replaceAll(terms[i], definitions[i])
+      console.log("WORDS and MEANINGS AFTER SUBSTITUTIONS")
+      for (i = 0; i < words.length; i++) {
+        console.log("words: " + words[i] + "  meaning: " + meanings[i])
       }
 
-      lines = []
-      lines = text.split("\n")
-      console.log("text: " + text)
 
-      newText = ""
-      wordTime = 0
+      immediate = []
+      immediates = []
+      //find all immediate commands (not colon definitions)
+      immediates = text.split(";").slice(-1)[0]
+      //  console.log("TEXT CHARCODE")
+      //  for (i=0;i<text.length;i++) { console.log(text.charCodeAt(i)) }
+      immediate = immediates.split(" ").slice(-1)[0]
+      console.log("IMMEDIATE")
+      console.log(immediate)
+      //run it ???????/
 
+      //look up word
+      index = words.findIndex(e => e == immediate);
+      ms = meanings[index]
 
+      meaning = ms.split(" ")
 
+      function isPositive(value) {
+        return value > "";
+      }
 
-      console.log("new text: " + newText)
+      meaning = meaning.filter(isPositive);
 
-      lines = text.split("\n")
+      console.log("MEANING TO INTERPRET")
+      console.log(meaning)
 
-      for (i = 0; i < lines.length; i++) {
-        //if the line has form "4,5" then store the number 4 as word time
-        captureWordTime = lines[i].match(/^(\d+),\d+,.*/)
+      function calculateTimeBeforeCommand() {
+        let sum = 0;
+        stack.forEach(num => {
+          sum += num * 1;
+        })
+        console.log("SUM = TIME " + sum)
+        dup() //duplicate the bottom of stack - time for colon definition
+        t = stack.pop()
+        return time = (sum * 1 + p0 * 1)
+      }
 
-        if (captureWordTime != null) {
-          wordTime = parseInt(captureWordTime[1])
-          console.log("lines: " + lines[i] + "   word time: " + wordTime)
-          restOfLine = lines[i].match(/^\d+,(.+?)$/)
-          if (restOfLine != null) {
-            lines[i] = restOfLine[1]
-          }
+      for (m of meaning) {
+
+        if (m == "DROP") {
+          stack.pop()
         }
 
-        if (lines[i]=="") {
-          wordTime=0
+        if (!isNaN(m) && m != "") {
+          time = stack[0]
+          stack.push(m)
         }
 
-        captureCommandTime = lines[i].match(/^(\d+),\w+/)
-        if (captureCommandTime != null) {
-          commandTime = captureCommandTime[1]
-          console.log("lines: " + lines[i] + " word time:  " + parseInt(wordTime) + " command time:  " + parseInt(commandTime))
-          restOfCommand = lines[i].match(/\d+,(.*)/)
-          console.log("rest: " + restOfCommand[1])
-          newCommandTime = parseInt(commandTime) + parseInt(wordTime)
-          console.log("newCommandTime: " + newCommandTime)
-          newCommand = newCommandTime + "," + restOfCommand[1]
-          newText += newCommand + "\n"
-          //console.log("new command: "+newCommand)
+        if (m == "l") {
+          p3 = stack.pop()
+          p2 = stack.pop()
+          p1 = stack.pop()
+          p0 = stack.pop() //this is the time for the function LIGHT
+          time = calculateTimeBeforeCommand()
+          console.log("LIGHT PARAMETERS  " + time + " " + p1 + " " + p2 + " " + p3)
+          setTimeout(lights, time * 1000, p1, p2, p3)
+        }
+        if (m == "s") {
+          p2 = stack.pop()
+          p1 = stack.pop()
+          p0 = stack.pop()
+          time = calculateTimeBeforeCommand()
+          console.log("SERVO PARAMETERS  " + time + " " + p1 + " " + p2)
+          setTimeout(servo, time * 1000, p1, p2)
+
+        }
+        if (m == "f") {
+          p2 = stack.pop()
+          p1 = stack.pop()
+          p0 = stack.pop()
+          time = calculateTimeBeforeCommand()
+          console.log("FIBRE PARAMETERS  " + time + " " + p1 + " " + p2)
+          setTimeout(fibre, time * 1000, p1, p2)
+        }
+        if (m == "t") {
+          p2 = stack.pop()
+          p1 = stack.pop()
+          p0 = stack.pop()
+          time = calculateTimeBeforeCommand()
+          console.log("TRACK PARAMETERS  " + time + " " + p1 + " " + p2)
+          setTimeout(track, time * 1000, p1, p2)
+        }
+        if (m == "p") {
+          p2 = stack.pop()
+          p1 = stack.pop()
+          p0 = stack.pop()
+          time = calculateTimeBeforeCommand()
+          console.log("PLAY PARAMETERS  " + time + " " + p1 + " " + p2)
+          setTimeout(playSound, time * 1000, p1, p2, 0)
         }
       }
 
-      console.log("after word time: " + newText)
+    })
 
 
-      //send each line of text to the actions routine
-      for (command of newText.split("\n")) {
-        toActions(command)
-      }
-    });
 
+    pair.addEventListener('click', function(event) {
+      navigator.bluetooth.requestDevice({
+          filters: [{
+            namePrefix: 'MyESP32'
+          }],
+          optionalServices: ['4fafc201-1fb5-459e-8fcc-c5c9c331914b']
+        })
 
-    setup.addEventListener('click', function(event) {
-      setupSound();
-    });
+        .then(function(device) {
+          // Step 2: Connect to it
+          console.log("connecting to device");
+          return device.gatt.connect();
+        })
 
+        .then(function(server) {
+          // Step 3: Get the Service
+          console.log("connecting to service");
+          return server.getPrimaryService('4fafc201-1fb5-459e-8fcc-c5c9c331914b');
+        })
 
-pair.addEventListener('click',function(event){
-    navigator.bluetooth.requestDevice({
-        filters: [{
-          namePrefix: 'MyESP32'
-        }],
-        optionalServices: ['4fafc201-1fb5-459e-8fcc-c5c9c331914b']
-      })
+        .then(function(service) {
+          // Step 4: get the Characteristic
+          console.log("getting characteristic");
+          return service.getCharacteristic('beb5483e-36e1-4688-b7f5-ea07361b26a8');
+        })
+        .then(function(characteristic) {
+          myCharacteristic = characteristic;
+          // Step 5: Write to the characteristic
+          var data = new Uint8Array([0x41]);
+          console.log("writing to characteristic");
+          return characteristic.writeValue(data);
+        })
 
-      .then(function(device) {
-        // Step 2: Connect to it
-        console.log("connecting to device");
-        return device.gatt.connect();
-      })
-
-      .then(function(server) {
-        // Step 3: Get the Service
-        console.log("connecting to service");
-        return server.getPrimaryService('4fafc201-1fb5-459e-8fcc-c5c9c331914b');
-      })
-
-      .then(function(service) {
-        // Step 4: get the Characteristic
-        console.log("getting characteristic");
-        return service.getCharacteristic('beb5483e-36e1-4688-b7f5-ea07361b26a8');
-      })
-      .then(function(characteristic) {
-        myCharacteristic = characteristic;
-        // Step 5: Write to the characteristic
-        var data = new Uint8Array([0x41]);
-        console.log("writing to characteristic");
-        return characteristic.writeValue(data);
-      })
-
-      .catch(function(error) {
-        // And of course: error handling!
-        console.error('Connection failed!', error);
-      });
+        .catch(function(error) {
+          // And of course: error handling!
+          console.error('Connection failed!', error);
+        });
     });
   </script>
 
