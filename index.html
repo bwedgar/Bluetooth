@@ -73,13 +73,11 @@
 
 </head>
 
-<body style="background-color:white;color:black;font-family:courier;font-size:50px;text-align:center;"
-  <div>BLE controller v21 </div>
-  <br>
-  <button id="pair" style="font-size:50px;">pair</button>
+<body style="background-color:white;color:black;font-family:courier;font-size:50px;text-align:center;" <button id="pair" style="font-size:50px;">pair</button>
+  <div>BLE controller v22 </div>
 
   <button id="run" style="font-size:50px;">run</button>
-  <br>
+  <div id="output" style="font-size:50px;"></div>
 
   <textarea id="commands" cols=50 rows=25 oninput="updateLocalStorage()" style="font-size:20px;"></textarea><br>
 
@@ -231,6 +229,7 @@
     var trackCodeFront;
     var trackCodeBack;
     var servoNumber = 0;
+    var startTime = Date.now();
 
     var sounds = []
 
@@ -263,7 +262,7 @@
     radioButtonsLightOff = document.querySelectorAll('.lightoff');
 
     displayTime = () => {
-      //  output.innerHTML = Math.floor((Date.now() - startTime) / 1000);
+      output.innerHTML = Math.floor((Date.now() - startTime) / 1000);
     }
 
     sendCode = (code) => {
@@ -271,7 +270,7 @@
       v[0] = eval("0b" + code.toString(2));
       console.log("sending code: ", code.toString(2).padStart(8, "0"));
       myCharacteristic.writeValue(v);
-      output.innerText = Math.floor((Date.now() - startTime) / 1000) + "  " + code.toString(2).padStart(8, "0")
+      //  output.innerText = Math.floor((Date.now() - startTime) / 1000) + "  " + code.toString(2).padStart(8, "0")
     }
 
     pannerList = [
