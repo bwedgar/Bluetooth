@@ -29,13 +29,16 @@
 </head>
 
 <body style="background-color:white;color:black;font-family:courier;font-size:40px;text-align:center;"
-<div>v25</div>
-    <button id="pair" style="font-size:40px;">pair</button>
-    <div id="output" style="font-size:20px;"></div>
+<div>v26</div>
+    <button id="pair" style="font-size:30px;">pair</button>
+<br>
+  <textarea id="commands" cols=35 rows=25 oninput="updateLocalStorage()" style="font-size:20px;"></textarea>
+  <br>
 
-  <textarea id="commands" cols=40 rows=25 oninput="updateLocalStorage()" style="font-size:20px;"></textarea><br>
+  <button id="run" style="font-size:30px;">run</button>
+  <span id="output" style="font-size:30px;"></span> 
 
-  <button id="run" style="font-size:40px;">run</button>
+  <br>
   <span>
     B
   </span>
