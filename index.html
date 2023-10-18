@@ -31,7 +31,7 @@
 </head>
 
 <body style="background-color:white;color:black;font-family:courier;font-size:40px;text-align:center;"
-<div>v31</div>
+<div>v32</div>
 
 <br>
   <textarea id="commands" cols=30 rows=20 oninput="updateLocalStorage()" style="font-size:20px;"></textarea>
@@ -228,6 +228,21 @@
       output.innerHTML=(Math.floor((Date.now() - startTime) / 1000)+" "+ code.toString(2).padStart(8, "0"));
       myCharacteristic.writeValue(v);
     }
+
+    statusTest=0
+
+    function sendTest(){
+    if (statusTest==0) {
+    sendCode("01011100")
+    statusTest=1
+    }
+    if (statusTest==1) {
+    sendCode("01011101")
+    statusTest=0
+    }
+    }
+
+    setInterval(15000,sendTest())
 
     pannerList = [
       [0.01, 0.01], //[0] centre
