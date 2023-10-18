@@ -31,7 +31,7 @@
 </head>
 
 <body style="background-color:white;color:black;font-family:courier;font-size:40px;text-align:center;"
-<div>v32</div>
+<div>v33</div>
 
 <br>
   <textarea id="commands" cols=30 rows=20 oninput="updateLocalStorage()" style="font-size:20px;"></textarea>
@@ -242,7 +242,7 @@
     }
     }
 
-    setInterval(15000,sendTest())
+
 
     pannerList = [
       [0.01, 0.01], //[0] centre
@@ -393,6 +393,8 @@
       //set up the sound system
       started = true;
       audioCtx = new(window.AudioContext || window.webkitAudioContext)();
+
+  setInterval(15000,sendTest())
 
       output.innerHTML = ""
       startTime = Date.now();
@@ -604,6 +606,7 @@
           // And of course: error handling!
           console.error('Connection failed!', error);
         });
+
     });
   </script>
 
