@@ -31,7 +31,7 @@
 </head>
 
 <body style="background-color:white;color:black;font-family:courier;font-size:40px;text-align:center;"
-<div>v33</div>
+<div>v34</div>
 
 <br>
   <textarea id="commands" cols=30 rows=20 oninput="updateLocalStorage()" style="font-size:20px;"></textarea>
@@ -233,11 +233,11 @@
 
     function sendTest(){
     if (statusTest==0) {
-    sendCode("01011100")
+    sendCode("01011000")
     statusTest=1
     }
     if (statusTest==1) {
-    sendCode("01011101")
+    sendCode("01011001")
     statusTest=0
     }
     }
