@@ -16,24 +16,19 @@
   <meta name="mobile-web-app-capable" content="yes">
   <meta name="apple-mobile-web-app-status-bar-style" content="black">
 
-  <meta http-equiv="refresh" content="600">
-
   <style>
     span {
       display: inline-block;
       width: 20px;
       font-size: 30px;
     }
-
-
   </style>
 
 </head>
 
-<body style="background-color:white;color:black;font-family:courier;font-size:40px;text-align:center;"
-<div>v36</div>
+<body style="background-color:white;color:black;font-family:courier;font-size:40px;text-align:center;" <div>v37</div>
 
-<br>
+  <br>
   <textarea id="commands" cols=30 rows=20 oninput="updateLocalStorage()" style="font-size:20px;"></textarea>
   <br>
   <button id="pair" style="font-size:30px;">pair</button>
@@ -188,7 +183,7 @@
     var trackCodeBack;
     var servoNumber = 0;
     var startTime = Date.now();
-
+var   statusTest = 0;
     var sounds = []
 
     for (i = 0; i < 12; i++) {
@@ -225,22 +220,22 @@
     sendCode = (code) => {
       v = new Uint8Array(1);
       v[0] = eval("0b" + code.toString(2));
-      output.innerHTML=(Math.floor((Date.now() - startTime) / 1000)+" "+ code.toString(2).padStart(8, "0"));
+      output.innerHTML = (Math.floor((Date.now() - startTime) / 1000) + " " + code.toString(2).padStart(8, "0"));
       myCharacteristic.writeValue(v);
     }
 
-    statusTest=0
 
-    function sendTest(){
-    if (statusTest==0) {
-    sendCode("01011000")
 
-    }
-    if (statusTest==1) {
-    sendCode("01011001")
+    function sendTest() {
+      if (statusTest == 0) {
+        sendCode("01011000")
 
-    }
-    statusTest=(statusTest==0)?1:0
+      }
+      if (statusTest == 1) {
+        sendCode("01011001")
+
+      }
+      statusTest = (statusTest == 0) ? 1 : 0
     }
 
 
@@ -395,7 +390,7 @@
       started = true;
       audioCtx = new(window.AudioContext || window.webkitAudioContext)();
 
-  setInterval( sendTest,15000)
+      setInterval(sendTest, 15000)
 
       output.innerHTML = ""
       startTime = Date.now();
@@ -472,7 +467,6 @@
         console.log("words: " + words[i] + "  meaning: " + meanings[i])
       }
 
-
       immediate = []
       immediates = []
       //find all immediate commands (not colon definitions)
@@ -511,7 +505,6 @@
       }
 
       for (m of meaning) {
-
 
         if (m == "DROP") {
           stack.pop()
@@ -567,8 +560,6 @@
       }
 
     })
-
-
 
     pair.addEventListener('click', function(event) {
       navigator.bluetooth.requestDevice({
