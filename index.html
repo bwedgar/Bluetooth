@@ -27,7 +27,7 @@
 </head>
 
 <body style="background-color:white;color:black;font-family:courier;font-size:40px;text-align:center;"
- <div>v39</div>
+ <div>v40</div>
 
   <br>
   <textarea id="commands" cols=30 rows=20 oninput="updateLocalStorage()" style="font-size:20px;"></textarea>
@@ -183,7 +183,6 @@
     var trackCodeBack;
     var servoNumber = 0;
     var startTime = Date.now();
-    var statusTest = 0;
     var sounds = []
 
     for (i = 0; i < 12; i++) {
@@ -224,15 +223,6 @@
       myCharacteristic.writeValue(v);
     }
 
-    function sendTest() {
-      if (statusTest == 0) {
-        sendCode(1 * 64 + 4 * 8 + 0 * 1)
-      }
-      if (statusTest == 1) {
-        sendCode(1 * 64 + 4 * 8 + 1 * 1)
-      }
-      statusTest = (statusTest == 0) ? 1 : 0
-    }
 
     pannerList = [
       [0.01, 0.01], //[0] centre
@@ -379,8 +369,6 @@
       //set up the sound system
       started = true;
       audioCtx = new(window.AudioContext || window.webkitAudioContext)();
-
-      setInterval(sendTest, 15000)
 
       output.innerHTML = ""
       startTime = Date.now();
